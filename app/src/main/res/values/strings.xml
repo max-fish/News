@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">News</string>
+    <string name="title_home">Home</string>
+    <string name="title_recommended">Recommended</string>
+    <string name="title_all">Everything</string>
+    <string name="title_info">About us</string>
+</resources>
