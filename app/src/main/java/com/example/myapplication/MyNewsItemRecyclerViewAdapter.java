@@ -1,22 +1,25 @@
 package com.example.myapplication;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.dummy.DummyContent.DummyItem;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 
 public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsItemRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DummyItem> mValues;
+    private final List<DataModel> mValues;
 
-    public MyNewsItemRecyclerViewAdapter(List<DummyItem> items) {
+    public MyNewsItemRecyclerViewAdapter(List<DataModel> items) {
         mValues = items;
     }
 
@@ -29,11 +32,13 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        holder.mItem = mValues.get(position);
-        holder.mIdView.setText(mValues.get(position).id);
-        holder.mContentView.setText(mValues.get(position).content);
+        DataModel mItem = mValues.get(position);
+        putImage(mItem.getUrl(), holder.mImageView);
+        holder.mTitleView.setText(mItem.getTitle());
+        holder.mDescriptionView.setText(mItem.getDescription());
 
-        holder.mView.setOnClickListener(new View.OnClickListener() {
+
+        holder.mItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 //                if (null != mListener) {
@@ -45,27 +50,37 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
         });
     }
 
+    private void putImage(String url, ImageView imageView){
+        Log.i("Adapter", "url " + url);
+         Picasso
+                 .get()
+                 .load(url)
+                 .placeholder(R.drawable.ic_image_black_24dp)
+                 .into(imageView);
+    }
+
     @Override
     public int getItemCount() {
         return mValues.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        public final View mView;
-        public final TextView mIdView;
-        public final TextView mContentView;
-        public DummyItem mItem;
+        public final TextView mTitleView;
+        public final TextView mDescriptionView;
+        public final ImageView mImageView;
+        public final View mItem;
 
         public ViewHolder(View view) {
             super(view);
-            mView = view;
-            mIdView = (TextView) view.findViewById(R.id.item_number);
-            mContentView = (TextView) view.findViewById(R.id.content);
+            mItem = view;
+            mTitleView = (TextView) view.findViewById(R.id.news_item_title);
+            mDescriptionView = (TextView) view.findViewById(R.id.news_item_description);
+            mImageView = view.findViewById(R.id.news_item_image);
         }
 
         @Override
         public String toString() {
-            return super.toString() + " '" + mContentView.getText() + "'";
+            return super.toString() + " '" + mTitleView.getText() + "'";
         }
     }
 }

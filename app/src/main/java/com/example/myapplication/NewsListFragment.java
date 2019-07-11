@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.example.myapplication.dummy.DummyContent;
 import com.example.myapplication.dummy.DummyContent.DummyItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -60,12 +61,22 @@ public class NewsListFragment extends Fragment {
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
+//            if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-            recyclerView.setAdapter(new MyNewsItemRecyclerViewAdapter(DummyContent.ITEMS));
+//            } else {
+//                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+//            }
+
+            List<DataModel> dataModels = new ArrayList<>();
+            dataModels.add(new DataModel("Title", "DEscription",
+                    "https://cdn-images-1.medium.com/max/1200/0*4ty0Adbdg4dsVBo3.png"));
+            dataModels.add(new DataModel("Title", "DEscription", "http://i.imgur.com/DvpvklR.png"));
+            dataModels.add(new DataModel("Title", "DEscription", "https://cdn-images-1.medium.com/max/1200/0*4ty0Adbdg4dsVBo3.png"));
+            dataModels.add(new DataModel("Title", "DEscription", "https://cdn-images-1.medium.com/max/1200/0*4ty0Adbdg4dsVBo3.png"));
+            dataModels.add(new DataModel("Title", "DEscription", "https://cdn-images-1.medium.com/max/1200/0*4ty0Adbdg4dsVBo3.png"));
+            dataModels.add(new DataModel("Title", "DEscription", "http://i.imgur.com/DvpvklR.png"));
+
+            recyclerView.setAdapter(new MyNewsItemRecyclerViewAdapter(dataModels));
         }
         return view;
     }
