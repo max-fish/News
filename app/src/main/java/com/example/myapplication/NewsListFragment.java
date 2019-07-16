@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,12 +12,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.example.myapplication.dummy.DummyContent;
 import com.example.myapplication.dummy.DummyContent.DummyItem;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class NewsListFragment extends Fragment {
@@ -60,23 +66,38 @@ public class NewsListFragment extends Fragment {
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
+            final RecyclerView recyclerView = (RecyclerView) view;
 //            if (mColumnCount <= 1) {
                 recyclerView.setLayoutManager(new LinearLayoutManager(context));
 //            } else {
 //                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
 //            }
 
-            List<DataModel> dataModels = new ArrayList<>();
-            dataModels.add(new DataModel("Title", "DEscription",
-                    "https://cdn-images-1.medium.com/max/1200/0*4ty0Adbdg4dsVBo3.png"));
-            dataModels.add(new DataModel("Title", "DEscription", "http://i.imgur.com/DvpvklR.png"));
-            dataModels.add(new DataModel("Title", "DEscription", "https://cdn-images-1.medium.com/max/1200/0*4ty0Adbdg4dsVBo3.png"));
-            dataModels.add(new DataModel("Title", "DEscription", "https://cdn-images-1.medium.com/max/1200/0*4ty0Adbdg4dsVBo3.png"));
-            dataModels.add(new DataModel("Title", "DEscription", "https://cdn-images-1.medium.com/max/1200/0*4ty0Adbdg4dsVBo3.png"));
-            dataModels.add(new DataModel("Title", "DEscription", "http://i.imgur.com/DvpvklR.png"));
+            final List<DataModel> dataModels = new ArrayList<>();
+//            dataModels.add(new DataModel("Title", "DEscription",
+//                    "https://cdn-images-1.medium.com/max/1200/0*4ty0Adbdg4dsVBo3.png"));
+//            dataModels.add(new DataModel("Title", "DEscription", "http://i.imgur.com/DvpvklR.png"));
+//            dataModels.add(new DataModel("Title", "DEscription", "https://cdn-images-1.medium.com/max/1200/0*4ty0Adbdg4dsVBo3.png"));
+//            dataModels.add(new DataModel("Title", "DEscription", "https://cdn-images-1.medium.com/max/1200/0*4ty0Adbdg4dsVBo3.png"));
+//            dataModels.add(new DataModel("Title", "DEscription", "https://cdn-images-1.medium.com/max/1200/0*4ty0Adbdg4dsVBo3.png"));
+//            dataModels.add(new DataModel("Title", "DEscription", "http://i.imgur.com/DvpvklR.png"));
 
-            recyclerView.setAdapter(new MyNewsItemRecyclerViewAdapter(dataModels));
+
+            Call<DataModelCall> repos = Retro.getService().listRepos("bitcoin", "2019-06-16",
+                    "publishedAt", "bbc-news", "47075dc90ef54c6f8a0880b20a3ceffc");
+            repos.enqueue(new Callback<DataModelCall>() {
+                @Override
+                public void onResponse(Call<DataModelCall> call, Response<DataModelCall> response) {
+                    if(response.body() != null) {
+                        recyclerView.setAdapter(new MyNewsItemRecyclerViewAdapter(response.body().getArticles(),getActivity()));
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<DataModelCall> call, Throwable t) {
+
+                }
+            });
         }
         return view;
     }

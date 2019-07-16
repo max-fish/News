@@ -1,19 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    tools:context=".AboutFragment"
+    android:orientation="vertical"
+    android:layout_marginBottom="8dp"
+    >
+<LinearLayout
+    android:id="@+id/country_selection"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AboutFragment">
+    android:orientation="horizontal">
 
     <!-- TODO: Update blank fragment layout -->
+
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Location" />
+    <Spinner
+        android:id="@+id/country_spinner"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:entries="@array/countries"
+        android:prompt="@string/country_prompt" />
+
+</LinearLayout>
+    <LinearLayout
+        android:id="@+id/perspective_selection"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="About us" />
+        android:orientation="horizontal"
+        >
 
-    <ImageView
-        android:id="@+id/about_image"
-        android:layout_width="match_parent"
-        android:layout_height="200dp" />
+        <!-- TODO: Update blank fragment layout -->
 
-</FrameLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Perspective" />
+        <Spinner
+            android:id="@+id/perspective_spinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:entries="@array/perspectives"
+            android:prompt="@string/perspective_prompt"
+            />
+    </LinearLayout>
+</LinearLayout>

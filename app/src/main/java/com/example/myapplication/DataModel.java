@@ -1,9 +1,21 @@
 package com.example.myapplication;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
+
 public class DataModel {
 
-    private String id;
-    private String name;
+    public Source getSource() {
+        return source;
+    }
+
+    public void setSource(Source source) {
+        this.source = source;
+    }
+
+    private Source source;
     private String author;
     private String title;
     private String description;
@@ -13,27 +25,15 @@ public class DataModel {
     private String content;
 
 
-    public DataModel(String title, String description,String url){
-        this.title = title;
-        this.description = description;
-        this.url = url;
-    }
-
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public DataModel(Parcel parcel){
+        title = parcel.readString();
+        description = parcel.readString();
+        author = parcel.readString();
+        url = parcel.readString();
+        urlToImage = parcel.readString();
+        publishedAt = parcel.readString();
+        content = parcel.readString();
+        source = (Source) parcel.readValue(source.getClass().getClassLoader());
     }
 
     public String getAuthor() {
@@ -90,5 +90,26 @@ public class DataModel {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public class Source {
+        private String id;
+        private String name;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
     }
 }

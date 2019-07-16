@@ -4,6 +4,37 @@
     <string name="title_recommended">Recommended</string>
     <string name="title_all">Everything</string>
     <string name="title_info">About us</string>
+    <string name="country_prompt">Choose a country</string>
+    <string name="perspective_prompt">Choose a perspective</string>
+    <string-array name="countries">
+        <item>All</item>
+        <item>Malaysia</item>
+        <item>United States</item>
+        <item>Indonesia</item>
+        <item>France</item>
+        <item>Italy</item>
+        <item>Singapore</item>
+        <item>New Zealand</item>
+        <item>India</item>
+    </string-array>
+
+    <string-array name="perspectives">
+        <item>All</item>
+        <item>ABC News</item>
+        <item>ABC News(AU)</item>
+        <item>Aftenposten</item>
+        <item>Al Jazeera English</item>
+        <item>ANSA.it</item>
+        <item>Argaam</item>
+        <item>ARS Technica</item>
+        <item>Ary news</item>
+        <item>Associated Press</item>
+        <item>Australian Financial Review</item>
+        <item>Axios</item>
+        <item>BBC News</item>
+        <item>CNN</item>
+        <item>Fox news</item>
+    </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraisentLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#FFFFFF"
+    tools:context=".DetailActivity">
+
+
+    <TextView
+        android:id="@+id/detail_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="title"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-black"
+        android:textSize="35sp"
+        android:textColor="#000000"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <ImageView
+        android:id="@+id/detail_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/detail_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        />
+
+    <TextView
+        android:id="@+id/detail_description"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="description"
+        android:fontFamily="sans-serif-black"
+        android:textSize="15sp"
+        android:textColor="#000000"
+        app:layout_constraintTop_toBottomOf="@id/detail_image"
+        />
+
+    <TextView
+        android:id="@+id/detail_source"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="perspective"
+        app:layout_constraintTop_toBottomOf="@+id/detail_description"
+        />
+    <TextView
+        android:id="@+id/detail_country"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="country"
+        app:layout_constraintTop_toBottomOf="@id/detail_source"
+        />
+
+
+</androidx.constraintlayout.widget.ConstraisentLayout>
