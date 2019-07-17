@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,35 +63,39 @@ public class NewsListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_newsitem_list, container, false);
-
+        Log.i("NewsListFragment", "onCreateView");
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
             final RecyclerView recyclerView = (RecyclerView) view;
 //            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
+            recyclerView.setLayoutManager(new LinearLayoutManager(context));
 //            } else {
 //                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
 //            }
 
-            final List<DataModel> dataModels = new ArrayList<>();
+            final List<DataModel> dataModels = Application.getNews();
 
-            Call<DataModelCall> repos = Retro.getService().listRepos("bitcoin", "2019-06-17",
-                    "publishedAt", "bbc-news", "47075dc90ef54c6f8a0880b20a3ceffc");
-            repos.enqueue(new Callback<DataModelCall>() {
-                @Override
-                public void onResponse(Call<DataModelCall> call, Response<DataModelCall> response) {
-                    if(response.body() != null) {
-                        recyclerView.setAdapter(new MyNewsItemRecyclerViewAdapter(response.body().getArticles(),getActivity()));
+            if (dataModels == null || dataModels.size() > 0) {
+
+                Call<DataModelCall> repos = Retro.getService().listRepos("bitcoin", "2019-06-17",
+                        "publishedAt", "bbc-news", "47075dc90ef54c6f8a0880b20a3ceffc");
+                repos.enqueue(new Callback<DataModelCall>() {
+                    @Override
+                    public void onResponse(Call<DataModelCall> call, Response<DataModelCall> response) {
+                        if (response.body() != null) {
+                            Application.setNews(response.body().getArticles());
+                            recyclerView.setAdapter(new MyNewsItemRecyclerViewAdapter(response.body().getArticles(), getActivity()));
+                        }
                     }
-                }
 
-                @Override
-                public void onFailure(Call<DataModelCall> call, Throwable t) {
+                    @Override
+                    public void onFailure(Call<DataModelCall> call, Throwable t) {
 
-                }
-            });
+                    }
+                });
+            }
         }
-        return view;
+            return view;
     }
 }
