@@ -17,6 +17,7 @@ public class DetailActivity extends AppCompatActivity {
     private TextView title;
     private TextView description;
     private TextView source;
+    private TextView content;
     private ImageView image;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -25,7 +26,8 @@ public class DetailActivity extends AppCompatActivity {
 
         title = findViewById(R.id.detail_title);
         description = findViewById(R.id.detail_description);
-        source = findViewById(R.id.detail_perspective);
+        source = findViewById(R.id.detail_source);
+        content = findViewById(R.id.detail_content);
         image = findViewById(R.id.detail_image);
 
         Bundle inBundle = getIntent().getBundleExtra("info");
@@ -52,6 +54,7 @@ public class DetailActivity extends AppCompatActivity {
         title.setText(bundle.getString("title"));
         description.setText(bundle.getString("description"));
         source.setText(bundle.getString("source"));
+        content.setText(bundle.getString("content"));
         Picasso
                 .get()
                 .load(bundle.getString("urlToImage"))

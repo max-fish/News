@@ -74,16 +74,8 @@ public class NewsListFragment extends Fragment {
 //            }
 
             final List<DataModel> dataModels = new ArrayList<>();
-//            dataModels.add(new DataModel("Title", "DEscription",
-//                    "https://cdn-images-1.medium.com/max/1200/0*4ty0Adbdg4dsVBo3.png"));
-//            dataModels.add(new DataModel("Title", "DEscription", "http://i.imgur.com/DvpvklR.png"));
-//            dataModels.add(new DataModel("Title", "DEscription", "https://cdn-images-1.medium.com/max/1200/0*4ty0Adbdg4dsVBo3.png"));
-//            dataModels.add(new DataModel("Title", "DEscription", "https://cdn-images-1.medium.com/max/1200/0*4ty0Adbdg4dsVBo3.png"));
-//            dataModels.add(new DataModel("Title", "DEscription", "https://cdn-images-1.medium.com/max/1200/0*4ty0Adbdg4dsVBo3.png"));
-//            dataModels.add(new DataModel("Title", "DEscription", "http://i.imgur.com/DvpvklR.png"));
 
-
-            Call<DataModelCall> repos = Retro.getService().listRepos("bitcoin", "2019-06-16",
+            Call<DataModelCall> repos = Retro.getService().listRepos("bitcoin", "2019-06-17",
                     "publishedAt", "bbc-news", "47075dc90ef54c6f8a0880b20a3ceffc");
             repos.enqueue(new Callback<DataModelCall>() {
                 @Override
@@ -101,6 +93,4 @@ public class NewsListFragment extends Fragment {
         }
         return view;
     }
-
-
 }
