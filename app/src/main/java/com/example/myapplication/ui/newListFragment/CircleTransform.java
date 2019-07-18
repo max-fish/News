@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.ui.newListFragment;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;

@@ -1,17 +1,18 @@
-package com.example.myapplication;
+package com.example.myapplication.ui;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MenuItem;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.util.Log;
-import android.view.MenuItem;
+import com.example.myapplication.R;
+import com.example.myapplication.ui.newListFragment.NewsListFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,11 +21,10 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            fragmentManager = getSupportFragmentManager();
 
             switch (item.getItemId()) {
                 case R.id.news_recommended:
-                    runFragment( "recommended", NewsListFragment.newInstance(1));
+                    runFragment("recommended", NewsListFragment.newInstance(1));
                     return true;
                 case R.id.news_all:
                     runFragment("all", NewsListFragment.newInstance(1));
@@ -37,17 +37,12 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private void runFragment(String tag, Fragment fragment){
+    private void runFragment(String tag, Fragment fragment) {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-
-        if (fragmentManager.findFragmentByTag(tag) == null){
-            fragmentTransaction.replace(R.id.fragment_container, fragment);
-            fragmentTransaction.addToBackStack(tag);
-            fragmentTransaction.commit();
-        }else {
-            fragmentManager.popBackStack(tag,0);
-        }
+        fragmentTransaction.replace(R.id.fragment_container, fragment, tag);
+        fragmentTransaction.commit();
     }
+
     private FragmentManager fragmentManager;
 
     private BottomNavigationView navView;
@@ -56,6 +51,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        fragmentManager = getSupportFragmentManager();
+
         navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
@@ -66,24 +64,24 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    private void clearStack(FragmentManager fragmentManager){
-        for(int i = 0; i < fragmentManager.getBackStackEntryCount(); i++){
+    private void clearStack(FragmentManager fragmentManager) {
+        for (int i = 0; i < fragmentManager.getBackStackEntryCount(); i++) {
             fragmentManager.popBackStack();
         }
     }
 
-    private FragmentManager.BackStackEntry findFirstFragmentOfStack(FragmentManager fragmentManager){
+    private FragmentManager.BackStackEntry findFirstFragmentOfStack(FragmentManager fragmentManager) {
         return fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount() - 1);
     }
 
     @Override
     public void onBackPressed() {
         if (findFirstFragmentOfStack(fragmentManager).getName().equals("recommended")) {
-            Log.d("home", "home");
+            Log.d("MainActivity", "home");
             //clearStack(fragmentManager);
             super.onBackPressed();
         } else {
-            Log.d("not home", "not home");
+            Log.d("MainActivity", "not home");
             clearStack(fragmentManager);
             navView.setSelectedItemId(R.id.news_recommended);
         }

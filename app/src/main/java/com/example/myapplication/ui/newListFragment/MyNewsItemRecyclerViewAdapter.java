@@ -1,9 +1,8 @@
-package com.example.myapplication;
+package com.example.myapplication.ui.newListFragment;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +11,9 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.data.model.DataModel;
+import com.example.myapplication.R;
+import com.example.myapplication.ui.DetailActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -62,8 +64,8 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
         }
     }
 
-    private View.OnClickListener makeViewHolderOnClickListener(final DataModel item){
-        if(viewHolderOnClickListener == null){
+    private View.OnClickListener makeViewHolderOnClickListener(final DataModel item) {
+        if (viewHolderOnClickListener == null) {
             viewHolderOnClickListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -75,19 +77,18 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
                 }
             };
             return viewHolderOnClickListener;
-        }
-        else{
+        } else {
             return viewHolderOnClickListener;
         }
     }
 
-    private void fillBundle(Bundle bundle, DataModel item){
+    private void fillBundle(Bundle bundle, DataModel item) {
         bundle.putString("title", item.getTitle());
         bundle.putString("description", item.getDescription());
         bundle.putString("author", item.getAuthor());
         bundle.putString("content", item.getContent());
         bundle.putString("source", item.getSource().getName());
-        bundle.putString("publishedAt",item.getPublishedAt());
+        bundle.putString("publishedAt", item.getPublishedAt());
         bundle.putString("url", item.getUrl());
         bundle.putString("urlToImage", item.getUrlToImage());
     }
