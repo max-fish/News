@@ -1,9 +1,6 @@
-package com.example.myapplication;
+package com.example.myapplication.data.model;
 
 import android.os.Parcel;
-import android.os.Parcelable;
-
-import java.io.Serializable;
 
 public class DataModel {
 
@@ -25,7 +22,7 @@ public class DataModel {
     private String content;
 
 
-    public DataModel(Parcel parcel){
+    public DataModel(Parcel parcel) {
         title = parcel.readString();
         description = parcel.readString();
         author = parcel.readString();
