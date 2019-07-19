@@ -68,7 +68,7 @@ public class RequestGenerator {
         private String sortBy;
         private String source;
 
-        public Builder(){};
+        public Builder(){}
 
 
         public Builder setQuery(String query) {

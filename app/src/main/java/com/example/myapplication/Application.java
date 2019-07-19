@@ -2,12 +2,21 @@ package com.example.myapplication;
 
 import android.util.Log;
 
+import com.example.myapplication.data.NewsRepository;
+import com.example.myapplication.data.NewsRepositoryImpl;
 import com.example.myapplication.data.model.DataModel;
 
 import java.util.List;
 
 public class Application extends android.app.Application {
+
     private static List<DataModel> listNews;
+
+    public static NewsRepository newsRepository;
+
+    public static NewsRepository getRepository(){
+        return newsRepository;
+    }
 
     public static void setNews(List<DataModel> news) {
         Log.i("Application", "setNews listRepos " + news.size());
@@ -25,6 +34,7 @@ public class Application extends android.app.Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        newsRepository = new NewsRepositoryImpl();
 
     }
 }

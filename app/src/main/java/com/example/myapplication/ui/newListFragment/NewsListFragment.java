@@ -6,13 +6,21 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.AsyncListUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.Application;
 import com.example.myapplication.R;
+import com.example.myapplication.data.callback.DataCallBack;
+import com.example.myapplication.data.model.DataModel;
 import com.example.myapplication.data.net.RequestGenerator;
+
+import java.util.List;
 
 
 public class NewsListFragment extends Fragment {
@@ -54,20 +62,28 @@ public class NewsListFragment extends Fragment {
             updateNews(recyclerView);
         }
 
-         return view;
+        return view;
     }
 
-    private void updateNews(RecyclerView recyclerView) {
+    private void updateNews(final RecyclerView recyclerView) {
+        Application.getRepository().getNews(new DataCallBack<List<DataModel>>() {
 
+            @Override
+            public void onEmit(List<DataModel> data) {
+                recyclerView.setAdapter(new MyNewsItemRecyclerViewAdapter(data, getActivity()));
+            }
 
-            RequestGenerator requestGenerator = new RequestGenerator.Builder()
-                    .setQuery("bitcoin")
-                    .setFromDate("2019-06-18")
-                    .setSortBy("publishedAt")
-                    .setSource("cnn")
-                    .build();
+            @Override
+            public void onCompleted() {
 
-            requestGenerator.execute(recyclerView, getActivity());
+            }
 
-        }
+            @Override
+            public void onError(Throwable throwable) {
+                if (getActivity() != null)
+                    Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+            }
+        });
+
     }
+}
