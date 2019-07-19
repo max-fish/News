@@ -6,7 +6,7 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-public interface GitHubService {
+public interface GitHubServiceAll {
     @GET("/v2/everything")
     Call<DataModelCall> listRepos(@Query("q") String q,
                                   @Query("from") String from,

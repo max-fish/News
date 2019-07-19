@@ -1,16 +1,19 @@
 package com.example.myapplication.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.myapplication.R;
+import com.example.myapplication.LocationFinder;
 import com.example.myapplication.ui.newListFragment.NewsListFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -49,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        LocationFinder.getLocation(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -85,5 +89,13 @@ public class MainActivity extends AppCompatActivity {
             clearStack(fragmentManager);
             navView.setSelectedItemId(R.id.news_recommended);
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+         if (requestCode == LocationFinder.LOCATION_REQUEST_CODE && resultCode == RESULT_OK){
+             LocationFinder.getLocation(this);
+         }
     }
 }
