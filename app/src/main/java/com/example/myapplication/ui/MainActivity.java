@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.myapplication.Constants;
 import com.example.myapplication.R;
 import com.example.myapplication.LocationFinder;
 import com.example.myapplication.ui.newListFragment.NewsListFragment;
@@ -27,10 +28,10 @@ public class MainActivity extends AppCompatActivity {
 
             switch (item.getItemId()) {
                 case R.id.news_recommended:
-                    runFragment("recommended", NewsListFragment.newInstance(1));
+                    runFragment("recommended", NewsListFragment.newInstance(Constants.NewsType.RECCOMENDED));
                     return true;
                 case R.id.news_all:
-                    runFragment("all", NewsListFragment.newInstance(1));
+                    runFragment("all", NewsListFragment.newInstance(Constants.NewsType.ALL));
                     return true;
                 case R.id.about_us:
                     runFragment("about", new AboutFragment());
@@ -63,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, NewsListFragment.newInstance(1));
+        fragmentTransaction.replace(R.id.fragment_container, NewsListFragment.newInstance(Constants.NewsType.RECCOMENDED));
         fragmentTransaction.addToBackStack("recommended");
         fragmentTransaction.commit();
     }

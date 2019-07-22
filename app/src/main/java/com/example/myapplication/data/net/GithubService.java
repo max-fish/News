@@ -12,5 +12,6 @@ public interface GithubService {
                                   @Query("from") String from,
                                   @Query("sortBy") String sortBy,
                                   @Query("sources") String source,
+                                  @Query("language") String language,
                                   @Query("apiKey") String apiKey);
 }

@@ -1,6 +1,7 @@
 package com.example.myapplication.data;
 
 import com.example.myapplication.Application;
+import com.example.myapplication.Constants;
 import com.example.myapplication.data.callback.DataCallBack;
 import com.example.myapplication.data.model.DataModel;
 import com.example.myapplication.data.net.RequestGenerator;
@@ -11,18 +12,56 @@ public class NewsRepositoryImpl implements NewsRepository {
 
 
     @Override
-    public void getNews(final DataCallBack<List<DataModel>> callBack) {
-         List<DataModel> dataModels = Application.getNews();
-        if (dataModels == null || dataModels.size() == 0) {
+    public void getAllNews(final DataCallBack<List<DataModel>> callBack, Constants.NewsType newsType, String query, boolean refresh) {
+        if (!refresh) {
+            List<DataModel> dataModels = Application.getNews();
+            if (dataModels == null || dataModels.size() == 0) {
+                RequestGenerator requestGenerator = new RequestGenerator.Builder()
+                        .setQuery(query)
+                        .setFromDate("2019-06-22")
+                        .setSortBy("publishedAt")
+                        .setSource("cnn")
+                        .setLanguage("en")
+                        .build();
+                requestGenerator.execute(callBack, newsType);
+            } else {
+                callBack.onEmit(dataModels);
+            }
+        } else {
             RequestGenerator requestGenerator = new RequestGenerator.Builder()
-                    .setQuery("bitcoin")
+                    .setQuery(query)
                     .setFromDate("2019-06-22")
                     .setSortBy("publishedAt")
                     .setSource("cnn")
+                    .setLanguage("en")
                     .build();
-            requestGenerator.execute(callBack);
+            requestGenerator.execute(callBack, newsType);
+        }
+    }
+
+    @Override
+    public void getRecommendedNews(DataCallBack<List<DataModel>> callBack, Constants.NewsType newsType, String query, boolean refresh) {
+        if (!refresh) {
+            List<DataModel> dataModels = Application.getRecommendedNews();
+            if (dataModels == null || dataModels.size() == 0) {
+                RequestGenerator requestGenerator = new RequestGenerator.Builder()
+                        .setQuery(query)
+                        .setFromDate("2019-06-22")
+                        .setSortBy("publishedAt")
+                        .setLanguage("en")
+                        .build();
+                requestGenerator.execute(callBack, newsType);
+            } else {
+                callBack.onEmit(dataModels);
+            }
         } else {
-            callBack.onEmit(dataModels);
+            RequestGenerator requestGenerator = new RequestGenerator.Builder()
+                    .setQuery(query)
+                    .setFromDate("2019-06-22")
+                    .setSortBy("publishedAt")
+                    .setLanguage("en")
+                    .build();
+            requestGenerator.execute(callBack, newsType);
         }
     }
 }

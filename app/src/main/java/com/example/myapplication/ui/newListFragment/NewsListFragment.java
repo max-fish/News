@@ -6,34 +6,35 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.AsyncListUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.myapplication.Application;
+import com.example.myapplication.Constants;
 import com.example.myapplication.R;
 import com.example.myapplication.data.callback.DataCallBack;
 import com.example.myapplication.data.model.DataModel;
-import com.example.myapplication.data.net.RequestGenerator;
 
 import java.util.List;
 
 
 public class NewsListFragment extends Fragment {
-    private static final String ARG_COLUMN_COUNT = "column-count";
-    private int mColumnCount;
+
+    private Constants.NewsType newsType;
 
     public NewsListFragment() {
     }
 
-    public static NewsListFragment newInstance(int columnCount) {
+    public static NewsListFragment newInstance(Constants.NewsType newsType) {
         NewsListFragment fragment = new NewsListFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
+        args.putSerializable("newsType", newsType);
         fragment.setArguments(args);
         return fragment;
     }
@@ -43,7 +44,7 @@ public class NewsListFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+            newsType = (Constants.NewsType) getArguments().getSerializable("newsType");
         }
         Log.i("NewsListFragment", "onCreate");
     }
@@ -52,38 +53,88 @@ public class NewsListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_newsitem_list, container, false);
-        Log.i("NewsListFragment", "onCreateView");
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            final RecyclerView recyclerView = (RecyclerView) view;
-            recyclerView.setLayoutManager(new LinearLayoutManager(context));
 
-            updateNews(recyclerView);
-        }
+        SearchView searchView = view.findViewById(R.id.search_bar);
+
+        final SwipeRefreshLayout pullToRefresh = view.findViewById(R.id.pull_to_refresh);
+
+        final RecyclerView recyclerView = view.findViewById(R.id.list);
+
+        pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                updateNews(null, recyclerView, newsType, true);
+                pullToRefresh.setRefreshing(false);
+            }
+        });
+
+
+
+        Log.d("NewsListFragment", "onCreateView");
+        // Set the adapter
+                recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+
+                updateNews(null, recyclerView, newsType, false);
+
+                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                    @Override
+                    public boolean onQueryTextSubmit(String query) {
+                        updateNews(query, recyclerView, newsType, false);
+                        return true;
+                    }
+
+                    @Override
+                    public boolean onQueryTextChange(String newText) {
+                        return false;
+                    }
+                });
 
         return view;
     }
 
-    private void updateNews(final RecyclerView recyclerView) {
-        Application.getRepository().getNews(new DataCallBack<List<DataModel>>() {
+    private void updateNews(String query, final RecyclerView recyclerView, Constants.NewsType newsType, boolean refresh) {
+        if(newsType == Constants.NewsType.ALL) {
 
-            @Override
-            public void onEmit(List<DataModel> data) {
-                recyclerView.setAdapter(new MyNewsItemRecyclerViewAdapter(data, getActivity()));
-            }
+            Application.getRepository().getAllNews(new DataCallBack<List<DataModel>>() {
 
-            @Override
-            public void onCompleted() {
+                @Override
+                public void onEmit(List<DataModel> data) {
+                    recyclerView.setAdapter(new MyNewsItemRecyclerViewAdapter(data, getActivity()));
 
-            }
+                }
 
-            @Override
-            public void onError(Throwable throwable) {
-                if (getActivity() != null)
-                    Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
-            }
-        });
+                @Override
+                public void onCompleted() {
+
+                }
+
+                @Override
+                public void onError(Throwable throwable) {
+                    if (getActivity() != null)
+                        Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+                }
+            }, newsType, query, refresh);
+        }
+        else if(newsType == Constants.NewsType.RECCOMENDED){
+            Application.getRepository().getRecommendedNews(new DataCallBack<List<DataModel>>() {
+                @Override
+                public void onEmit(List<DataModel> data) {
+                    recyclerView.setAdapter(new MyNewsItemRecyclerViewAdapter(data, getActivity()));
+                }
+
+                @Override
+                public void onCompleted() {
+
+                }
+
+                @Override
+                public void onError(Throwable throwable) {
+                    if (getActivity() != null)
+                        Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+                }
+            }, newsType, query, refresh);
+        }
 
     }
+
 }

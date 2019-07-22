@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.Application;
+import com.example.myapplication.Constants;
 import com.example.myapplication.data.callback.DataCallBack;
 import com.example.myapplication.data.model.DataModel;
 import com.example.myapplication.data.model.DataModelCall;
@@ -23,22 +24,24 @@ public class RequestGenerator {
     private String fromDate;
     private String sortBy;
     private String source;
+    private String language;
     private static final String API_KEY = "47075dc90ef54c6f8a0880b20a3ceffc";
     private List<DataModel> newsList;
 
 
-    public RequestGenerator(String query, String fromDate, String sortBy, String source) {
+    public RequestGenerator(String query, String fromDate, String sortBy, String source, String language) {
         this.query = query;
         this.fromDate = fromDate;
         this.sortBy = sortBy;
         this.source = source;
+        this.language = language;
     }
 
-    public void execute(final DataCallBack<List<DataModel>> callBack) {
+    public void execute(final DataCallBack<List<DataModel>> callBack, final Constants.NewsType newsType) {
         Log.i("NewsListFragment", "Retro.getService().listRepos");
 
             Call<DataModelCall> repos = Retro.getServiceAll().listRepos(query, fromDate,
-                    sortBy, source, API_KEY);
+                    sortBy, source, language, API_KEY);
 
         repos.enqueue(new Callback<DataModelCall>() {
             @Override
@@ -46,7 +49,12 @@ public class RequestGenerator {
                 if (response.body() != null) {
                     List<DataModel> results = response.body().getArticles();
                     callBack.onEmit(results);
-                    Application.setNews(results);
+                    if(newsType == Constants.NewsType.ALL) {
+                        Application.setNews(results);
+                    }
+                    else if(newsType == Constants.NewsType.RECCOMENDED){
+                        Application.setRecommendedNews(results);
+                    }
                 }
             }
 
@@ -62,6 +70,7 @@ public class RequestGenerator {
         private String fromDate;
         private String sortBy;
         private String source;
+        private String language;
 
         public Builder(){}
 
@@ -86,8 +95,13 @@ public class RequestGenerator {
             return this;
         }
 
+        public Builder setLanguage(String language){
+            this.language = language;
+            return this;
+        }
+
         public RequestGenerator build(){
-            return new RequestGenerator(query, fromDate, sortBy, source);
+            return new RequestGenerator(query, fromDate, sortBy, source, language);
         }
     }
 }

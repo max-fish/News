@@ -12,6 +12,8 @@ public class Application extends android.app.Application {
 
     private static List<DataModel> listNews;
 
+    private static List<DataModel> listRecommendedNews;
+
     public static NewsRepository newsRepository;
 
     public static NewsRepository getRepository(){
@@ -29,6 +31,14 @@ public class Application extends android.app.Application {
         else
             Log.i("Application", "getNews listRepos = null ");
         return listNews;
+    }
+
+    public static void setRecommendedNews(List<DataModel> news){
+        listRecommendedNews = news;
+    }
+
+    public static List<DataModel> getRecommendedNews(){
+        return listRecommendedNews;
     }
 
     @Override
