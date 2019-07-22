@@ -7,12 +7,15 @@ import com.example.myapplication.data.NewsRepositoryImpl;
 import com.example.myapplication.data.model.DataModel;
 
 import java.util.List;
+import java.util.Stack;
 
 public class Application extends android.app.Application {
 
     private static List<DataModel> listNews;
 
     private static List<DataModel> listRecommendedNews;
+
+    private static Stack<String> queryStack = new Stack<>();
 
     public static NewsRepository newsRepository;
 
@@ -39,6 +42,14 @@ public class Application extends android.app.Application {
 
     public static List<DataModel> getRecommendedNews(){
         return listRecommendedNews;
+    }
+
+    public static void addQuery(String query){
+        queryStack.push(query);
+    }
+
+    public static String getQuery(){
+        return queryStack.pop();
     }
 
     @Override

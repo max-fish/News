@@ -1,5 +1,7 @@
 package com.example.myapplication.data;
 
+import android.util.Log;
+
 import com.example.myapplication.Application;
 import com.example.myapplication.Constants;
 import com.example.myapplication.data.callback.DataCallBack;
@@ -43,11 +45,15 @@ public class NewsRepositoryImpl implements NewsRepository {
     public void getRecommendedNews(DataCallBack<List<DataModel>> callBack, Constants.NewsType newsType, String query, boolean refresh) {
         if (!refresh) {
             List<DataModel> dataModels = Application.getRecommendedNews();
-            if (dataModels == null || dataModels.size() == 0) {
+
+            if (dataModels == null || dataModels.size() == 0 || !query.equals(Application.getQuery())) {
+                Log.d("NewsRepository", "getting new");
+                Application.addQuery(query);
                 RequestGenerator requestGenerator = new RequestGenerator.Builder()
                         .setQuery(query)
                         .setFromDate("2019-06-22")
                         .setSortBy("publishedAt")
+                        .setSource("bbc-news")
                         .setLanguage("en")
                         .build();
                 requestGenerator.execute(callBack, newsType);
