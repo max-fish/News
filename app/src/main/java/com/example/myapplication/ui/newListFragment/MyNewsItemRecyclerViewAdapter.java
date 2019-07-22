@@ -65,7 +65,6 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
     }
 
     private View.OnClickListener makeViewHolderOnClickListener(final DataModel item) {
-        if (viewHolderOnClickListener == null) {
             viewHolderOnClickListener = new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -77,10 +76,7 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
                 }
             };
             return viewHolderOnClickListener;
-        } else {
-            return viewHolderOnClickListener;
         }
-    }
 
     private void fillBundle(Bundle bundle, DataModel item) {
         bundle.putString("title", item.getTitle());

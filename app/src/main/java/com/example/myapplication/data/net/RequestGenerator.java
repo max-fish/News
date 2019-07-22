@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.Application;
+import com.example.myapplication.data.callback.DataCallBack;
 import com.example.myapplication.data.model.DataModel;
 import com.example.myapplication.data.model.DataModelCall;
 import com.example.myapplication.ui.newListFragment.MyNewsItemRecyclerViewAdapter;
@@ -33,34 +34,28 @@ public class RequestGenerator {
         this.source = source;
     }
 
-    public void execute(final RecyclerView recyclerView, final Activity activity) {
+    public void execute(final DataCallBack<List<DataModel>> callBack) {
         Log.i("NewsListFragment", "Retro.getService().listRepos");
 
-        final List<DataModel> dataModels = Application.getNews();
-        if (dataModels == null || dataModels.size() == 0) {
             Call<DataModelCall> repos = Retro.getServiceAll().listRepos(query, fromDate,
                     sortBy, source, API_KEY);
 
-            repos.enqueue(new Callback<DataModelCall>() {
-                @Override
-                public void onResponse(Call<DataModelCall> call, Response<DataModelCall> response) {
-                    if (response.body() != null) {
-                        List<DataModel> results = response.body().getArticles();
-                        Application.setNews(results);
-                        recyclerView.setAdapter(new MyNewsItemRecyclerViewAdapter(results, activity));
-                    }
+        repos.enqueue(new Callback<DataModelCall>() {
+            @Override
+            public void onResponse(Call<DataModelCall> call, Response<DataModelCall> response) {
+                if (response.body() != null) {
+                    List<DataModel> results = response.body().getArticles();
+                    callBack.onEmit(results);
+                    Application.setNews(results);
                 }
+            }
 
-                @Override
-                public void onFailure(Call<DataModelCall> call, Throwable t) {
-
-                }
-            });
+            @Override
+            public void onFailure(Call<DataModelCall> call, Throwable t) {
+                callBack.onError(t);
+            }
+        });
         }
-        else {
-            recyclerView.setAdapter(new MyNewsItemRecyclerViewAdapter(dataModels, activity));
-        }
-    }
 
     public static class Builder{
         private String query;

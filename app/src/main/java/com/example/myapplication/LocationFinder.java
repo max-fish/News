@@ -8,10 +8,12 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import java.io.IOException;
@@ -49,7 +51,7 @@ public class LocationFinder {
                                             (location.getLatitude(), location.getLongitude(), 1);
                                      String countryName = addresses.get(0).getCountryName();
                                      tbrLocation[0] = countryName;
-                                } catch (IOException e) {
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
 
