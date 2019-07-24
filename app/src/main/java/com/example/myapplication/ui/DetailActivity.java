@@ -1,8 +1,13 @@
 package com.example.myapplication.ui;
 
+import android.content.Intent;
+import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,9 +21,10 @@ import com.squareup.picasso.Picasso;
 public class DetailActivity extends AppCompatActivity {
     private TextView title;
     private TextView description;
-    private TextView source;
+    private ImageView source;
     private TextView content;
     private ImageView image;
+    private ImageView link;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -30,6 +36,7 @@ public class DetailActivity extends AppCompatActivity {
         source = findViewById(R.id.detail_source);
         content = findViewById(R.id.detail_content);
         image = findViewById(R.id.detail_image);
+        link = findViewById(R.id.detail_link);
 
         Bundle inBundle = getIntent().getBundleExtra("info");
 
@@ -50,14 +57,26 @@ public class DetailActivity extends AppCompatActivity {
         }
     }
 
-    private void getBundleDataOut(Bundle bundle) {
+    private void getBundleDataOut(final Bundle bundle) {
         title.setText(bundle.getString("title"));
         description.setText(bundle.getString("description"));
-        source.setText(bundle.getString("source"));
+        setSourceImage(bundle.getString("source"), source);
         content.setText(bundle.getString("content"));
         Picasso
                 .get()
                 .load(bundle.getString("urlToImage"))
                 .into(image);
+        link.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent browserIntent = new Intent (Intent.ACTION_VIEW, Uri.parse(bundle.getString("url")));
+                startActivity(browserIntent);
+            }
+        });
+    }
+
+    private void setSourceImage(String source, ImageView sourceView) {
+        if(source.equals("bbc-news"))
+            sourceView.setImageResource(R.drawable.ic_bbc);
     }
 }

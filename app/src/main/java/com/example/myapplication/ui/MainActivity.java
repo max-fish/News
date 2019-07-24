@@ -3,6 +3,8 @@ package com.example.myapplication.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -55,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         LocationFinder.getLocation(this);
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
 
         fragmentManager = getSupportFragmentManager();
@@ -64,9 +67,39 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, NewsListFragment.newInstance(Constants.NewsType.RECCOMENDED));
+        fragmentTransaction.replace(R.id.fragment_container, NewsListFragment.newInstance(Constants.NewsType.RECCOMENDED), "recommended");
         fragmentTransaction.addToBackStack("recommended");
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.perspective_selection, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        String fragmentTag =  findFirstFragmentOfStack(getSupportFragmentManager()).getName();
+        Fragment currentFragment = getSupportFragmentManager().findFragmentByTag(fragmentTag);
+        if(currentFragment instanceof NewsListFragment) {
+            switch (item.getItemId()) {
+                case R.id.CNN_perspective:
+                    ((NewsListFragment) currentFragment).changePerspective("cnn");
+                    return true;
+                case R.id.BBC_perspective:
+                    ((NewsListFragment) currentFragment).changePerspective("bbc-news");
+                    return true;
+                    default:
+                       return super.onOptionsItemSelected(item);
+
+            }
+        }
+        else{
+             return super.onOptionsItemSelected(item);
+        }
     }
 
     private void clearStack(FragmentManager fragmentManager) {

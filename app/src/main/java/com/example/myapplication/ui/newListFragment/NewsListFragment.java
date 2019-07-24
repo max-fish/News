@@ -18,6 +18,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.myapplication.Application;
 import com.example.myapplication.Constants;
 import com.example.myapplication.R;
+import com.example.myapplication.Request;
 import com.example.myapplication.data.callback.DataCallBack;
 import com.example.myapplication.data.model.DataModel;
 
@@ -26,7 +27,11 @@ import java.util.List;
 
 public class NewsListFragment extends Fragment {
 
+    private Request currentRequest;
+
     private Constants.NewsType newsType;
+
+    RecyclerView recyclerView;
 
     public NewsListFragment() {
     }
@@ -54,19 +59,23 @@ public class NewsListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_newsitem_list, container, false);
 
-        SearchView searchView = view.findViewById(R.id.search_bar);
+        final SearchView searchView = view.findViewById(R.id.search_bar);
 
         final SwipeRefreshLayout pullToRefresh = view.findViewById(R.id.pull_to_refresh);
 
-        final RecyclerView recyclerView = view.findViewById(R.id.list);
+        recyclerView = view.findViewById(R.id.list);
 
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                updateNews(null, recyclerView, newsType, true);
+                Request request = new Request(searchView.getQuery().toString(), currentRequest.getPerspective());
+                updateNews(request, recyclerView, newsType);
+                currentRequest = request;
                 pullToRefresh.setRefreshing(false);
             }
         });
+
+
 
 
 
@@ -74,12 +83,17 @@ public class NewsListFragment extends Fragment {
         // Set the adapter
                 recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
-                updateNews(null, recyclerView, newsType, false);
+                Request request = new Request("", "cnn");
+                updateNews(request, recyclerView, newsType);
+                currentRequest = request;
+
 
                 searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                     @Override
                     public boolean onQueryTextSubmit(String query) {
-                        updateNews(query, recyclerView, newsType, false);
+                        Request request = new Request(query, currentRequest.getPerspective());
+                        updateNews(request, recyclerView, newsType);
+                        currentRequest = request;
                         return true;
                     }
 
@@ -92,7 +106,7 @@ public class NewsListFragment extends Fragment {
         return view;
     }
 
-    private void updateNews(String query, final RecyclerView recyclerView, Constants.NewsType newsType, boolean refresh) {
+    private void updateNews(Request request, final RecyclerView recyclerView, Constants.NewsType newsType) {
         if(newsType == Constants.NewsType.ALL) {
 
             Application.getRepository().getAllNews(new DataCallBack<List<DataModel>>() {
@@ -113,7 +127,7 @@ public class NewsListFragment extends Fragment {
                     if (getActivity() != null)
                         Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
                 }
-            }, newsType, query, refresh);
+            }, newsType, request);
         }
         else if(newsType == Constants.NewsType.RECCOMENDED){
             Application.getRepository().getRecommendedNews(new DataCallBack<List<DataModel>>() {
@@ -132,9 +146,16 @@ public class NewsListFragment extends Fragment {
                     if (getActivity() != null)
                         Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
                 }
-            }, newsType, query, refresh);
+            }, newsType, request);
         }
 
+    }
+
+    public void changePerspective(String perspective){
+        Request request = new Request(currentRequest.getQuery(), perspective);
+        Log.d("NewsListFragment", currentRequest.getPerspective());
+        updateNews(request, recyclerView, newsType);
+        currentRequest = request;
     }
 
 }

@@ -26,7 +26,6 @@ public class RequestGenerator {
     private String source;
     private String language;
     private static final String API_KEY = "47075dc90ef54c6f8a0880b20a3ceffc";
-    private List<DataModel> newsList;
 
 
     public RequestGenerator(String query, String fromDate, String sortBy, String source, String language) {
