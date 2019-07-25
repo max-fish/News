@@ -31,6 +31,7 @@ public class DetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
+
         title = findViewById(R.id.detail_title);
         description = findViewById(R.id.detail_description);
         source = findViewById(R.id.detail_source);

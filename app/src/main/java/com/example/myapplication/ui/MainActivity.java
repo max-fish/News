@@ -10,6 +10,8 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -60,6 +62,11 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
 
+        Toolbar preferenceToolbar = findViewById(R.id.preference_toolbar);
+        setSupportActionBar(preferenceToolbar);
+//        getSupportActionBar().setTitle("jgvjvjvj");
+
+
         fragmentManager = getSupportFragmentManager();
 
         navView = findViewById(R.id.nav_view);
@@ -75,7 +82,27 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.perspective_selection, menu);
+        menuInflater.inflate(R.menu.preferences, menu);
+
+        SearchView searchItem = (SearchView) menu.findItem(R.id.action_search).getActionView();
+//
+        searchItem.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            String fragmentTag =  findFirstFragmentOfStack(getSupportFragmentManager()).getName();
+            Fragment currentFragment = getSupportFragmentManager().findFragmentByTag(fragmentTag);
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                if(currentFragment instanceof NewsListFragment){
+                    ((NewsListFragment) currentFragment).changeQuery(query);
+                    return true;
+                }
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
         return true;
     }
 

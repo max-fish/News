@@ -59,8 +59,6 @@ public class NewsListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_newsitem_list, container, false);
 
-        final SearchView searchView = view.findViewById(R.id.search_bar);
-
         final SwipeRefreshLayout pullToRefresh = view.findViewById(R.id.pull_to_refresh);
 
         recyclerView = view.findViewById(R.id.list);
@@ -68,9 +66,7 @@ public class NewsListFragment extends Fragment {
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                Request request = new Request(searchView.getQuery().toString(), currentRequest.getPerspective());
-                updateNews(request, recyclerView, newsType);
-                currentRequest = request;
+                submitRequest(currentRequest.getQuery(), currentRequest.getPerspective());
                 pullToRefresh.setRefreshing(false);
             }
         });
@@ -83,25 +79,7 @@ public class NewsListFragment extends Fragment {
         // Set the adapter
                 recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
-                Request request = new Request("", "cnn");
-                updateNews(request, recyclerView, newsType);
-                currentRequest = request;
-
-
-                searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                    @Override
-                    public boolean onQueryTextSubmit(String query) {
-                        Request request = new Request(query, currentRequest.getPerspective());
-                        updateNews(request, recyclerView, newsType);
-                        currentRequest = request;
-                        return true;
-                    }
-
-                    @Override
-                    public boolean onQueryTextChange(String newText) {
-                        return false;
-                    }
-                });
+                submitRequest("", "cnn");
 
         return view;
     }
@@ -152,8 +130,15 @@ public class NewsListFragment extends Fragment {
     }
 
     public void changePerspective(String perspective){
-        Request request = new Request(currentRequest.getQuery(), perspective);
-        Log.d("NewsListFragment", currentRequest.getPerspective());
+        submitRequest(currentRequest.getQuery(), perspective);
+    }
+
+    public void changeQuery(String query){
+        submitRequest(query, currentRequest.getPerspective());
+    }
+
+    private void submitRequest(String query, String perspective){
+        Request request = new Request(query, perspective);
         updateNews(request, recyclerView, newsType);
         currentRequest = request;
     }

@@ -20,7 +20,7 @@ public class NewsRepositoryImpl implements NewsRepository {
             if (dataModels == null || dataModels.size() == 0) {
                 RequestGenerator requestGenerator = new RequestGenerator.Builder()
                         .setQuery(request.getQuery())
-                        .setFromDate("2019-06-24")
+                        .setFromDate("2019-06-25")
                         .setSortBy("publishedAt")
                         .setSource(request.getPerspective())
                         .setLanguage("en")
@@ -42,7 +42,7 @@ public class NewsRepositoryImpl implements NewsRepository {
                 Log.d("NewsRepository", "getting new");
                 RequestGenerator requestGenerator = new RequestGenerator.Builder()
                         .setQuery(request.getQuery())
-                        .setFromDate("2019-06-24")
+                        .setFromDate("2019-06-25")
                         .setSortBy("publishedAt")
                         .setSource(request.getPerspective())
                         .setLanguage("en")
