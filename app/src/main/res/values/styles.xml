@@ -15,4 +15,9 @@
         <item name="android:actionMenuTextColor">@color/white</item>
     </style>
 
+    <style name="PreferenceButtonStyle">
+        <item name="android:background">@drawable/preference_selection_background</item>
+        <item name="android:textColor">@color/preference_selection_text_color</item>
+    </style>
+
 </resources>

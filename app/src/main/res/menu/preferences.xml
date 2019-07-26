@@ -12,8 +12,13 @@
         app:actionViewClass="androidx.appcompat.widget.SearchView" />
 
 
-    <item android:title="CNN"
-        android:id="@+id/CNN_perspective"
-        android:actionLayout="@layout/perspective_selection"
+    <item
+        android:id="@+id/action_settings"
+        android:title="Settings"
+        android:icon="@drawable/ic_settings_white_24dp"
+        app:showAsAction="ifRoom"
+        android:onClick="openSettings"
         />
+
+
 </menu>

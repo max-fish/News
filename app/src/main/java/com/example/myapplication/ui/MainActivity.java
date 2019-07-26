@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,6 +18,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.myapplication.Constants;
+import com.example.myapplication.PreferenceDialogFragment;
 import com.example.myapplication.R;
 import com.example.myapplication.LocationFinder;
 import com.example.myapplication.ui.newListFragment.NewsListFragment;
@@ -80,12 +82,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+   public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.preferences, menu);
 
         SearchView searchItem = (SearchView) menu.findItem(R.id.action_search).getActionView();
-//
+
         searchItem.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             String fragmentTag =  findFirstFragmentOfStack(getSupportFragmentManager()).getName();
             Fragment currentFragment = getSupportFragmentManager().findFragmentByTag(fragmentTag);
@@ -104,29 +106,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-
-        String fragmentTag =  findFirstFragmentOfStack(getSupportFragmentManager()).getName();
-        Fragment currentFragment = getSupportFragmentManager().findFragmentByTag(fragmentTag);
-        if(currentFragment instanceof NewsListFragment) {
-            switch (item.getItemId()) {
-                case R.id.CNN_perspective:
-                    ((NewsListFragment) currentFragment).changePerspective("cnn");
-                    return true;
-                case R.id.BBC_perspective:
-                    ((NewsListFragment) currentFragment).changePerspective("bbc-news");
-                    return true;
-                    default:
-                       return super.onOptionsItemSelected(item);
-
-            }
-        }
-        else{
-             return super.onOptionsItemSelected(item);
-        }
     }
 
     private void clearStack(FragmentManager fragmentManager) {
@@ -150,6 +129,13 @@ public class MainActivity extends AppCompatActivity {
             clearStack(fragmentManager);
             navView.setSelectedItemId(R.id.news_recommended);
         }
+    }
+
+    public boolean openSettings(MenuItem item){
+        FragmentManager fm = getSupportFragmentManager();
+        PreferenceDialogFragment preferenceDialogFragment = PreferenceDialogFragment.newInstance();
+        preferenceDialogFragment.show(fm, "preferences");
+        return true;
     }
 
     @Override
