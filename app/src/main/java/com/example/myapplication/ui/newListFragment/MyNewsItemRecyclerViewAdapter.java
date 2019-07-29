@@ -3,9 +3,13 @@ package com.example.myapplication.ui.newListFragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,20 +20,22 @@ import com.example.myapplication.R;
 import com.example.myapplication.ui.DetailActivity;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsItemRecyclerViewAdapter.ViewHolder> {
 
-    private final List<DataModel> mValues;
+    private List<DataModel> mValues;
 
     private Activity activity;
 
-    private View.OnClickListener viewHolderOnClickListener;
+    private RecyclerView recyclerView;
 
     public MyNewsItemRecyclerViewAdapter(List<DataModel> items, Activity activity) {
         mValues = items;
         this.activity = activity;
+        recyclerView = activity.findViewById(R.id.list);
     }
 
     @Override
@@ -46,7 +52,6 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
         holder.mTitleView.setText(mItem.getTitle());
         holder.mDescriptionView.setText(mItem.getDescription());
         holder.source = mItem.getSource().getName();
-
 
         holder.mItem.setOnClickListener(makeViewHolderOnClickListener(mItem));
     }
@@ -65,18 +70,18 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
     }
 
     private View.OnClickListener makeViewHolderOnClickListener(final DataModel item) {
-            viewHolderOnClickListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent detailsIntent = new Intent(activity, DetailActivity.class);
-                    Bundle bundle = new Bundle();
-                    fillBundle(bundle, item);
-                    detailsIntent.putExtra("info", bundle);
-                    activity.startActivity(detailsIntent);
-                }
-            };
-            return viewHolderOnClickListener;
-        }
+        return new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//            Intent detailsIntent = new Intent(activity, DetailActivity.class);
+//            Bundle bundle = new Bundle();
+//            fillBundle(bundle, item);
+//            detailsIntent.putExtra("info", bundle);
+//            activity.startActivity(detailsIntent);.
+                deleteAllItems();
+            }
+        };
+    }
 
     private void fillBundle(Bundle bundle, DataModel item) {
         bundle.putString("title", item.getTitle());
@@ -89,9 +94,82 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
         bundle.putString("urlToImage", item.getUrlToImage());
     }
 
+
+    int animPos =0;
+    int delPos =0;
+    final int during = 500;
+
+    private void deleteItem(View rowView, final int position) {
+
+        Animation anim = AnimationUtils.loadAnimation(activity,
+                android.R.anim.slide_out_right);
+        anim.setDuration(during);
+        anim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                if (delPos == 5) {
+                    int size = mValues.size();
+                    for(int i = 0; i < size; i++){
+                        mValues.remove(0);
+                    }
+                    notifyItemRangeRemoved(0, size);
+//                    mValues = null;
+//                    notifyDataSetChanged();
+//                    return;
+                }
+//                mValues.remove(0); //Remove the current content from the array
+                delPos++;
+//                notifyDataSetChanged(); //Refresh list
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        rowView.startAnimation(anim);
+    }
+
+    boolean mStopHandler = false;
+
+    public void deleteAllItems() {
+
+        final Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+
+                if (mValues.size() == 0) {
+                    mStopHandler = true;
+                }
+
+                if (!mStopHandler) {
+                    View v;
+                    RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(animPos);
+                    if (viewHolder != null){
+                        v = viewHolder.itemView;
+                        deleteItem(v,animPos );
+                        animPos++;
+                    }
+
+                } else {
+                    handler.removeCallbacksAndMessages(null);
+                }
+
+                handler.postDelayed(this, 100);
+            }
+        };
+        activity.runOnUiThread(runnable);
+    }
+
     @Override
     public int getItemCount() {
-        return mValues.size();
+        return mValues != null ? mValues.size() : 0;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder
