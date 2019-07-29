@@ -1,9 +1,5 @@
 package com.example.myapplication.data;
 
-import android.app.Activity;
-
-import androidx.recyclerview.widget.AsyncListUtil;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.Constants;
 import com.example.myapplication.Request;

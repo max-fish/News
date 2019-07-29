@@ -134,6 +134,9 @@ public class MainActivity extends AppCompatActivity {
     public boolean openSettings(MenuItem item){
         FragmentManager fm = getSupportFragmentManager();
         PreferenceDialogFragment preferenceDialogFragment = PreferenceDialogFragment.newInstance();
+        Bundle settingsBundle = new Bundle();
+        settingsBundle.putString("fragmentName", findFirstFragmentOfStack(fragmentManager).getName());
+        preferenceDialogFragment.setArguments(settingsBundle);
         preferenceDialogFragment.show(fm, "preferences");
         return true;
     }
@@ -145,4 +148,5 @@ public class MainActivity extends AppCompatActivity {
              LocationFinder.getLocation(this);
          }
     }
+
 }

@@ -2,8 +2,8 @@
 
 <TableLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-
+    xmlns:android="http://schemas.android.com/apk/res/android"
+>
         <TableRow>
             <View
                 android:layout_marginTop="@dimen/text_margin"
@@ -38,9 +38,10 @@
                 android:orientation="horizontal"
                 >
 
-            <Button
+            <ImageButton
                 android:id="@+id/source_cnn"
-                android:text="CNN"
+                android:src="@drawable/ic_cnn"
+                android:contentDescription="@string/source_preference_button"
                 android:layout_width="144dp"
                 android:layout_height="48dp"
                 style="@style/PreferenceButtonStyle"
@@ -52,6 +53,7 @@
                 android:layout_width="144dp"
                 android:layout_height="48dp"
                 android:src="@drawable/ic_bbc"
+                android:contentDescription="@string/source_preference_button"
                 style="@style/PreferenceButtonStyle"
                 />
             </LinearLayout>
@@ -68,19 +70,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             >
-        <Button
-            android:text="FOX"
+        <ImageButton
             android:id="@+id/source_fox"
+            android:src="@drawable/ic_fox"
             android:layout_width="144dp"
             android:layout_height="48dp"
             style="@style/PreferenceButtonStyle"
+            android:contentDescription="@string/source_preference_button"
             />
-        <Button
-            android:text="MSNBC"
+        <ImageButton
             android:id="@+id/source_msnbc"
+            android:src="@drawable/ic_msnbc"
             android:layout_width="144dp"
             android:layout_height="48dp"
             style="@style/PreferenceButtonStyle"
+            android:contentDescription="@string/source_preference_button"
             />
         </LinearLayout>
     </TableRow>
@@ -122,6 +126,7 @@
             android:layout_width="60dp"
             style="@style/PreferenceButtonStyle"
             android:layout_marginEnd="@dimen/text_margin"
+            android:contentDescription="@string/language_preference_button"
             />
 
             <Button
@@ -130,6 +135,7 @@
                 android:layout_height="60dp"
                 style="@style/PreferenceButtonStyle"
                 android:layout_marginEnd="@dimen/text_margin"
+                android:contentDescription="@string/language_preference_button"
                 />
 
             <Button
@@ -138,6 +144,7 @@
                 android:layout_height="60dp"
                 style="@style/PreferenceButtonStyle"
                 android:layout_marginEnd="@dimen/text_margin"
+                android:contentDescription="@string/language_preference_button"
                 />
 
             <Button
@@ -145,6 +152,7 @@
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 style="@style/PreferenceButtonStyle"
+                android:contentDescription="@string/language_preference_button"
                 />
         </LinearLayout>
     </TableRow>
@@ -180,18 +188,21 @@
                 android:layout_height="wrap_content"
                 android:text="publishedAt"
                 style="@style/PreferenceButtonStyle"
+                android:contentDescription="@string/sorting_preference_button"
                 />
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="relevancy"
                 style="@style/PreferenceButtonStyle"
+                android:contentDescription="@string/sorting_preference_button"
                 />
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="popularity"
                 style="@style/PreferenceButtonStyle"
+                android:contentDescription="@string/sorting_preference_button"
                 />
         </LinearLayout>
     </TableRow>

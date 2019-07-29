@@ -55,6 +55,8 @@ public class Application extends android.app.Application {
 
     public static Request getDeletePreviousRequest(){return requestStack.pop();}
 
+
+
     @Override
     public void onCreate() {
         super.onCreate();

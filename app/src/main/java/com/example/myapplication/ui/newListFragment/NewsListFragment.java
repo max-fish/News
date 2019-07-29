@@ -143,4 +143,8 @@ public class NewsListFragment extends Fragment {
         currentRequest = request;
     }
 
+    public Request getCurrentRequest(){
+        return currentRequest;
+    }
+
 }

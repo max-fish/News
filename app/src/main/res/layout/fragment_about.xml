@@ -20,35 +20,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Location" />
-    <Spinner
-        android:id="@+id/country_spinner"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:entries="@array/countries"
-        android:prompt="@string/country_prompt" />
 
 </LinearLayout>
-    <LinearLayout
-        android:id="@+id/perspective_selection"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        >
-
-        <!-- TODO: Update blank fragment layout -->
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Perspective" />
-        <Spinner
-            android:id="@+id/perspective_spinner"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:entries="@array/perspectives"
-            android:prompt="@string/perspective_prompt"
-            />
-    </LinearLayout>
 </LinearLayout>

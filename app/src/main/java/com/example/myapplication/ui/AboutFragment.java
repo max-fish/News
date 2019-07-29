@@ -26,13 +26,4 @@ public class AboutFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_about, container, false);
         return view;
     }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        Spinner countrySpinner = view.findViewById(R.id.country_spinner);
-        selectedCountry = (String) countrySpinner.getSelectedItem();
-        Spinner perspectiveSpinner = view.findViewById(R.id.perspective_spinner);
-        selectedPerspective = (String) perspectiveSpinner.getSelectedItem();
-
-    }
 }
