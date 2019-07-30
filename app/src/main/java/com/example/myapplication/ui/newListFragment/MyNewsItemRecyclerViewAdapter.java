@@ -117,7 +117,7 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
                     for(int i = 0; i < size; i++){
                         mValues.remove(0);
                     }
-                    notifyItemRangeRemoved(0, size);
+                    //notifyItemRangeRemoved(0, size);
 //                    mValues = null;
 //                    notifyDataSetChanged();
 //                    return;
