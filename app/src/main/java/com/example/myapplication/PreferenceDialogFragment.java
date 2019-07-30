@@ -36,6 +36,7 @@ public class PreferenceDialogFragment extends DialogFragment {
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
+     *
      * @return A new instance of fragment PreferenceDialogFragment.
      */
     // TODO: Rename and change types and number of parameters
@@ -64,7 +65,7 @@ public class PreferenceDialogFragment extends DialogFragment {
         ImageButton msnbcButton = view.findViewById(R.id.source_msnbc);
 
         String originalSource = originalFragment.getCurrentRequest().getPerspective();
-        switch(originalSource) {
+        switch (originalSource) {
             case Constants.CNN_SOURCE:
                 cnnButton.setSelected(true);
                 break;
@@ -89,7 +90,7 @@ public class PreferenceDialogFragment extends DialogFragment {
     }
 
 
-    private void setUpOnClick(final ImageButton button){
+    private void setUpOnClick(final ImageButton button) {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,7 +98,8 @@ public class PreferenceDialogFragment extends DialogFragment {
             }
         });
     }
-    private void handleChangedPreference(ImageButton button){
+
+    private void handleChangedPreference(ImageButton button) {
         new EventHandler(getContext(), (NewsListFragment) getFragmentManager().findFragmentByTag("recommended")).handleEvent(button);
     }
 
@@ -116,10 +118,9 @@ public class PreferenceDialogFragment extends DialogFragment {
         }
 
         public void handleEvent(ImageButton button) {
-            if(button.isSelected()){
+            if (button.isSelected()) {
                 button.setSelected(false);
-            }
-            else{
+            } else {
                 button.setSelected(true);
             }
             if (button.getContentDescription().equals(SOURCE_BUTTON_TYPE)) {
@@ -132,7 +133,7 @@ public class PreferenceDialogFragment extends DialogFragment {
         }
 
         private void handleSourceButtonEvent(ImageButton button) {
-            switch(button.getId()) {
+            switch (button.getId()) {
                 case R.id.source_cnn:
                     fragment.changePerspective(Constants.CNN_SOURCE);
                     break;

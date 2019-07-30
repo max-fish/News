@@ -32,10 +32,8 @@ import java.util.List;
 public class NewsListFragment extends Fragment {
 
     private Request currentRequest;
-
     private Constants.NewsType newsType;
-
-    RecyclerView recyclerView;
+    private RecyclerView recyclerView;
 
     public NewsListFragment() {
     }
@@ -75,23 +73,21 @@ public class NewsListFragment extends Fragment {
             }
         });
 
-
-
-
         Log.d("NewsListFragment", "onCreateView");
         // Set the adapter
-                recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-
-                submitRequest("", "cnn");
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        submitRequest("", "cnn");
 
         return view;
     }
 
     private void updateNews(Request request, final RecyclerView recyclerView, Constants.NewsType newsType) {
-        if(newsType == Constants.NewsType.ALL) {
+        RecyclerView.Adapter adapter = recyclerView.getAdapter();
+        if (adapter != null)
+            ((MyNewsItemRecyclerViewAdapter) adapter).deleteAllItems();
 
+        if (newsType == Constants.NewsType.ALL) {
             Application.getRepository().getAllNews(new DataCallBack<List<DataModel>>() {
-
                 @Override
                 public void onEmit(List<DataModel> data) {
                     recyclerView.setAdapter(new MyNewsItemRecyclerViewAdapter(data, getActivity()));
@@ -109,8 +105,7 @@ public class NewsListFragment extends Fragment {
                         Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
                 }
             }, newsType, request);
-        }
-        else if(newsType == Constants.NewsType.RECCOMENDED){
+        } else if (newsType == Constants.NewsType.RECCOMENDED) {
             Application.getRepository().getRecommendedNews(new DataCallBack<List<DataModel>>() {
                 @Override
                 public void onEmit(List<DataModel> data) {
@@ -132,21 +127,21 @@ public class NewsListFragment extends Fragment {
 
     }
 
-    public void changePerspective(String perspective){
+    public void changePerspective(String perspective) {
         submitRequest(currentRequest.getQuery(), perspective);
     }
 
-    public void changeQuery(String query){
+    public void changeQuery(String query) {
         submitRequest(query, currentRequest.getPerspective());
     }
 
-    private void submitRequest(String query, String perspective){
+    private void submitRequest(String query, String perspective) {
         Request request = new Request(query, perspective);
         updateNews(request, recyclerView, newsType);
         currentRequest = request;
     }
 
-    public Request getCurrentRequest(){
+    public Request getCurrentRequest() {
         return currentRequest;
     }
 

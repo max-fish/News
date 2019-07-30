@@ -1,7 +1,6 @@
 package com.example.myapplication.ui.newListFragment;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -9,15 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.LayoutAnimationController;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myapplication.data.model.DataModel;
 import com.example.myapplication.R;
-import com.example.myapplication.ui.DetailActivity;
+import com.example.myapplication.data.model.DataModel;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -25,12 +22,14 @@ import java.util.List;
 
 
 public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsItemRecyclerViewAdapter.ViewHolder> {
-
     private List<DataModel> mValues;
-
     private Activity activity;
-
     private RecyclerView recyclerView;
+
+    private int animPos = 0;
+    private int delPos = 0;
+    private final int during = 500;
+    private boolean mStopHandler = false;
 
     public MyNewsItemRecyclerViewAdapter(List<DataModel> items, Activity activity) {
         mValues = items;
@@ -94,15 +93,8 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
         bundle.putString("urlToImage", item.getUrlToImage());
     }
 
-
-    int animPos =0;
-    int delPos =0;
-    final int during = 500;
-
-    private void deleteItem(View rowView, final int position) {
-
-        Animation anim = AnimationUtils.loadAnimation(activity,
-                android.R.anim.slide_out_right);
+    private void animateItem(final View rowView) {
+        Animation anim = AnimationUtils.loadAnimation(activity, android.R.anim.slide_out_right);
         anim.setDuration(during);
         anim.setAnimationListener(new Animation.AnimationListener() {
             @Override
@@ -112,19 +104,11 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                if (delPos == 5) {
-                    int size = mValues.size();
-                    for(int i = 0; i < size; i++){
-                        mValues.remove(0);
-                    }
-                    //notifyItemRangeRemoved(0, size);
-//                    mValues = null;
-//                    notifyDataSetChanged();
-//                    return;
+                rowView.setVisibility(View.INVISIBLE);
+                if (delPos++ == 4) {
+                    mValues = new ArrayList<>();
+                    notifyDataSetChanged();
                 }
-//                mValues.remove(0); //Remove the current content from the array
-                delPos++;
-//                notifyDataSetChanged(); //Refresh list
             }
 
             @Override
@@ -135,33 +119,27 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
         rowView.startAnimation(anim);
     }
 
-    boolean mStopHandler = false;
 
     public void deleteAllItems() {
-
         final Handler handler = new Handler();
         Runnable runnable = new Runnable() {
             @Override
             public void run() {
-
                 if (mValues.size() == 0) {
                     mStopHandler = true;
                 }
-
                 if (!mStopHandler) {
                     View v;
                     RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(animPos);
-                    if (viewHolder != null){
+                    if (viewHolder != null) {
                         v = viewHolder.itemView;
-                        deleteItem(v,animPos );
+                        animateItem(v);
                         animPos++;
                     }
-
                 } else {
                     handler.removeCallbacksAndMessages(null);
                 }
-
-                handler.postDelayed(this, 100);
+                handler.postDelayed(this, during / 5);
             }
         };
         activity.runOnUiThread(runnable);
