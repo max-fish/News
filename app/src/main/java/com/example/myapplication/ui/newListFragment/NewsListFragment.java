@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.LinearLayout;
@@ -65,6 +66,7 @@ public class NewsListFragment extends Fragment {
 
         recyclerView = view.findViewById(R.id.list);
 
+
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -76,16 +78,18 @@ public class NewsListFragment extends Fragment {
         Log.d("NewsListFragment", "onCreateView");
         // Set the adapter
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+
+        Animation anim = AnimationUtils.loadAnimation(getContext(), android.R.anim.slide_in_left);
+        anim.setDuration(400);
+
+        recyclerView.setLayoutAnimation(new LayoutAnimationController(anim));
+
         submitRequest("", "cnn");
 
         return view;
     }
 
     private void updateNews(Request request, final RecyclerView recyclerView, Constants.NewsType newsType) {
-        RecyclerView.Adapter adapter = recyclerView.getAdapter();
-        if (adapter != null)
-            ((MyNewsItemRecyclerViewAdapter) adapter).deleteAllItems();
-
         if (newsType == Constants.NewsType.ALL) {
             Application.getRepository().getAllNews(new DataCallBack<List<DataModel>>() {
                 @Override
@@ -143,6 +147,10 @@ public class NewsListFragment extends Fragment {
 
     public Request getCurrentRequest() {
         return currentRequest;
+    }
+
+    public RecyclerView getRecyclerView(){
+        return recyclerView;
     }
 
 }

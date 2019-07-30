@@ -1,6 +1,7 @@
 package com.example.myapplication.ui.newListFragment;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.R;
 import com.example.myapplication.data.model.DataModel;
+import com.example.myapplication.ui.DetailActivity;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -35,6 +37,7 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
         mValues = items;
         this.activity = activity;
         recyclerView = activity.findViewById(R.id.list);
+        recyclerView.startLayoutAnimation();
     }
 
     @Override
@@ -51,7 +54,6 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
         holder.mTitleView.setText(mItem.getTitle());
         holder.mDescriptionView.setText(mItem.getDescription());
         holder.source = mItem.getSource().getName();
-
         holder.mItem.setOnClickListener(makeViewHolderOnClickListener(mItem));
     }
 
@@ -72,12 +74,11 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//            Intent detailsIntent = new Intent(activity, DetailActivity.class);
-//            Bundle bundle = new Bundle();
-//            fillBundle(bundle, item);
-//            detailsIntent.putExtra("info", bundle);
-//            activity.startActivity(detailsIntent);.
-                deleteAllItems();
+            Intent detailsIntent = new Intent(activity, DetailActivity.class);
+            Bundle bundle = new Bundle();
+            fillBundle(bundle, item);
+            detailsIntent.putExtra("info", bundle);
+            activity.startActivity(detailsIntent);
             }
         };
     }
@@ -93,7 +94,33 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
         bundle.putString("urlToImage", item.getUrlToImage());
     }
 
-    private void animateItem(final View rowView) {
+
+    public void deleteAllItems() {
+        final Handler handler = new Handler();
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                if (mValues.size() == 0) {
+                    mStopHandler = true;
+                }
+                if (!mStopHandler) {
+                    View v;
+                    RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(animPos);
+                    if (viewHolder != null) {
+                        v = viewHolder.itemView;
+                        animateDeletion(v);
+                        animPos++;
+                    }
+                } else {
+                    handler.removeCallbacksAndMessages(null);
+                }
+                handler.postDelayed(this, during / 5);
+            }
+        };
+        activity.runOnUiThread(runnable);
+    }
+
+    private void animateDeletion(final View rowView) {
         Animation anim = AnimationUtils.loadAnimation(activity, android.R.anim.slide_out_right);
         anim.setDuration(during);
         anim.setAnimationListener(new Animation.AnimationListener() {
@@ -120,38 +147,12 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
     }
 
 
-    public void deleteAllItems() {
-        final Handler handler = new Handler();
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                if (mValues.size() == 0) {
-                    mStopHandler = true;
-                }
-                if (!mStopHandler) {
-                    View v;
-                    RecyclerView.ViewHolder viewHolder = recyclerView.findViewHolderForAdapterPosition(animPos);
-                    if (viewHolder != null) {
-                        v = viewHolder.itemView;
-                        animateItem(v);
-                        animPos++;
-                    }
-                } else {
-                    handler.removeCallbacksAndMessages(null);
-                }
-                handler.postDelayed(this, during / 5);
-            }
-        };
-        activity.runOnUiThread(runnable);
-    }
-
     @Override
     public int getItemCount() {
         return mValues != null ? mValues.size() : 0;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder
-//    implements View.OnClickListener
     {
         public final TextView mTitleView;
         public final TextView mDescriptionView;
@@ -162,8 +163,8 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
         public ViewHolder(View view) {
             super(view);
             mItem = view;
-            mTitleView = (TextView) view.findViewById(R.id.news_item_title);
-            mDescriptionView = (TextView) view.findViewById(R.id.news_item_description);
+            mTitleView =  view.findViewById(R.id.news_item_title);
+            mDescriptionView = view.findViewById(R.id.news_item_description);
             mImageView = view.findViewById(R.id.news_item_image);
         }
 

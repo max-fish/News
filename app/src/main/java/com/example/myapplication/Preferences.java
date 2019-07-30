@@ -1,26 +1,14 @@
 package com.example.myapplication;
 
 public class Preferences {
-    private String language;
-    private String country;
     private String source;
-    private String category;
+    private String language;
     private String sortBy;
 
-    public String getLanguage() {
-        return language;
-    }
-
-    public void setLanguage(String language) {
+    public Preferences(String source, String language, String sortBy){
+        this.source = source;
         this.language = language;
-    }
-
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
+        this.sortBy = sortBy;
     }
 
     public String getSource() {
@@ -31,12 +19,12 @@ public class Preferences {
         this.source = source;
     }
 
-    public String getCategory() {
-        return category;
+    public String getLanguage() {
+        return language;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setLanguage(String language) {
+        this.language = language;
     }
 
     public String getSortBy() {
@@ -46,5 +34,6 @@ public class Preferences {
     public void setSortBy(String sortBy) {
         this.sortBy = sortBy;
     }
-;
+
+
 }

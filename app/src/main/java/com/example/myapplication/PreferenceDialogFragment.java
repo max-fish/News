@@ -2,13 +2,12 @@ package com.example.myapplication;
 
 import android.content.Context;
 import android.os.Bundle;
-
-import androidx.core.app.FrameMetricsAggregator;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.RecyclerView;
 
 
-import android.util.EventLog;
+
 import android.view.LayoutInflater;
 
 import android.view.View;
@@ -16,7 +15,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 
+import com.example.myapplication.ui.newListFragment.MyNewsItemRecyclerViewAdapter;
 import com.example.myapplication.ui.newListFragment.NewsListFragment;
+
+import java.util.Collection;
+import java.util.Set;
 
 
 /**
@@ -27,7 +30,8 @@ import com.example.myapplication.ui.newListFragment.NewsListFragment;
  * create an instance of this fragment.
  */
 public class PreferenceDialogFragment extends DialogFragment {
-    private String originalFragmentTag;
+    private Preferences currentPreference;
+    private NewsListFragment originalFragment;
 
     public PreferenceDialogFragment() {
         // Required empty public constructor
@@ -48,7 +52,9 @@ public class PreferenceDialogFragment extends DialogFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        originalFragmentTag = getArguments().getString("fragmentName");
+        String originalFragmentTag = getArguments().getString("fragmentName");
+         originalFragment = (NewsListFragment) getFragmentManager().findFragmentByTag(originalFragmentTag);
+
     }
 
     @Override
@@ -57,7 +63,6 @@ public class PreferenceDialogFragment extends DialogFragment {
 
         View view = inflater.inflate(R.layout.preferences_selection, container, false);
 
-        NewsListFragment originalFragment = (NewsListFragment) getFragmentManager().findFragmentByTag(originalFragmentTag);
 
         ImageButton cnnButton = view.findViewById(R.id.source_cnn);
         ImageButton bbcButton = view.findViewById(R.id.source_bbc);
@@ -84,7 +89,6 @@ public class PreferenceDialogFragment extends DialogFragment {
         setUpOnClick(bbcButton);
         setUpOnClick(foxButton);
         setUpOnClick(msnbcButton);
-
 
         return view;
     }
@@ -120,19 +124,23 @@ public class PreferenceDialogFragment extends DialogFragment {
         public void handleEvent(ImageButton button) {
             if (button.isSelected()) {
                 button.setSelected(false);
+                RecyclerView.Adapter adapter = originalFragment.getRecyclerView().getAdapter();
+                if (adapter != null)
+                    ((MyNewsItemRecyclerViewAdapter) adapter).deleteAllItems();
             } else {
                 button.setSelected(true);
-            }
-            if (button.getContentDescription().equals(SOURCE_BUTTON_TYPE)) {
-                handleSourceButtonEvent(button);
-            } else if (button.getContentDescription().equals(LANGUAGE_BUTTON_TYPE)) {
-                handleLanguageButtonEvent(button);
-            } else if (button.getContentDescription().equals(SORTING_BUTTON_TYPE)) {
-                handleSortingButtonEvent(button);
+                if (button.getContentDescription().equals(SOURCE_BUTTON_TYPE)) {
+                    handleSourceButtonEvent(button);
+                } else if (button.getContentDescription().equals(LANGUAGE_BUTTON_TYPE)) {
+                    handleLanguageButtonEvent(button);
+                } else if (button.getContentDescription().equals(SORTING_BUTTON_TYPE)) {
+                    handleSortingButtonEvent(button);
+                }
             }
         }
 
         private void handleSourceButtonEvent(ImageButton button) {
+
             switch (button.getId()) {
                 case R.id.source_cnn:
                     fragment.changePerspective(Constants.CNN_SOURCE);
