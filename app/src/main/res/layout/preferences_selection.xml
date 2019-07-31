@@ -1,209 +1,217 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<TableLayout android:layout_width="match_parent"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android"
->
-        <TableRow>
-            <View
-                android:layout_marginTop="@dimen/text_margin"
-                android:layout_marginBottom="2dp"
-                android:layout_height="3dp"
-                android:background="@color/colorPrimary"
-                />
-        </TableRow>
+    android:padding="16dp">
 
     <TableRow>
+
+        <View
+            android:layout_height="3dp"
+            android:layout_marginTop="@dimen/text_margin"
+            android:layout_marginBottom="2dp"
+            android:background="@color/colorPrimary" />
+    </TableRow>
+
+    <TableRow>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
             android:layout_marginLeft="@dimen/text_margin"
+            android:layout_marginTop="2dp"
             android:layout_marginBottom="@dimen/text_margin"
             android:fontFamily="@font/ubuntu_r"
             android:text="Source"
             android:textColor="#000000" />
     </TableRow>
 
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            >
-
-            <LinearLayout
-                android:layout_gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                >
-
-            <ImageButton
-                android:id="@+id/source_cnn"
-                android:src="@drawable/ic_cnn"
-                android:contentDescription="@string/source_preference_button"
-                android:layout_width="144dp"
-                android:layout_height="48dp"
-                style="@style/PreferenceButtonStyle"
-                android:clickable="true"
-                />
-
-            <ImageButton
-                android:id="@+id/source_bbc"
-                android:layout_width="144dp"
-                android:layout_height="48dp"
-                android:src="@drawable/ic_bbc"
-                android:contentDescription="@string/source_preference_button"
-                style="@style/PreferenceButtonStyle"
-                />
-            </LinearLayout>
-        </TableRow>
     <TableRow
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:layout_marginBottom="24dp"
-        >
+        android:gravity="center">
+
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:orientation="horizontal"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/source_cnn"
+                style="@style/PreferenceButtonStyle"
+                android:layout_width="144dp"
+                android:layout_height="48dp"
+                android:clickable="true"
+                android:contentDescription="@string/source_preference_button"
+                android:src="@drawable/ic_cnn" />
+
+            <ImageButton
+                android:id="@+id/source_bbc"
+                style="@style/PreferenceButtonStyle"
+                android:layout_width="144dp"
+                android:layout_height="48dp"
+                android:contentDescription="@string/source_preference_button"
+                android:src="@drawable/ic_bbc" />
+        </LinearLayout>
+    </TableRow>
+
+    <TableRow
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="24dp"
+        android:gravity="center">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            >
-        <ImageButton
-            android:id="@+id/source_fox"
-            android:src="@drawable/ic_fox"
-            android:layout_width="144dp"
-            android:layout_height="48dp"
-            style="@style/PreferenceButtonStyle"
-            android:contentDescription="@string/source_preference_button"
-            />
-        <ImageButton
-            android:id="@+id/source_msnbc"
-            android:src="@drawable/ic_msnbc"
-            android:layout_width="144dp"
-            android:layout_height="48dp"
-            style="@style/PreferenceButtonStyle"
-            android:contentDescription="@string/source_preference_button"
-            />
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/source_fox"
+                style="@style/PreferenceButtonStyle"
+                android:layout_width="144dp"
+                android:layout_height="48dp"
+                android:contentDescription="@string/source_preference_button"
+                android:src="@drawable/ic_fox" />
+
+            <ImageButton
+                android:id="@+id/source_msnbc"
+                style="@style/PreferenceButtonStyle"
+                android:layout_width="144dp"
+                android:layout_height="48dp"
+                android:contentDescription="@string/source_preference_button"
+                android:src="@drawable/ic_msnbc" />
         </LinearLayout>
     </TableRow>
 
     <TableRow>
+
         <View
             android:layout_height="3dp"
-            android:background="@color/colorPrimary"
-            />
+            android:background="@color/colorPrimary" />
     </TableRow>
+
     <TableRow
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content">
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
             android:layout_marginLeft="@dimen/text_margin"
+            android:layout_marginTop="2dp"
             android:layout_marginBottom="@dimen/text_margin"
             android:fontFamily="@font/ubuntu_r"
             android:text="Language"
             android:textColor="#000000" />
     </TableRow>
+
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        >
+        android:gravity="center">
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_gravity="center"
-            >
-        <Button
-            android:text="en"
-            android:layout_height="60dp"
-            android:layout_width="60dp"
-            style="@style/PreferenceButtonStyle"
-            android:layout_marginEnd="@dimen/text_margin"
-            android:contentDescription="@string/language_preference_button"
-            />
+            android:orientation="horizontal">
 
             <Button
-                android:text="ru"
+                android:id="@+id/language_en"
+                style="@style/PreferenceButtonStyle"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                style="@style/PreferenceButtonStyle"
                 android:layout_marginEnd="@dimen/text_margin"
                 android:contentDescription="@string/language_preference_button"
-                />
+                android:text="en" />
 
             <Button
-                android:text="fr"
+                android:id="@+id/language_ru"
+                style="@style/PreferenceButtonStyle"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                style="@style/PreferenceButtonStyle"
                 android:layout_marginEnd="@dimen/text_margin"
                 android:contentDescription="@string/language_preference_button"
-                />
+                android:text="ru" />
 
             <Button
-                android:text="es"
+                android:id="@+id/language_fr"
+                style="@style/PreferenceButtonStyle"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
-                style="@style/PreferenceButtonStyle"
+                android:layout_marginEnd="@dimen/text_margin"
                 android:contentDescription="@string/language_preference_button"
-                />
+                android:text="fr" />
+
+            <Button
+                android:id="@+id/language_es"
+                style="@style/PreferenceButtonStyle"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:contentDescription="@string/language_preference_button"
+                android:text="es" />
         </LinearLayout>
     </TableRow>
+
     <TableRow>
+
         <View
+            android:layout_height="3dp"
             android:layout_marginTop="24dp"
             android:layout_marginBottom="2dp"
-            android:layout_height="3dp"
-            android:background="@color/colorPrimary"
-            />
+            android:background="@color/colorPrimary" />
     </TableRow>
+
     <TableRow>
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
             android:layout_marginLeft="@dimen/text_margin"
+            android:layout_marginTop="2dp"
             android:layout_marginBottom="@dimen/text_margin"
             android:fontFamily="@font/ubuntu_r"
             android:text="Sort By"
             android:textColor="#000000" />
     </TableRow>
+
     <TableRow
-        android:gravity="center"
         android:layout_width="match_parent"
-        >
+        android:gravity="center">
+
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_gravity="center"
-            >
+            android:orientation="horizontal">
+
             <Button
+                android:id="@+id/sortBy_publishedAt"
+                style="@style/PreferenceButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="publishedAt"
-                style="@style/PreferenceButtonStyle"
+                android:layout_marginEnd="@dimen/text_margin"
                 android:contentDescription="@string/sorting_preference_button"
-                />
+                android:text="publishedAt" />
+
             <Button
+                android:id="@+id/sortBy_relevancy"
+                style="@style/PreferenceButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="relevancy"
-                style="@style/PreferenceButtonStyle"
+                android:layout_marginEnd="@dimen/text_margin"
                 android:contentDescription="@string/sorting_preference_button"
-                />
+                android:text="relevancy" />
+
             <Button
+                android:id="@+id/sortBy_popularity"
+                style="@style/PreferenceButtonStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="popularity"
-                style="@style/PreferenceButtonStyle"
                 android:contentDescription="@string/sorting_preference_button"
-                />
+                android:text="popularity" />
         </LinearLayout>
     </TableRow>
-    </TableLayout>
+</TableLayout>

@@ -18,6 +18,7 @@
     <style name="PreferenceButtonStyle">
         <item name="android:background">@drawable/preference_selection_background</item>
         <item name="android:textColor">@color/preference_selection_text_color</item>
+        <item name="android:layout_margin">4dp</item>
     </style>
 
 </resources>

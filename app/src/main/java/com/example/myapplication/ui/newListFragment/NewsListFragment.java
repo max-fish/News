@@ -80,7 +80,7 @@ public class NewsListFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
         Animation anim = AnimationUtils.loadAnimation(getContext(), android.R.anim.slide_in_left);
-        anim.setDuration(400);
+        anim.setDuration(250);
 
         recyclerView.setLayoutAnimation(new LayoutAnimationController(anim));
 
@@ -140,7 +140,7 @@ public class NewsListFragment extends Fragment {
     }
 
     private void submitRequest(String query, String perspective) {
-        Request request = new Request(query, perspective);
+        Request request = new Request(query, perspective, "en", "publishedAt");
         updateNews(request, recyclerView, newsType);
         currentRequest = request;
     }

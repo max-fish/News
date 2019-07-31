@@ -43,9 +43,9 @@ public class NewsRepositoryImpl implements NewsRepository {
                 RequestGenerator requestGenerator = new RequestGenerator.Builder()
                         .setQuery(request.getQuery())
                         .setFromDate("2019-06-30")
-                        .setSortBy("publishedAt")
+                        .setSortBy(request.getSortBy())
                         .setSource(request.getPerspective())
-                        .setLanguage("en")
+                        .setLanguage(request.getLanguage())
                         .build();
                 requestGenerator.execute(callBack, newsType);
             } else {
