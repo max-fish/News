@@ -1,6 +1,5 @@
 package com.example.myapplication;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.DialogFragment;
@@ -27,13 +26,25 @@ import com.example.myapplication.ui.newListFragment.NewsListFragment;
  * create an instance of this fragment.
  */
 public class PreferenceDialogFragment extends DialogFragment implements View.OnClickListener {
-    private Preferences currentPreference;
     private NewsListFragment originalFragment;
     private ImageButton cnnButton;
     private ImageButton bbcButton;
     private ImageButton foxButton;
     private ImageButton msnbcButton;
+
+    private Button enButton;
+    private Button ruButton;
+    private Button frButton;
+    private Button esButton;
+
+    private Button publishedAtButton;
+    private Button relevancyButton;
+    private Button popularityButton;
+
+
     private String originalSource;
+    private String originalLanguage;
+    private String originalSortBy;
 
     public PreferenceDialogFragment() {
         // Required empty public constructor
@@ -74,161 +85,138 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
         msnbcButton = view.findViewById(R.id.source_msnbc);
         msnbcButton.setOnClickListener(this);
 
-        Button enButton = view.findViewById(R.id.language_en);
-        Button ruButton = view.findViewById(R.id.language_ru);
-        Button frButton = view.findViewById(R.id.language_fr);
-        Button esButton = view.findViewById(R.id.language_es);
+         enButton = view.findViewById(R.id.language_en);
+         enButton.setOnClickListener(this);
+         ruButton = view.findViewById(R.id.language_ru);
+         ruButton.setOnClickListener(this);
+         frButton = view.findViewById(R.id.language_fr);
+         frButton.setOnClickListener(this);
+         esButton = view.findViewById(R.id.language_es);
+         esButton.setOnClickListener(this);
 
+         publishedAtButton = view.findViewById(R.id.sortBy_publishedAt);
+         publishedAtButton.setOnClickListener(this);
+         relevancyButton = view.findViewById(R.id.sortBy_relevancy);
+         relevancyButton.setOnClickListener(this);
+         popularityButton = view.findViewById(R.id.sortBy_popularity);
+         popularityButton.setOnClickListener(this);
 
         originalSource = originalFragment.getCurrentRequest().getPerspective();
-        initTypeBtn(originalSource);
-
-        String originalLanguage = originalFragment.getCurrentRequest().getLanguage();
-        switch (originalLanguage) {
-            case Constants.EN_LANGUAGE:
-                enButton.setSelected(true);
-                break;
-            case Constants.RU_LANGUAGE:
-                ruButton.setSelected(true);
-                break;
-            case Constants.FR_LANGUAGE:
-                frButton.setSelected(true);
-                break;
-            case Constants.ES_LANGUAGE:
-                esButton.setSelected(true);
-                break;
-        }
-
-        String originalSorting = originalFragment.getCurrentRequest().getSortBy();
-        switch (originalSorting) {
-            case Constants.PUBLISHED_AT_SORT:
-
-        }
+        originalLanguage = originalFragment.getCurrentRequest().getLanguage();
+        originalSortBy = originalFragment.getCurrentRequest().getSortBy();
 
 
-//        setUpOnClick(cnnButton);
-//        setUpOnClick(bbcButton);
-//        setUpOnClick(foxButton);
-//        setUpOnClick(msnbcButton);
+        initTypeBtn(originalSource, originalLanguage, originalSortBy);
 
         return view;
     }
 
-    private void initTypeBtn(String originalSource) {
+    @Override
+    public void onClick(View view) {
+        String source = originalSource;
+        String language = originalLanguage;
+        String sortBy = originalSortBy;
+        switch (view.getId()) {
+            case R.id.source_cnn:
+                source = Constants.CNN_SOURCE;
+                break;
+            case R.id.source_bbc:
+                source = Constants.BBC_SOURCE;
+                break;
+            case R.id.source_fox:
+                source = Constants.FOX_SOURCE;
+                break;
+            case R.id.source_msnbc:
+                source = Constants.MSNBC_SOURCE;
+                break;
+            case R.id.language_en:
+                language = Constants.EN_LANGUAGE;
+                break;
+            case R.id.language_ru:
+                language = Constants.RU_LANGUAGE;
+                break;
+            case R.id.language_fr:
+                language = Constants.FR_LANGUAGE;
+                break;
+            case R.id.language_es:
+                language = Constants.ES_LANGUAGE;
+                break;
+            case R.id.sortBy_publishedAt:
+                sortBy = Constants.PUBLISHED_AT_SORT;
+                break;
+            case R.id.sortBy_relevancy:
+                sortBy = Constants.RELEVANCY_SORT;
+                break;
+            case R.id.sortBy_popularity:
+                sortBy = Constants.POPULARITY_SORT;
+                break;
+        }
+        initTypeBtn(source, language, sortBy);
+        if (!originalSource.equals(source)) {
+            setSourceToListFragment(source);
+            originalSource = source;
+        }
+        if(!originalLanguage.equals(language)){
+            setLanguageToListFragment(language);
+            originalLanguage = language;
+        }
+        if(!originalSortBy.equals(sortBy)){
+            setSortByToListFragment(sortBy);
+            originalSortBy = sortBy;
+        }
+    }
+
+    private void initTypeBtn(String originalSource, String originalLanguage, String originalSortBy) {
         if (originalSource == null)
+            return;
+
+        if(originalLanguage == null)
+            return;
+
+        if(originalSortBy == null)
             return;
 
         cnnButton.setSelected(originalSource.equals(Constants.CNN_SOURCE));
         bbcButton.setSelected(originalSource.equals(Constants.BBC_SOURCE));
         foxButton.setSelected(originalSource.equals(Constants.FOX_SOURCE));
         msnbcButton.setSelected(originalSource.equals(Constants.MSNBC_SOURCE));
+
+        enButton.setSelected(originalLanguage.equals(Constants.EN_LANGUAGE));
+        ruButton.setSelected(originalLanguage.equals(Constants.RU_LANGUAGE));
+        frButton.setSelected(originalLanguage.equals(Constants.FR_LANGUAGE));
+        esButton.setSelected(originalLanguage.equals(Constants.ES_LANGUAGE));
+
+        publishedAtButton.setSelected(originalSortBy.equals(Constants.PUBLISHED_AT_SORT));
+        relevancyButton.setSelected(originalSortBy.equals(Constants.RELEVANCY_SORT));
+        popularityButton.setSelected(originalSortBy.equals(Constants.POPULARITY_SORT));
     }
 
-
-//    private void setUpOnClick(final ImageButton button) {
-//        button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                handleChangedPreference(button);
-//            }
-//        });
-//    }
-
-//    private void handleChangedPreference(ImageButton button) {
-//        new EventHandler(getContext(), (NewsListFragment) getFragmentManager().findFragmentByTag("recommended")).handleEvent(button);
-//    }
-
-    @Override
-    public void onClick(View view) {
-        String type = null;
-        switch (view.getId()) {
-            case R.id.source_cnn:
-                type = Constants.CNN_SOURCE;
-                break;
-            case R.id.source_bbc:
-                type = Constants.BBC_SOURCE;
-                break;
-            case R.id.source_fox:
-                type = Constants.FOX_SOURCE;
-                break;
-            case R.id.source_msnbc:
-                type = Constants.MSNBC_SOURCE;
-                break;
-        }
-        initTypeBtn(type);
-//        new EventHandler(getContext(), (NewsListFragment) getFragmentManager().findFragmentByTag("recommended")).handleEvent((ImageButton) view);
-        if (!originalSource.equals(type)){
-            setTypeToListFragment(type);
-            originalSource = type;
-        }
-    }
-
-    private void setTypeToListFragment(String type) {
+    private void setSourceToListFragment(String source) {
         RecyclerView.Adapter adapter = originalFragment.getRecyclerView().getAdapter();
         if (adapter != null)
             ((MyNewsItemRecyclerViewAdapter) adapter).deleteAllItems();
         NewsListFragment fragment = (NewsListFragment) getFragmentManager().findFragmentByTag("recommended");
         if (fragment != null)
-            fragment.changePerspective(type);
+            fragment.changePerspective(source);
     }
 
-
-    private class EventHandler {
-        private final String SOURCE_BUTTON_TYPE;
-        private final String LANGUAGE_BUTTON_TYPE;
-        private final String SORTING_BUTTON_TYPE;
-        private final NewsListFragment fragment;
-
-        private EventHandler(Context context, NewsListFragment fragment) {
-            SOURCE_BUTTON_TYPE = context.getResources().getString(R.string.source_preference_button);
-            LANGUAGE_BUTTON_TYPE = context.getResources().getString(R.string.language_preference_button);
-            SORTING_BUTTON_TYPE = context.getResources().getString(R.string.sorting_preference_button);
-            this.fragment = fragment;
+    private void setLanguageToListFragment(String language){
+        RecyclerView.Adapter adapter = originalFragment.getRecyclerView().getAdapter();
+        if (adapter != null)
+            ((MyNewsItemRecyclerViewAdapter) adapter).deleteAllItems();
+        NewsListFragment fragment = (NewsListFragment) getFragmentManager().findFragmentByTag("recommended");
+        if(fragment != null){
+            fragment.changeLanguage(language);
         }
+    }
 
-        public void handleEvent(ImageButton button) {
-            if (button.isSelected()) {
-                button.setSelected(false);
-                RecyclerView.Adapter adapter = originalFragment.getRecyclerView().getAdapter();
-                if (adapter != null)
-                    ((MyNewsItemRecyclerViewAdapter) adapter).deleteAllItems();
-            } else {
-                button.setSelected(true);
-                if (button.getContentDescription().equals(SOURCE_BUTTON_TYPE)) {
-                    handleSourceButtonEvent(button);
-                } else if (button.getContentDescription().equals(LANGUAGE_BUTTON_TYPE)) {
-                    handleLanguageButtonEvent(button);
-                } else if (button.getContentDescription().equals(SORTING_BUTTON_TYPE)) {
-                    handleSortingButtonEvent(button);
-                }
-            }
+    private void setSortByToListFragment(String sortBy){
+        RecyclerView.Adapter adapter = originalFragment.getRecyclerView().getAdapter();
+        if (adapter != null)
+            ((MyNewsItemRecyclerViewAdapter) adapter).deleteAllItems();
+        NewsListFragment fragment = (NewsListFragment) getFragmentManager().findFragmentByTag("recommended");
+        if(fragment != null){
+            fragment.changeSortBy(sortBy);
         }
-
-        private void handleSourceButtonEvent(ImageButton button) {
-
-            switch (button.getId()) {
-                case R.id.source_cnn:
-                    fragment.changePerspective(Constants.CNN_SOURCE);
-                    break;
-                case R.id.source_bbc:
-                    fragment.changePerspective(Constants.BBC_SOURCE);
-                    break;
-                case R.id.source_fox:
-                    fragment.changePerspective(Constants.FOX_SOURCE);
-                    break;
-                case R.id.source_msnbc:
-                    fragment.changePerspective(Constants.MSNBC_SOURCE);
-                    break;
-            }
-        }
-
-        private void handleLanguageButtonEvent(ImageButton button) {
-
-        }
-
-        private void handleSortingButtonEvent(ImageButton button) {
-
-        }
-
     }
 }

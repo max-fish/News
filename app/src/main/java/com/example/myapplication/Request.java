@@ -48,6 +48,7 @@ public class Request {
     }
 
     public boolean equals(Request request){
-        return query.equals(request.getQuery()) && perspective.equals(request.getPerspective());
+        return query.equals(request.getQuery()) && perspective.equals(request.getPerspective()) &&
+                language.equals(request.getLanguage()) && sortBy.equals(request.getSortBy());
     }
 }

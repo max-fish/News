@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,17 +34,25 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
     private final int during = 500;
     private boolean mStopHandler = false;
 
+    private int radius=0;
+    private int newsItemHeight;
+    private int newsItemPicWidth;
+
     public MyNewsItemRecyclerViewAdapter(List<DataModel> items, Activity activity) {
         mValues = items;
         this.activity = activity;
         recyclerView = activity.findViewById(R.id.list);
         recyclerView.startLayoutAnimation();
+
+        radius = (int) activity.getResources().getDimension(R.dimen.radius_image);
+        newsItemHeight = (int) activity.getResources().getDimension(R.dimen.news_item_height);
+        newsItemPicWidth = (int) activity.getResources().getDimension(R.dimen.news_item_pic_width);
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_newsitem, parent, false);
+                .inflate(R.layout.news_item, parent, false);
         return new ViewHolder(view);
     }
 
@@ -58,14 +67,13 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
     }
 
     private void putImage(String url, ImageView imageView) {
-        if (url == null || url == "") {
-
-        } else {
+        if (!TextUtils.isEmpty(url)) {
             Picasso
                     .get()
                     .load(url)
-                    .transform(new CircleTransform(80, 0))
-                    .fit()
+                    .transform(new CircleTransform(radius, 0))
+                    .resizeDimen(R.dimen.news_item_pic_width, R.dimen.news_item_height)
+                    .centerCrop()
                     .into(imageView);
         }
     }

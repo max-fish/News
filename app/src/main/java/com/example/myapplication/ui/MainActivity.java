@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -66,8 +67,6 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar preferenceToolbar = findViewById(R.id.preference_toolbar);
         setSupportActionBar(preferenceToolbar);
-//        getSupportActionBar().setTitle("jgvjvjvj");
-
 
         fragmentManager = getSupportFragmentManager();
 

@@ -1,6 +1,5 @@
 package com.example.myapplication.ui.newListFragment;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -9,12 +8,8 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -60,7 +55,7 @@ public class NewsListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_newsitem_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_list, container, false);
 
         final SwipeRefreshLayout pullToRefresh = view.findViewById(R.id.pull_to_refresh);
 
@@ -70,7 +65,7 @@ public class NewsListFragment extends Fragment {
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                submitRequest(currentRequest.getQuery(), currentRequest.getPerspective());
+                submitRequest(currentRequest.getQuery(), currentRequest.getPerspective(), currentRequest.getLanguage(), currentRequest.getSortBy());
                 pullToRefresh.setRefreshing(false);
             }
         });
@@ -84,7 +79,7 @@ public class NewsListFragment extends Fragment {
 
         recyclerView.setLayoutAnimation(new LayoutAnimationController(anim));
 
-        submitRequest("", "cnn");
+        submitRequest("", "cnn", "en", "publishedAt");
 
         return view;
     }
@@ -131,16 +126,25 @@ public class NewsListFragment extends Fragment {
 
     }
 
-    public void changePerspective(String perspective) {
-        submitRequest(currentRequest.getQuery(), perspective);
-    }
 
     public void changeQuery(String query) {
-        submitRequest(query, currentRequest.getPerspective());
+        submitRequest(query, currentRequest.getPerspective(), currentRequest.getLanguage(), currentRequest.getSortBy());
     }
 
-    private void submitRequest(String query, String perspective) {
-        Request request = new Request(query, perspective, "en", "publishedAt");
+    public void changePerspective(String perspective) {
+        submitRequest(currentRequest.getQuery(), perspective, currentRequest.getLanguage(), currentRequest.getSortBy());
+    }
+
+    public void changeLanguage(String language){
+        submitRequest(currentRequest.getQuery(), currentRequest.getPerspective(), language, currentRequest.getSortBy());
+    }
+
+    public void changeSortBy(String sortBy){
+        submitRequest(currentRequest.getQuery(), currentRequest.getPerspective(), currentRequest.getLanguage(), sortBy);
+    }
+
+    private void submitRequest(String query, String perspective, String language, String sortBy) {
+        Request request = new Request(query, perspective, language, sortBy);
         updateNews(request, recyclerView, newsType);
         currentRequest = request;
     }

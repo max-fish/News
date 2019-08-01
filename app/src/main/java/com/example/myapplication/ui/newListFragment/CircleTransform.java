@@ -26,7 +26,9 @@ public class CircleTransform implements com.squareup.picasso.Transformation {
 
         Bitmap output = Bitmap.createBitmap(source.getWidth(), source.getHeight(), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(output);
-        canvas.drawRoundRect(new RectF(margin, margin, source.getWidth() - margin, source.getHeight() - margin), radius, radius, paint);
+        RectF rectF = new RectF(margin, margin, source.getWidth() - margin, source.getHeight() - margin);
+        
+        canvas.drawRoundRect(rectF, radius, radius, paint);
 
         if (source != output) {
             source.recycle();

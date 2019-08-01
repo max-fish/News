@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+
     <style name="MainActivityTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -21,4 +22,9 @@
         <item name="android:layout_margin">4dp</item>
     </style>
 
+    <style name="ActionBarSearchViewStyle">
+        <item name="android:textColorHint">@color/white</item>
+    </style>
+
 </resources>
+
