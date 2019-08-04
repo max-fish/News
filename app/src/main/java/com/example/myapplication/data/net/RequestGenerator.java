@@ -25,22 +25,24 @@ public class RequestGenerator {
     private String sortBy;
     private String source;
     private String language;
+    private String category;
     private static final String API_KEY = "47075dc90ef54c6f8a0880b20a3ceffc";
 
 
-    public RequestGenerator(String query, String fromDate, String sortBy, String source, String language) {
+    public RequestGenerator(String query, String fromDate, String sortBy, String source, String language, String category) {
         this.query = query;
         this.fromDate = fromDate;
         this.sortBy = sortBy;
         this.source = source;
         this.language = language;
+        this.category = category;
     }
 
     public void execute(final DataCallBack<List<DataModel>> callBack, final Constants.NewsType newsType) {
         Log.i("NewsListFragment", "Retro.getService().listRepos");
 
             Call<DataModelCall> repos = Retro.getServiceAll().listRepos(query, fromDate,
-                    sortBy, source, language, API_KEY);
+                    sortBy, source, language, category, API_KEY);
 
         repos.enqueue(new Callback<DataModelCall>() {
             @Override
@@ -70,6 +72,7 @@ public class RequestGenerator {
         private String sortBy;
         private String source;
         private String language;
+        private String category;
 
         public Builder(){}
 
@@ -99,8 +102,13 @@ public class RequestGenerator {
             return this;
         }
 
+        public Builder setCategory(String category){
+            this.category = category;
+            return this;
+        }
+
         public RequestGenerator build(){
-            return new RequestGenerator(query, fromDate, sortBy, source, language);
+            return new RequestGenerator(query, fromDate, sortBy, source, language, category);
         }
     }
 }

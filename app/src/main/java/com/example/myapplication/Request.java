@@ -7,13 +7,19 @@ public class Request {
     private String perspective;
     private String language;
     private String sortBy;
+    private String category;
 
-    public Request(String query, String perspective, String language, String sortBy){
+    public Request(String query, String perspective, String language, String sortBy, String category){
         this.query = query;
         this.perspective = perspective;
         this.language = language;
         this.sortBy = sortBy;
+        this.category = category;
     }
+
+    public String getCategory(){return category;}
+
+    public void setCategory(){this.category = category;}
 
     public String getLanguage() {
         return language;
@@ -49,6 +55,7 @@ public class Request {
 
     public boolean equals(Request request){
         return query.equals(request.getQuery()) && perspective.equals(request.getPerspective()) &&
-                language.equals(request.getLanguage()) && sortBy.equals(request.getSortBy());
+                language.equals(request.getLanguage()) && sortBy.equals(request.getSortBy())
+                && category.equals(request.getCategory());
     }
 }

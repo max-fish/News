@@ -2,11 +2,14 @@ package com.example.myapplication;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import android.util.Log;
 import android.view.LayoutInflater;
 
 import android.view.View;
@@ -74,8 +77,15 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        return provideYourFragmentView(inflater, container, savedInstanceState);
+    }
 
-        View view = inflater.inflate(R.layout.preferences_selection, container, false);
+    public View provideYourFragmentView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.preferences_selection, parent, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         cnnButton = view.findViewById(R.id.source_cnn);
         cnnButton.setOnClickListener(this);
         bbcButton = view.findViewById(R.id.source_bbc);
@@ -85,21 +95,21 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
         msnbcButton = view.findViewById(R.id.source_msnbc);
         msnbcButton.setOnClickListener(this);
 
-         enButton = view.findViewById(R.id.language_en);
-         enButton.setOnClickListener(this);
-         ruButton = view.findViewById(R.id.language_ru);
-         ruButton.setOnClickListener(this);
-         frButton = view.findViewById(R.id.language_fr);
-         frButton.setOnClickListener(this);
-         esButton = view.findViewById(R.id.language_es);
-         esButton.setOnClickListener(this);
+        enButton = view.findViewById(R.id.language_en);
+        enButton.setOnClickListener(this);
+        ruButton = view.findViewById(R.id.language_ru);
+        ruButton.setOnClickListener(this);
+        frButton = view.findViewById(R.id.language_fr);
+        frButton.setOnClickListener(this);
+        esButton = view.findViewById(R.id.language_es);
+        esButton.setOnClickListener(this);
 
-         publishedAtButton = view.findViewById(R.id.sortBy_publishedAt);
-         publishedAtButton.setOnClickListener(this);
-         relevancyButton = view.findViewById(R.id.sortBy_relevancy);
-         relevancyButton.setOnClickListener(this);
-         popularityButton = view.findViewById(R.id.sortBy_popularity);
-         popularityButton.setOnClickListener(this);
+        publishedAtButton = view.findViewById(R.id.sortBy_publishedAt);
+        publishedAtButton.setOnClickListener(this);
+        relevancyButton = view.findViewById(R.id.sortBy_relevancy);
+        relevancyButton.setOnClickListener(this);
+        popularityButton = view.findViewById(R.id.sortBy_popularity);
+        popularityButton.setOnClickListener(this);
 
         originalSource = originalFragment.getCurrentRequest().getPerspective();
         originalLanguage = originalFragment.getCurrentRequest().getLanguage();
@@ -107,8 +117,7 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
 
 
         initTypeBtn(originalSource, originalLanguage, originalSortBy);
-
-        return view;
+        super.onViewCreated(view, savedInstanceState);
     }
 
     @Override
@@ -155,25 +164,30 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
         if (!originalSource.equals(source)) {
             setSourceToListFragment(source);
             originalSource = source;
+            if (this instanceof TopHeadlinesPreferenceDialogFragment) {
+                Log.d("PreferenceDialog", "Top");
+                TopHeadlinesPreferenceDialogFragment top = (TopHeadlinesPreferenceDialogFragment) this;
+                top.clearOptions();
+            }
         }
-        if(!originalLanguage.equals(language)){
+        if (!originalLanguage.equals(language)) {
             setLanguageToListFragment(language);
             originalLanguage = language;
         }
-        if(!originalSortBy.equals(sortBy)){
+        if (!originalSortBy.equals(sortBy)) {
             setSortByToListFragment(sortBy);
             originalSortBy = sortBy;
         }
     }
 
-    private void initTypeBtn(String originalSource, String originalLanguage, String originalSortBy) {
+    protected void initTypeBtn(String originalSource, String originalLanguage, String originalSortBy) {
         if (originalSource == null)
             return;
 
-        if(originalLanguage == null)
+        if (originalLanguage == null)
             return;
 
-        if(originalSortBy == null)
+        if (originalSortBy == null)
             return;
 
         cnnButton.setSelected(originalSource.equals(Constants.CNN_SOURCE));
@@ -195,28 +209,33 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
         RecyclerView.Adapter adapter = originalFragment.getRecyclerView().getAdapter();
         if (adapter != null)
             ((MyNewsItemRecyclerViewAdapter) adapter).deleteAllItems();
-        NewsListFragment fragment = (NewsListFragment) getFragmentManager().findFragmentByTag("recommended");
-        if (fragment != null)
-            fragment.changePerspective(source);
+        if (originalFragment != null)
+            originalFragment.changePerspective(source);
     }
 
-    private void setLanguageToListFragment(String language){
+    private void setLanguageToListFragment(String language) {
         RecyclerView.Adapter adapter = originalFragment.getRecyclerView().getAdapter();
         if (adapter != null)
             ((MyNewsItemRecyclerViewAdapter) adapter).deleteAllItems();
-        NewsListFragment fragment = (NewsListFragment) getFragmentManager().findFragmentByTag("recommended");
-        if(fragment != null){
-            fragment.changeLanguage(language);
+        if (originalFragment != null) {
+            originalFragment.changeLanguage(language);
         }
     }
 
-    private void setSortByToListFragment(String sortBy){
+    private void setSortByToListFragment(String sortBy) {
         RecyclerView.Adapter adapter = originalFragment.getRecyclerView().getAdapter();
         if (adapter != null)
             ((MyNewsItemRecyclerViewAdapter) adapter).deleteAllItems();
-        NewsListFragment fragment = (NewsListFragment) getFragmentManager().findFragmentByTag("recommended");
-        if(fragment != null){
-            fragment.changeSortBy(sortBy);
+        if (originalFragment != null) {
+            originalFragment.changeSortBy(sortBy);
         }
+    }
+
+    NewsListFragment getOriginalFragment() {
+        return originalFragment;
+    }
+
+    void setOriginalSource() {
+        this.originalSource = "";
     }
 }

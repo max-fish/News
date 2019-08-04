@@ -18,4 +18,12 @@ public class Constants {
     static final String PUBLISHED_AT_SORT = "publishedAt";
     static final String RELEVANCY_SORT = "relevancy";
     static final String POPULARITY_SORT = "popularity";
+
+    static final String BUSINESS_CATEGORY = "business";
+    static final String ENTERTAINMENT_CATEGORY = "entertainment";
+    static final String GENERAL_CATEGORY = "general";
+    static final String HEALTH_CATEGORY = "health";
+    static final String SCIENCE_CATEGORY = "science";
+    static final String SPORTS_CATEGORY = "sports";
+    static final String TECHNOLOGY_CATEGORY = "technology";
 }

@@ -10,6 +10,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -23,6 +24,7 @@ import com.example.myapplication.data.callback.DataCallBack;
 import com.example.myapplication.data.model.DataModel;
 
 import java.util.List;
+import java.util.Objects;
 
 
 public class NewsListFragment extends Fragment {
@@ -53,7 +55,7 @@ public class NewsListFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_list, container, false);
 
@@ -65,7 +67,7 @@ public class NewsListFragment extends Fragment {
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                submitRequest(currentRequest.getQuery(), currentRequest.getPerspective(), currentRequest.getLanguage(), currentRequest.getSortBy());
+                submitRequest(currentRequest.getQuery(), currentRequest.getPerspective(), currentRequest.getLanguage(), currentRequest.getSortBy(), currentRequest.getCategory());
                 pullToRefresh.setRefreshing(false);
             }
         });
@@ -79,7 +81,7 @@ public class NewsListFragment extends Fragment {
 
         recyclerView.setLayoutAnimation(new LayoutAnimationController(anim));
 
-        submitRequest("", "cnn", "en", "publishedAt");
+        submitRequest("", "cnn", "en", "publishedAt", null);
 
         return view;
     }
@@ -89,7 +91,7 @@ public class NewsListFragment extends Fragment {
             Application.getRepository().getAllNews(new DataCallBack<List<DataModel>>() {
                 @Override
                 public void onEmit(List<DataModel> data) {
-                    recyclerView.setAdapter(new MyNewsItemRecyclerViewAdapter(data, getActivity()));
+                    recyclerView.setAdapter(new MyNewsItemRecyclerViewAdapter(data, Objects.requireNonNull(getActivity())));
 
                 }
 
@@ -108,7 +110,7 @@ public class NewsListFragment extends Fragment {
             Application.getRepository().getRecommendedNews(new DataCallBack<List<DataModel>>() {
                 @Override
                 public void onEmit(List<DataModel> data) {
-                    recyclerView.setAdapter(new MyNewsItemRecyclerViewAdapter(data, getActivity()));
+                    recyclerView.setAdapter(new MyNewsItemRecyclerViewAdapter(data, Objects.requireNonNull(getActivity())));
                 }
 
                 @Override
@@ -128,23 +130,27 @@ public class NewsListFragment extends Fragment {
 
 
     public void changeQuery(String query) {
-        submitRequest(query, currentRequest.getPerspective(), currentRequest.getLanguage(), currentRequest.getSortBy());
+        submitRequest(query, currentRequest.getPerspective(), currentRequest.getLanguage(), currentRequest.getSortBy(), currentRequest.getCategory());
     }
 
     public void changePerspective(String perspective) {
-        submitRequest(currentRequest.getQuery(), perspective, currentRequest.getLanguage(), currentRequest.getSortBy());
+        submitRequest(currentRequest.getQuery(), perspective, currentRequest.getLanguage(), currentRequest.getSortBy(), "");
     }
 
     public void changeLanguage(String language){
-        submitRequest(currentRequest.getQuery(), currentRequest.getPerspective(), language, currentRequest.getSortBy());
+        submitRequest(currentRequest.getQuery(), currentRequest.getPerspective(), language, currentRequest.getSortBy(), currentRequest.getCategory());
     }
 
     public void changeSortBy(String sortBy){
-        submitRequest(currentRequest.getQuery(), currentRequest.getPerspective(), currentRequest.getLanguage(), sortBy);
+        submitRequest(currentRequest.getQuery(), currentRequest.getPerspective(), currentRequest.getLanguage(), sortBy, currentRequest.getCategory());
     }
 
-    private void submitRequest(String query, String perspective, String language, String sortBy) {
-        Request request = new Request(query, perspective, language, sortBy);
+    public void changeCategory(String category){
+        submitRequest(currentRequest.getQuery(), "", currentRequest.getLanguage(), currentRequest.getSortBy(), category);
+    }
+
+    private void submitRequest(String query, String perspective, String language, String sortBy, String category) {
+        Request request = new Request(query, perspective, language, sortBy, category);
         updateNews(request, recyclerView, newsType);
         currentRequest = request;
     }

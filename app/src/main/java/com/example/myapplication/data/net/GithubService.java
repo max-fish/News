@@ -7,11 +7,12 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 public interface GithubService {
-    @GET("/v2/everything")
+    @GET("/v2/top-headlines")
     Call<DataModelCall> listRepos(@Query("q") String q,
                                   @Query("from") String from,
                                   @Query("sortBy") String sortBy,
                                   @Query("sources") String source,
                                   @Query("language") String language,
+                                  @Query("category") String category,
                                   @Query("apiKey") String apiKey);
 }

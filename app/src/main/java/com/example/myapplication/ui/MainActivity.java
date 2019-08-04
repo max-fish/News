@@ -22,6 +22,7 @@ import com.example.myapplication.Constants;
 import com.example.myapplication.PreferenceDialogFragment;
 import com.example.myapplication.R;
 import com.example.myapplication.LocationFinder;
+import com.example.myapplication.TopHeadlinesPreferenceDialogFragment;
 import com.example.myapplication.ui.newListFragment.NewsListFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -132,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
 
     public boolean openSettings(MenuItem item){
         FragmentManager fm = getSupportFragmentManager();
-        PreferenceDialogFragment preferenceDialogFragment = PreferenceDialogFragment.newInstance();
+        TopHeadlinesPreferenceDialogFragment preferenceDialogFragment = TopHeadlinesPreferenceDialogFragment.newInstance();
         Bundle settingsBundle = new Bundle();
         settingsBundle.putString("fragmentName", findFirstFragmentOfStack(fragmentManager).getName());
         preferenceDialogFragment.setArguments(settingsBundle);

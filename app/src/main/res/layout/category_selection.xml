@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical"
+    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+<TableRow
+    android:layout_width="match_parent"
+    android:layout_height="2dp">
+
+    <View
+        android:layout_height="3dp"
+        android:layout_marginTop="@dimen/text_margin"
+        android:layout_marginBottom="2dp"
+        android:background="@color/colorPrimary" />
+    </TableRow>
+    <TableRow android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/text_margin"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="@dimen/text_margin"
+            android:fontFamily="@font/ubuntu_r"
+            android:text="Source"
+            android:textColor="#000000" />
+    </TableRow>
+
+<TableRow
+android:layout_width="match_parent"
+android:gravity="center" android:layout_height="wrap_content">
+
+<LinearLayout
+    android:orientation="horizontal"
+    android:layout_width="wrap_content">
+
+    <Button
+        android:id="@+id/category_business"
+        style="@style/PreferenceButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/text_margin"
+        android:contentDescription="@string/sorting_preference_button"
+        android:text="business" />
+
+    <Button
+        android:id="@+id/category_entertainment"
+        style="@style/PreferenceButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/text_margin"
+        android:contentDescription="@string/sorting_preference_button"
+        android:text="entertainment" />
+
+    <Button
+        android:id="@+id/category_general"
+        style="@style/PreferenceButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/sorting_preference_button"
+        android:text="general" />
+</LinearLayout>
+</TableRow>
+    <TableRow
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/category_health"
+            style="@style/PreferenceButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/sorting_preference_button"
+            android:text="health" />
+
+        <Button
+            android:id="@+id/category_science"
+            style="@style/PreferenceButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/text_margin"
+            android:contentDescription="@string/sorting_preference_button"
+            android:text="science" />
+
+        <Button
+            android:id="@+id/category_sports"
+            style="@style/PreferenceButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/text_margin"
+            android:contentDescription="@string/sorting_preference_button"
+            android:text="sports" />
+
+        <Button
+            android:id="@+id/category_technology"
+            style="@style/PreferenceButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@string/sorting_preference_button"
+            android:text="technology" />
+
+    </TableRow>
+</LinearLayout>
