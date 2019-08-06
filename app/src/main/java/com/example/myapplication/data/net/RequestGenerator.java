@@ -1,16 +1,12 @@
 package com.example.myapplication.data.net;
 
-import android.app.Activity;
 import android.util.Log;
-
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.Application;
 import com.example.myapplication.Constants;
 import com.example.myapplication.data.callback.DataCallBack;
 import com.example.myapplication.data.model.DataModel;
 import com.example.myapplication.data.model.DataModelCall;
-import com.example.myapplication.ui.newListFragment.MyNewsItemRecyclerViewAdapter;
 
 import java.util.List;
 
@@ -41,7 +37,7 @@ public class RequestGenerator {
     public void execute(final DataCallBack<List<DataModel>> callBack, final Constants.NewsType newsType) {
         Log.i("NewsListFragment", "Retro.getService().listRepos");
 
-            Call<DataModelCall> repos = Retro.getServiceAll().listRepos(query, fromDate,
+            Call<DataModelCall> repos = Retro.getServiceRecommended().listRepos(query, fromDate,
                     sortBy, source, language, category, API_KEY);
 
         repos.enqueue(new Callback<DataModelCall>() {

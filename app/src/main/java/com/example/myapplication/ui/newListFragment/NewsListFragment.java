@@ -81,7 +81,7 @@ public class NewsListFragment extends Fragment {
 
         recyclerView.setLayoutAnimation(new LayoutAnimationController(anim));
 
-        submitRequest("", "cnn", "en", "publishedAt", null);
+        submitRequest("", "cnn", "en", "publishedAt", "");
 
         return view;
     }

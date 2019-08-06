@@ -36,22 +36,24 @@ public class MainActivity extends AppCompatActivity {
 
             switch (item.getItemId()) {
                 case R.id.news_recommended:
-                    runFragment("recommended", NewsListFragment.newInstance(Constants.NewsType.RECCOMENDED));
+                    runFragment(getString(R.string.top_headline_fragment_name), NewsListFragment.newInstance(Constants.NewsType.RECCOMENDED));
                     return true;
                 case R.id.news_all:
-                    runFragment("all", NewsListFragment.newInstance(Constants.NewsType.ALL));
+                    runFragment(getString(R.string.all_fragment_name), NewsListFragment.newInstance(Constants.NewsType.ALL));
                     return true;
                 case R.id.about_us:
-                    runFragment("about", new AboutFragment());
+                    runFragment(getString(R.string.about_fragment_name), new AboutFragment());
                     return true;
             }
             return false;
         }
     };
 
+
     private void runFragment(String tag, Fragment fragment) {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, fragment, tag);
+        fragmentTransaction.addToBackStack(tag);
         fragmentTransaction.commit();
     }
 
@@ -76,8 +78,8 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, NewsListFragment.newInstance(Constants.NewsType.RECCOMENDED), "recommended");
-        fragmentTransaction.addToBackStack("recommended");
+        fragmentTransaction.replace(R.id.fragment_container, NewsListFragment.newInstance(Constants.NewsType.RECCOMENDED), getString(R.string.top_headline_fragment_name));
+        fragmentTransaction.addToBackStack(getString(R.string.top_headline_fragment_name));
         fragmentTransaction.commit();
     }
 
@@ -120,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (findFirstFragmentOfStack(fragmentManager).getName().equals("recommended")) {
+        if (findFirstFragmentOfStack(fragmentManager).getName().equals(getString(R.string.top_headline_fragment_name))) {
             Log.d("MainActivity", "home");
             //clearStack(fragmentManager);
             super.onBackPressed();
@@ -131,16 +133,30 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public boolean openSettings(MenuItem item){
+    public boolean openSettings(MenuItem item) {
         FragmentManager fm = getSupportFragmentManager();
-        TopHeadlinesPreferenceDialogFragment preferenceDialogFragment = TopHeadlinesPreferenceDialogFragment.newInstance();
-        Bundle settingsBundle = new Bundle();
-        settingsBundle.putString("fragmentName", findFirstFragmentOfStack(fragmentManager).getName());
-        preferenceDialogFragment.setArguments(settingsBundle);
-        preferenceDialogFragment.show(fm, "preferences");
-        return true;
+        FragmentManager.BackStackEntry fragment = findFirstFragmentOfStack(fragmentManager);
+        if (fragment.getName().equals(getString(R.string.top_headline_fragment_name))) {
+            Log.d("MainActivity", findFirstFragmentOfStack(fragmentManager).getName());
+            TopHeadlinesPreferenceDialogFragment topHeadlinesPreferenceDialogFragment =
+                    TopHeadlinesPreferenceDialogFragment.newInstance();
+            Bundle settingsBundle = new Bundle();
+            settingsBundle.putString(getString(R.string.fragment_name_key), fragment.getName());
+            topHeadlinesPreferenceDialogFragment.setArguments(settingsBundle);
+            topHeadlinesPreferenceDialogFragment.show(fm, getString(R.string.preferences_fragment));
+            return true;
+        }
+        if (fragment.getName().equals(getString(R.string.all_fragment_name))) {
+            PreferenceDialogFragment preferenceDialogFragment =
+                    PreferenceDialogFragment.newInstance();
+            Bundle settingsBundle = new Bundle();
+            settingsBundle.putString(getString(R.string.fragment_name_key), fragment.getName());
+            preferenceDialogFragment.setArguments(settingsBundle);
+            preferenceDialogFragment.show(fm, getString(R.string.preferences_fragment));
+            return true;
+        }
+        return false;
     }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

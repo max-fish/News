@@ -6,12 +6,20 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class Retro {
     final static String baseUrl = "https://newsapi.org/";
 
-    public static GithubService getServiceAll() {
+    public static GithubServiceRecommended getServiceRecommended() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(baseUrl)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        return retrofit.create(GithubService.class);
+        return retrofit.create(GithubServiceRecommended.class);
+    }
+    public static GithubServiceAll getServiceAll(){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        return retrofit.create(GithubServiceAll.class);
     }
 }

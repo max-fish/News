@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TableLayout;
+import android.widget.TableRow;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -58,7 +59,10 @@ implements View.OnClickListener
         View view = inflater.inflate(R.layout.preferences_selection, parent, false);
         if(view instanceof TableLayout){
             Log.d("TopHeadlines", "Tablelayout!");
-            ((TableLayout) view).addView(inflater.inflate(R.layout.category_selection, parent, false));
+            TableLayout tableLayout = (TableLayout) view;
+            TableRow categoryRow = new TableRow(getContext());
+            categoryRow.addView(inflater.inflate(R.layout.category_selection, parent, false));
+            tableLayout.addView(categoryRow);
         }
         return view;
     }

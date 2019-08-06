@@ -34,9 +34,7 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
     private final int during = 500;
     private boolean mStopHandler = false;
 
-    private int radius=0;
-    private int newsItemHeight;
-    private int newsItemPicWidth;
+    private int radius = 0;
 
     public MyNewsItemRecyclerViewAdapter(List<DataModel> items, Activity activity) {
         mValues = items;
@@ -45,8 +43,6 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
         recyclerView.startLayoutAnimation();
 
         radius = (int) activity.getResources().getDimension(R.dimen.radius_image);
-        newsItemHeight = (int) activity.getResources().getDimension(R.dimen.news_item_height);
-        newsItemPicWidth = (int) activity.getResources().getDimension(R.dimen.news_item_pic_width);
     }
 
     @Override

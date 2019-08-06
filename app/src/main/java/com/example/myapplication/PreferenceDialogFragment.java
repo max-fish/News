@@ -68,7 +68,7 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String originalFragmentTag = getArguments().getString("fragmentName");
+        String originalFragmentTag = getArguments().getString(getString(R.string.fragment_name_key));
         originalFragment = (NewsListFragment) getFragmentManager().findFragmentByTag(originalFragmentTag);
 
 

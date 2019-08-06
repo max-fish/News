@@ -2,14 +2,14 @@
 <LinearLayout android:orientation="vertical"
     android:layout_height="wrap_content"
     android:layout_width="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_marginTop="@dimen/text_margin" xmlns:android="http://schemas.android.com/apk/res/android">
 <TableRow
     android:layout_width="match_parent"
-    android:layout_height="2dp">
+    android:layout_height="wrap_content"
+    >
 
     <View
         android:layout_height="3dp"
-        android:layout_marginTop="@dimen/text_margin"
         android:layout_marginBottom="2dp"
         android:background="@color/colorPrimary" />
     </TableRow>
@@ -23,7 +23,7 @@
             android:layout_marginTop="2dp"
             android:layout_marginBottom="@dimen/text_margin"
             android:fontFamily="@font/ubuntu_r"
-            android:text="Source"
+            android:text="Category"
             android:textColor="#000000" />
     </TableRow>
 
