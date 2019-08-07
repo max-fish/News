@@ -28,6 +28,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
+    private String country;
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -161,8 +163,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
          if (requestCode == LocationFinder.LOCATION_REQUEST_CODE && resultCode == RESULT_OK){
-             LocationFinder.getLocation(this);
+             country = LocationFinder.getLocation(this);
          }
+    }
+
+    public String getCountry(){
+        return country;
     }
 
 }

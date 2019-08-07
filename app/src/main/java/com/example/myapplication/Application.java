@@ -1,13 +1,11 @@
 package com.example.myapplication;
 
-import android.graphics.drawable.Drawable;
 import android.util.Log;
 
 import com.example.myapplication.data.NewsRepository;
 import com.example.myapplication.data.NewsRepositoryImpl;
 import com.example.myapplication.data.model.DataModel;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Stack;
 
@@ -17,7 +15,9 @@ public class Application extends android.app.Application {
 
     private static List<DataModel> listRecommendedNews;
 
-    private static Stack<Request> requestStack = new Stack<>();
+    private static Stack<Request> recommendedRequestStack = new Stack<>();
+
+    private static Stack<Request> allRequestStack = new Stack<>();
 
     private static NewsRepository newsRepository;
 
@@ -47,13 +47,21 @@ public class Application extends android.app.Application {
         return listRecommendedNews;
     }
 
-    public static void addRequest(Request query){
-        requestStack.push(query);
+    public static void addRecommendedRequest(Request request){
+        recommendedRequestStack.push(request);
     }
 
-    public static Stack<Request> getRequestStack(){return requestStack;}
+    public static void addAllRequest(Request request){
+        allRequestStack.push(request);
+    }
 
-    public static Request getDeletePreviousRequest(){return requestStack.pop();}
+    public static Stack<Request> getRecommendedRequestStack(){return recommendedRequestStack;}
+
+    public static Stack<Request> getAllRequestStack() {return allRequestStack;}
+
+    public static Request getDeletePreviousRecommendedRequest(){return recommendedRequestStack.pop();}
+
+    public static Request getDeletePreviousAllRequest(){return  allRequestStack.pop();}
 
 
 

@@ -19,6 +19,7 @@ public class TopHeadlinesPreferenceDialogFragment extends PreferenceDialogFragme
 implements View.OnClickListener
 {
     private String originalCategory;
+
     private Button business;
     private Button entertainment;
     private Button general;
@@ -37,6 +38,7 @@ implements View.OnClickListener
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
         business = view.findViewById(R.id.category_business);
         business.setOnClickListener(this);
         entertainment = view.findViewById(R.id.category_entertainment);
@@ -51,6 +53,8 @@ implements View.OnClickListener
         sports.setOnClickListener(this);
         technology = view.findViewById(R.id.category_technology);
         technology.setOnClickListener(this);
+
+        initTypeBtn(originalCategory);
         super.onViewCreated(view, savedInstanceState);
 
     }
@@ -73,37 +77,38 @@ implements View.OnClickListener
         switch(view.getId()){
             case R.id.category_business:
                 category = Constants.BUSINESS_CATEGORY;
-                setOriginalSource();
+                clearOriginalSource();
                 break;
             case R.id.category_entertainment:
                 category = Constants.ENTERTAINMENT_CATEGORY;
-                setOriginalSource();
+                clearOriginalSource();
                 break;
             case R.id.category_general:
                 category = Constants.GENERAL_CATEGORY;
-                setOriginalSource();
+                clearOriginalSource();
                 break;
             case R.id.category_health:
                 category = Constants.HEALTH_CATEGORY;
-                setOriginalSource();
+                clearOriginalSource();
                 break;
             case R.id.category_science:
                 category = Constants.SCIENCE_CATEGORY;
-                setOriginalSource();
+                clearOriginalSource();
                 break;
             case R.id.category_sports:
                 category = Constants.SPORTS_CATEGORY;
-                setOriginalSource();
+                clearOriginalSource();
                 break;
             case R.id.category_technology:
                 category = Constants.TECHNOLOGY_CATEGORY;
-                setOriginalSource();
+                clearOriginalSource();
                 break;
         }
         initTypeBtn(category);
         if(!category.equals(originalCategory)){
             setCategoryToListFragment(category);
             originalCategory = category;
+            disableLanguageButtons();
         }
         super.onClick(view);
     }
@@ -129,7 +134,7 @@ implements View.OnClickListener
         getOriginalFragment().changeCategory(category);
     }
 
-    public void clearOptions(){
+    void clearCategoryOptions(){
         originalCategory = "";
         initTypeBtn(originalCategory);
     }

@@ -34,12 +34,12 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
     private final int during = 500;
     private boolean mStopHandler = false;
 
-    private int radius = 0;
+    private int radius;
 
-    public MyNewsItemRecyclerViewAdapter(List<DataModel> items, Activity activity) {
+    public MyNewsItemRecyclerViewAdapter(List<DataModel> items, Activity activity, RecyclerView recyclerView) {
         mValues = items;
         this.activity = activity;
-        recyclerView = activity.findViewById(R.id.list);
+        this.recyclerView = recyclerView;
         recyclerView.startLayoutAnimation();
 
         radius = (int) activity.getResources().getDimension(R.dimen.radius_image);

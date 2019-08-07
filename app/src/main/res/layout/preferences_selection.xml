@@ -86,7 +86,9 @@
         </LinearLayout>
     </TableRow>
 
-    <TableRow>
+    <TableRow android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
 
         <View
             android:layout_height="3dp"
@@ -111,7 +113,9 @@
     <TableRow
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center">
+        android:gravity="center"
+        android:layout_marginBottom="@dimen/text_margin"
+        >
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -166,7 +170,6 @@
     </TableRow>
 
     <TableRow>
-
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

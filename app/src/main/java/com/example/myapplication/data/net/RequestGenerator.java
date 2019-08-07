@@ -58,7 +58,7 @@ public class RequestGenerator {
                 }
             });
         }
-        if(newsType == Constants.NewsType.ALL){
+        else if(newsType == Constants.NewsType.ALL){
             Call<DataModelCall> reposAll = Retro.getServiceAll().listRepos(query, fromDate, sortBy,
                     source, language, API_KEY);
             reposAll.enqueue(new Callback<DataModelCall>() {

@@ -91,7 +91,7 @@ public class NewsListFragment extends Fragment {
             Application.getRepository().getAllNews(new DataCallBack<List<DataModel>>() {
                 @Override
                 public void onEmit(List<DataModel> data) {
-                    recyclerView.setAdapter(new MyNewsItemRecyclerViewAdapter(data, Objects.requireNonNull(getActivity())));
+                    recyclerView.setAdapter(new MyNewsItemRecyclerViewAdapter(data, Objects.requireNonNull(getActivity()), recyclerView));
 
                 }
 
@@ -110,7 +110,7 @@ public class NewsListFragment extends Fragment {
             Application.getRepository().getRecommendedNews(new DataCallBack<List<DataModel>>() {
                 @Override
                 public void onEmit(List<DataModel> data) {
-                    recyclerView.setAdapter(new MyNewsItemRecyclerViewAdapter(data, Objects.requireNonNull(getActivity())));
+                    recyclerView.setAdapter(new MyNewsItemRecyclerViewAdapter(data, Objects.requireNonNull(getActivity()), recyclerView));
                 }
 
                 @Override
@@ -146,7 +146,7 @@ public class NewsListFragment extends Fragment {
     }
 
     public void changeCategory(String category){
-        submitRequest(currentRequest.getQuery(), "", currentRequest.getLanguage(), currentRequest.getSortBy(), category);
+        submitRequest(currentRequest.getQuery(), "", "", currentRequest.getSortBy(), category);
     }
 
     private void submitRequest(String query, String perspective, String language, String sortBy, String category) {

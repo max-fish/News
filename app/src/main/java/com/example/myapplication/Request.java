@@ -19,30 +19,12 @@ public class Request {
 
     public String getCategory(){return category;}
 
-    public void setCategory(){this.category = category;}
-
     public String getLanguage() {
         return language;
     }
 
-    public void setLanguage(String language) {
-        this.language = language;
-    }
-
     public String getSortBy() {
         return sortBy;
-    }
-
-    public void setSortBy(String sortBy) {
-        this.sortBy = sortBy;
-    }
-
-    public void setQuery(String query){
-        this.query = query;
-    }
-
-    public void setPerspective(String perspective){
-        this.perspective = perspective;
     }
 
     public String getQuery() {

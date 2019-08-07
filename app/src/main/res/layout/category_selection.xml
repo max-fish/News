@@ -2,11 +2,11 @@
 <LinearLayout android:orientation="vertical"
     android:layout_height="wrap_content"
     android:layout_width="wrap_content"
-    android:layout_marginTop="@dimen/text_margin" xmlns:android="http://schemas.android.com/apk/res/android">
+    android:paddingTop="@dimen/text_margin"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 <TableRow
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    >
+    android:layout_height="wrap_content">
 
     <View
         android:layout_height="3dp"
@@ -28,8 +28,8 @@
     </TableRow>
 
 <TableRow
-android:layout_width="match_parent"
-android:gravity="center" android:layout_height="wrap_content">
+android:layout_width="wrap_content"
+android:layout_gravity="center" android:layout_height="wrap_content">
 
 <LinearLayout
     android:orientation="horizontal"
@@ -92,7 +92,10 @@ android:gravity="center" android:layout_height="wrap_content">
             android:layout_marginEnd="@dimen/text_margin"
             android:contentDescription="@string/sorting_preference_button"
             android:text="sports" />
-
+    </TableRow>
+    <TableRow android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center">
         <Button
             android:id="@+id/category_technology"
             style="@style/PreferenceButtonStyle"

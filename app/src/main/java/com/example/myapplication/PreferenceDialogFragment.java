@@ -117,6 +117,9 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
 
 
         initTypeBtn(originalSource, originalLanguage, originalSortBy);
+        if(originalLanguage.equals("") && originalSource.equals("")){
+            disableLanguageButtons();
+        }
         super.onViewCreated(view, savedInstanceState);
     }
 
@@ -167,7 +170,7 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
             if (this instanceof TopHeadlinesPreferenceDialogFragment) {
                 Log.d("PreferenceDialog", "Top");
                 TopHeadlinesPreferenceDialogFragment top = (TopHeadlinesPreferenceDialogFragment) this;
-                top.clearOptions();
+                top.clearCategoryOptions();
             }
         }
         if (!originalLanguage.equals(language)) {
@@ -180,7 +183,7 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
         }
     }
 
-    protected void initTypeBtn(String originalSource, String originalLanguage, String originalSortBy) {
+    private void initTypeBtn(String originalSource, String originalLanguage, String originalSortBy) {
         if (originalSource == null)
             return;
 
@@ -211,6 +214,7 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
             ((MyNewsItemRecyclerViewAdapter) adapter).deleteAllItems();
         if (originalFragment != null)
             originalFragment.changePerspective(source);
+        enableLanguageButtons();
     }
 
     private void setLanguageToListFragment(String language) {
@@ -235,7 +239,27 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
         return originalFragment;
     }
 
-    void setOriginalSource() {
+    void clearOriginalSource() {
         this.originalSource = "";
+    }
+
+    void disableLanguageButtons(){
+        originalLanguage = "";
+
+        enButton.setEnabled(false);
+        ruButton.setEnabled(false);
+        frButton.setEnabled(false);
+        esButton.setEnabled(false);
+    }
+
+    private void enableLanguageButtons(){
+        originalLanguage = Constants.EN_LANGUAGE;
+
+        enButton.setSelected(true);
+
+        enButton.setEnabled(true);
+        ruButton.setEnabled(true);
+        frButton.setEnabled(true);
+        esButton.setEnabled(true);
     }
 }
