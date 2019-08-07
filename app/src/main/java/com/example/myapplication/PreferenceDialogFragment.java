@@ -49,6 +49,8 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
     private String originalLanguage;
     private String originalSortBy;
 
+    private boolean languageButtonsDisabled;
+
     public PreferenceDialogFragment() {
         // Required empty public constructor
     }
@@ -214,6 +216,7 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
             ((MyNewsItemRecyclerViewAdapter) adapter).deleteAllItems();
         if (originalFragment != null)
             originalFragment.changePerspective(source);
+        if(languageButtonsDisabled)
         enableLanguageButtons();
     }
 
@@ -240,7 +243,7 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
     }
 
     void clearOriginalSource() {
-        this.originalSource = "";
+        originalSource = "";
     }
 
     void disableLanguageButtons(){
@@ -250,6 +253,8 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
         ruButton.setEnabled(false);
         frButton.setEnabled(false);
         esButton.setEnabled(false);
+
+        languageButtonsDisabled = true;
     }
 
     private void enableLanguageButtons(){
@@ -261,5 +266,7 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
         ruButton.setEnabled(true);
         frButton.setEnabled(true);
         esButton.setEnabled(true);
+
+        languageButtonsDisabled = false;
     }
 }

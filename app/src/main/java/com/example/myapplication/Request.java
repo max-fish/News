@@ -35,6 +35,7 @@ public class Request {
         return perspective;
     }
 
+
     public boolean equals(Request request){
         return query.equals(request.getQuery()) && perspective.equals(request.getPerspective()) &&
                 language.equals(request.getLanguage()) && sortBy.equals(request.getSortBy())

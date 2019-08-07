@@ -18,6 +18,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.myapplication.Application;
 import com.example.myapplication.Constants;
 import com.example.myapplication.PreferenceDialogFragment;
 import com.example.myapplication.R;
@@ -27,9 +28,6 @@ import com.example.myapplication.ui.newListFragment.NewsListFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
-
-    private String country;
-
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -65,7 +63,6 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        LocationFinder.getLocation(this);
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
@@ -77,6 +74,8 @@ public class MainActivity extends AppCompatActivity {
 
         navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+        LocationFinder.getLocation(this);
 
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -163,12 +162,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
          if (requestCode == LocationFinder.LOCATION_REQUEST_CODE && resultCode == RESULT_OK){
-             country = LocationFinder.getLocation(this);
          }
-    }
-
-    public String getCountry(){
-        return country;
     }
 
 }

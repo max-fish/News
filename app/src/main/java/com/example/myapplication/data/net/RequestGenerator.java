@@ -22,10 +22,12 @@ public class RequestGenerator {
     private String source;
     private String language;
     private String category;
+    private String country;
     private static final String API_KEY = "47075dc90ef54c6f8a0880b20a3ceffc";
 
 
-    public RequestGenerator(String query, String fromDate, String sortBy, String source, String language, String category) {
+    public RequestGenerator(String query, String fromDate, String sortBy, String source,
+                            String language, String category) {
         this.query = query;
         this.fromDate = fromDate;
         this.sortBy = sortBy;
@@ -40,7 +42,7 @@ public class RequestGenerator {
         if (newsType == Constants.NewsType.RECCOMENDED) {
 
             Call<DataModelCall> reposRecommended = Retro.getServiceRecommended().listRepos(query, fromDate,
-                    sortBy, source, language, category, API_KEY);
+                    sortBy, source, language, category, country, API_KEY);
 
             reposRecommended.enqueue(new Callback<DataModelCall>() {
                 @Override
@@ -86,6 +88,7 @@ public class RequestGenerator {
         private String source;
         private String language;
         private String category;
+        private String country;
 
         public Builder(){}
 

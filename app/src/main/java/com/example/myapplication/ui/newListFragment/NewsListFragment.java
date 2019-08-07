@@ -1,5 +1,6 @@
 package com.example.myapplication.ui.newListFragment;
 
+import android.content.ContentResolver;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -67,7 +68,9 @@ public class NewsListFragment extends Fragment {
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                submitRequest(currentRequest.getQuery(), currentRequest.getPerspective(), currentRequest.getLanguage(), currentRequest.getSortBy(), currentRequest.getCategory());
+                submitRequest(currentRequest.getQuery(), currentRequest.getPerspective(),
+                        currentRequest.getLanguage(), currentRequest.getSortBy(),
+                        currentRequest.getCategory());
                 pullToRefresh.setRefreshing(false);
             }
         });
@@ -81,7 +84,8 @@ public class NewsListFragment extends Fragment {
 
         recyclerView.setLayoutAnimation(new LayoutAnimationController(anim));
 
-        submitRequest("", "cnn", "en", "publishedAt", "");
+
+            submitRequest("", "cnn", "en", "publishedAt", "");
 
         return view;
     }
@@ -130,26 +134,32 @@ public class NewsListFragment extends Fragment {
 
 
     public void changeQuery(String query) {
-        submitRequest(query, currentRequest.getPerspective(), currentRequest.getLanguage(), currentRequest.getSortBy(), currentRequest.getCategory());
+        submitRequest(query, currentRequest.getPerspective(), currentRequest.getLanguage(),
+                currentRequest.getSortBy(), currentRequest.getCategory());
     }
 
     public void changePerspective(String perspective) {
-        submitRequest(currentRequest.getQuery(), perspective, currentRequest.getLanguage(), currentRequest.getSortBy(), "");
+        submitRequest(currentRequest.getQuery(), perspective, currentRequest.getLanguage(),
+                currentRequest.getSortBy(), "");
     }
 
     public void changeLanguage(String language){
-        submitRequest(currentRequest.getQuery(), currentRequest.getPerspective(), language, currentRequest.getSortBy(), currentRequest.getCategory());
+        submitRequest(currentRequest.getQuery(), currentRequest.getPerspective(), language,
+                currentRequest.getSortBy(), currentRequest.getCategory());
     }
 
     public void changeSortBy(String sortBy){
-        submitRequest(currentRequest.getQuery(), currentRequest.getPerspective(), currentRequest.getLanguage(), sortBy, currentRequest.getCategory());
+        submitRequest(currentRequest.getQuery(), currentRequest.getPerspective(),
+                currentRequest.getLanguage(), sortBy, currentRequest.getCategory());
     }
 
     public void changeCategory(String category){
-        submitRequest(currentRequest.getQuery(), "", "", currentRequest.getSortBy(), category);
+        submitRequest(currentRequest.getQuery(), "", "",
+                currentRequest.getSortBy(), category);
     }
 
-    private void submitRequest(String query, String perspective, String language, String sortBy, String category) {
+    private void submitRequest(String query, String perspective, String language, String sortBy,
+                               String category) {
         Request request = new Request(query, perspective, language, sortBy, category);
         updateNews(request, recyclerView, newsType);
         currentRequest = request;

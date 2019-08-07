@@ -11,6 +11,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
+import com.example.myapplication.data.callback.LocationCallBack;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -24,12 +25,9 @@ public class LocationFinder {
 
     public static final int LOCATION_REQUEST_CODE = 1000;
 
-    public static String getLocation(Activity activity) {
+    public static void getLocation(Activity activity) {
 
         FusedLocationProviderClient fusedLocationProviderClient;
-
-        final String[] tbrLocation = new String[1];
-
 
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(activity);
@@ -50,14 +48,15 @@ public class LocationFinder {
                                     List<Address> addresses = geocoder.getFromLocation
                                             (location.getLatitude(), location.getLongitude(), 1);
                                      String countryName = addresses.get(0).getCountryName();
-                                     tbrLocation[0] = countryName;
+                                     Application.setLocation(countryName);
+                                     Log.d("LocationFinder", countryName);
+                                     Log.d("LocationFinder", Application.getLocation());
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
 
                             }
                         });
-        return tbrLocation[0];
     }
 
 }

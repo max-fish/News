@@ -6,7 +6,9 @@ import com.example.myapplication.data.NewsRepository;
 import com.example.myapplication.data.NewsRepositoryImpl;
 import com.example.myapplication.data.model.DataModel;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Stack;
 
 public class Application extends android.app.Application {
@@ -18,6 +20,8 @@ public class Application extends android.app.Application {
     private static Stack<Request> recommendedRequestStack = new Stack<>();
 
     private static Stack<Request> allRequestStack = new Stack<>();
+
+    private static HashMap<String, String> countriesToISO = new HashMap<>();
 
     private static NewsRepository newsRepository;
 
@@ -63,12 +67,30 @@ public class Application extends android.app.Application {
 
     public static Request getDeletePreviousAllRequest(){return  allRequestStack.pop();}
 
+    private static String location;
+
+    public static void setLocation(String country){
+        location = country;
+    }
+
+    public static String getLocation(){
+        return location;
+    }
+
+    public static HashMap<String, String> getCountriesToISO(){
+        return countriesToISO;
+    }
 
 
     @Override
     public void onCreate() {
         super.onCreate();
         newsRepository = new NewsRepositoryImpl();
+
+        for(String iso : Locale.getISOCountries()){
+            Locale locale = new Locale("", iso);
+            countriesToISO.put(locale.getDisplayCountry(), iso);
+        }
 
     }
 }
