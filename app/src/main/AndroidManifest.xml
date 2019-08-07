@@ -17,7 +17,9 @@
             android:name=".ui.MainActivity"
             android:theme="@style/MainActivityTheme"
             android:configChanges="orientation|screenSize|keyboard"
-            android:label="@string/app_name">
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -28,6 +30,7 @@
             android:name=".ui.DetailActivity"
             android:theme="@style/AppTheme"
             android:label="Details"
+            android:screenOrientation="portrait"
             android:parentActivityName=".ui.MainActivity" />
     </application>
 

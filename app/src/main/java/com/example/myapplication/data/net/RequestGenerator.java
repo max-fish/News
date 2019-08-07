@@ -37,30 +37,47 @@ public class RequestGenerator {
     public void execute(final DataCallBack<List<DataModel>> callBack, final Constants.NewsType newsType) {
         Log.i("NewsListFragment", "Retro.getService().listRepos");
 
-            Call<DataModelCall> repos = Retro.getServiceRecommended().listRepos(query, fromDate,
+        if (newsType == Constants.NewsType.RECCOMENDED) {
+
+            Call<DataModelCall> reposRecommended = Retro.getServiceRecommended().listRepos(query, fromDate,
                     sortBy, source, language, category, API_KEY);
 
-        repos.enqueue(new Callback<DataModelCall>() {
-            @Override
-            public void onResponse(Call<DataModelCall> call, Response<DataModelCall> response) {
-                if (response.body() != null) {
-                    List<DataModel> results = response.body().getArticles();
-                    callBack.onEmit(results);
-                    if(newsType == Constants.NewsType.ALL) {
-                        Application.setNews(results);
-                    }
-                    else if(newsType == Constants.NewsType.RECCOMENDED){
-                        Application.setRecommendedNews(results);
+            reposRecommended.enqueue(new Callback<DataModelCall>() {
+                @Override
+                public void onResponse(Call<DataModelCall> call, Response<DataModelCall> response) {
+                    if (response.body() != null) {
+                        List<DataModel> results = response.body().getArticles();
+                        callBack.onEmit(results);
+                            Application.setRecommendedNews(results);
                     }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<DataModelCall> call, Throwable t) {
-                callBack.onError(t);
-            }
-        });
+                @Override
+                public void onFailure(Call<DataModelCall> call, Throwable t) {
+                    callBack.onError(t);
+                }
+            });
         }
+        if(newsType == Constants.NewsType.ALL){
+            Call<DataModelCall> reposAll = Retro.getServiceAll().listRepos(query, fromDate, sortBy,
+                    source, language, API_KEY);
+            reposAll.enqueue(new Callback<DataModelCall>() {
+                @Override
+                public void onResponse(Call<DataModelCall> call, Response<DataModelCall> response) {
+                    if (response.body() != null) {
+                        List<DataModel> results = response.body().getArticles();
+                        callBack.onEmit(results);
+                            Application.setNews(results);
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<DataModelCall> call, Throwable t) {
+                    callBack.onError(t);
+                }
+            });
+        }
+    }
 
     public static class Builder{
         private String query;
