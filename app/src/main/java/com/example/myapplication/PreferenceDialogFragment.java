@@ -1,5 +1,7 @@
 package com.example.myapplication;
 
+import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,16 +11,23 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import android.text.TextUtils;
+import android.text.method.MovementMethod;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.myapplication.ui.newListFragment.MyNewsItemRecyclerViewAdapter;
 import com.example.myapplication.ui.newListFragment.NewsListFragment;
+
+import java.util.Objects;
 
 
 /**
@@ -51,6 +60,9 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
 
     private boolean languageButtonsDisabled;
 
+
+    private LinearLayout filterSelection;
+
     public PreferenceDialogFragment() {
         // Required empty public constructor
     }
@@ -72,6 +84,7 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
         super.onCreate(savedInstanceState);
         String originalFragmentTag = getArguments().getString(getString(R.string.fragment_name_key));
         originalFragment = (NewsListFragment) getFragmentManager().findFragmentByTag(originalFragmentTag);
+        filterSelection = Objects.requireNonNull(getActivity()).findViewById(R.id.filter_selection);
 
 
     }
@@ -117,9 +130,13 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
         originalLanguage = originalFragment.getCurrentRequest().getLanguage();
         originalSortBy = originalFragment.getCurrentRequest().getSortBy();
 
-
         initTypeBtn(originalSource, originalLanguage, originalSortBy);
-        if(originalLanguage.equals("") && originalSource.equals("")){
+
+        addFilterPreferences(originalSource);
+        addFilterPreferences(originalLanguage);
+        addFilterPreferences(originalSortBy);
+
+        if (originalLanguage.equals("") && originalSource.equals("")) {
             disableLanguageButtons();
         }
         super.onViewCreated(view, savedInstanceState);
@@ -216,8 +233,8 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
             ((MyNewsItemRecyclerViewAdapter) adapter).deleteAllItems();
         if (originalFragment != null)
             originalFragment.changePerspective(source);
-        if(languageButtonsDisabled)
-        enableLanguageButtons();
+        if (languageButtonsDisabled)
+            enableLanguageButtons();
     }
 
     private void setLanguageToListFragment(String language) {
@@ -246,7 +263,7 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
         originalSource = "";
     }
 
-    void disableLanguageButtons(){
+    void disableLanguageButtons() {
         originalLanguage = "";
 
         enButton.setEnabled(false);
@@ -257,7 +274,7 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
         languageButtonsDisabled = true;
     }
 
-    private void enableLanguageButtons(){
+    private void enableLanguageButtons() {
         originalLanguage = Constants.EN_LANGUAGE;
 
         enButton.setSelected(true);

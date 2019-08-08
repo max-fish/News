@@ -1,19 +1,27 @@
 package com.example.myapplication.ui;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -58,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private FragmentManager fragmentManager;
-
+    private LinearLayout filterSelection;
     private BottomNavigationView navView;
 
     @Override
@@ -76,6 +84,10 @@ public class MainActivity extends AppCompatActivity {
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         LocationFinder.getLocation(this);
+
+        filterSelection = findViewById(R.id.filter_selection);
+
+
 
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -138,7 +150,6 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fm = getSupportFragmentManager();
         FragmentManager.BackStackEntry fragment = findFirstFragmentOfStack(fragmentManager);
         if (fragment.getName().equals(getString(R.string.top_headline_fragment_name))) {
-            Log.d("MainActivity", findFirstFragmentOfStack(fragmentManager).getName());
             TopHeadlinesPreferenceDialogFragment topHeadlinesPreferenceDialogFragment =
                     TopHeadlinesPreferenceDialogFragment.newInstance();
             Bundle settingsBundle = new Bundle();
@@ -163,6 +174,45 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
          if (requestCode == LocationFinder.LOCATION_REQUEST_CODE && resultCode == RESULT_OK){
          }
+    }
+
+    void addFilterPreferences(String preference) {
+        if(!TextUtils.isEmpty(preference)) {
+            if (filterSelection.getVisibility() == View.GONE)
+                filterSelection.setVisibility(View.VISIBLE);
+
+            TextView textView = new TextView(this);
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                textView.setTypeface(getResources().getFont(R.font.ubuntu_r));
+            }
+            else{
+                textView.setTypeface(ResourcesCompat.getFont(this, R.font.ubuntu_r));
+            }
+            textView.setText(preference);
+            textView.setBackground(getResources().getDrawable(R.drawable.preference_button_border));
+            Drawable closeIcon = getResources().getDrawable(R.drawable.ic_close_white_24dp);
+            textView.setCompoundDrawablesWithIntrinsicBounds(null, null, closeIcon, null);
+
+            textView.setPadding(16, 0, 0, 0);
+            textView.setCompoundDrawablePadding(16);
+
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+
+            int px = (int) TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP,
+                    8,
+                    getResources().getDisplayMetrics()
+            );
+
+            params.setMargins(px, px, 0, px);
+
+            textView.setLayoutParams(params);
+
+            filterSelection.addView(textView);
+        }
     }
 
 }

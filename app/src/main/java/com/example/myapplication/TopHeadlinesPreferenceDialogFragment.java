@@ -55,6 +55,7 @@ implements View.OnClickListener
         technology.setOnClickListener(this);
 
         initTypeBtn(originalCategory);
+        addFilterPreferences(originalCategory);
         super.onViewCreated(view, savedInstanceState);
 
     }
