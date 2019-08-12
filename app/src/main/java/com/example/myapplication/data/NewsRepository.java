@@ -13,4 +13,8 @@ public interface NewsRepository {
 
     void getRecommendedNews(DataCallBack<List<DataModel>> callBack, Constants.NewsType newsType, Request request);
 
+    void saveArticle(String url);
+
+    boolean checkArticle(String url);
+
 }

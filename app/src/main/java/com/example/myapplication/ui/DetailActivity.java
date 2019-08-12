@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.myapplication.Application;
 import com.example.myapplication.R;
 import com.squareup.picasso.Picasso;
 
@@ -61,9 +62,8 @@ public class DetailActivity extends AppCompatActivity {
     private void getBundleDataOut(final Bundle bundle) {
         title.setText(bundle.getString("title"));
         description.setText(bundle.getString("description"));
-        setSourceImage(bundle.getString("source"), source);
         content.setText(bundle.getString("content"));
-        Picasso
+                 Picasso
                 .get()
                 .load(bundle.getString("urlToImage"))
                 .into(image);
@@ -74,10 +74,5 @@ public class DetailActivity extends AppCompatActivity {
                 startActivity(browserIntent);
             }
         });
-    }
-
-    private void setSourceImage(String source, ImageView sourceView) {
-        if(source.equals("bbc-news"))
-            sourceView.setImageResource(R.drawable.ic_bbc);
     }
 }

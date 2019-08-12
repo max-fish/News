@@ -10,6 +10,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
@@ -150,35 +151,35 @@ public class NewsListFragment extends Fragment {
 
 
     public void changeQuery(String query) {
-        removeFilterPreferences(Constants.FILTER_PREFERENCE_QUERY_ID);
+        //removeFilterPreferences(Constants.FILTER_PREFERENCE_QUERY_ID);
         addFilterPreference(query, Constants.FILTER_PREFERENCE_QUERY_ID);
         submitRequest(query, currentRequest.getPerspective(), currentRequest.getLanguage(),
                 currentRequest.getSortBy(), currentRequest.getCategory());
     }
 
     public void changePerspective(String perspective) {
-        removeFilterPreferences(Constants.FILTER_PREFERENCE_SOURCE_ID);
+        Log.d("NewsListFragment", "changing perspecitve");
+        removeFilterPreferences(Constants.FILTER_PREFERENCE_CATEGORY_ID);
         addFilterPreference(perspective, Constants.FILTER_PREFERENCE_SOURCE_ID);
         submitRequest(currentRequest.getQuery(), perspective, currentRequest.getLanguage(),
                 currentRequest.getSortBy(), "");
     }
 
     public void changeLanguage(String language){
-        removeFilterPreferences(Constants.FILTER_PREFERENCE_LANGUAGE_ID);
         addFilterPreference(language, Constants.FILTER_PREFERENCE_LANGUAGE_ID);
         submitRequest(currentRequest.getQuery(), currentRequest.getPerspective(), language,
                 currentRequest.getSortBy(), currentRequest.getCategory());
     }
 
     public void changeSortBy(String sortBy){
-        removeFilterPreferences(Constants.FILTER_PREFERENCE_SORT_BY_ID);
         addFilterPreference(sortBy, Constants.FILTER_PREFERENCE_SORT_BY_ID);
         submitRequest(currentRequest.getQuery(), currentRequest.getPerspective(),
                 currentRequest.getLanguage(), sortBy, currentRequest.getCategory());
     }
 
     public void changeCategory(String category){
-        removeFilterPreferences(Constants.FILTER_PREFERENCE_CATEGORY_ID);
+        removeFilterPreferences(Constants.FILTER_PREFERENCE_SOURCE_ID);
+        removeFilterPreferences(Constants.FILTER_PREFERENCE_LANGUAGE_ID);
         addFilterPreference(category, Constants.FILTER_PREFERENCE_CATEGORY_ID);
         submitRequest(currentRequest.getQuery(), "", "",
                 currentRequest.getSortBy(), category);
@@ -201,12 +202,14 @@ public class NewsListFragment extends Fragment {
     }
 
     private void removeFilterPreferences(int type){
+        Log.d("NewsListFragment", "removing view");
         ViewGroup filterSelectionViewGroup = filterSelection;
 
         for(int i = 0; i < filterSelectionViewGroup.getChildCount(); i++){
             if(filterSelectionViewGroup.getChildAt(i) instanceof  FilterPreferenceTextView){
                 FilterPreferenceTextView textView = (FilterPreferenceTextView) filterSelectionViewGroup.getChildAt(i);
                 if(textView.getType() == type){
+                    Log.d("NewsListFragment", "deleted");
                     filterSelectionViewGroup.removeViewAt(i);
                 }
             }
@@ -214,6 +217,7 @@ public class NewsListFragment extends Fragment {
     }
 
     private void addFilterPreference(String preference, int type) {
+        Log.d("NewsListFragment", "adding preference" + preference);
         if(!TextUtils.isEmpty(preference)) {
             if (filterSelection.getVisibility() == View.GONE)
                 filterSelection.setVisibility(View.VISIBLE);
@@ -232,20 +236,48 @@ public class NewsListFragment extends Fragment {
             textView.setCompoundDrawablePadding(16);
             textView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
+                public void onClick(final View view) {
+                    final ViewGroup filterSelectionViewGroup = filterSelection;
+                    Log.d("NewsListFragment", "delete clicked");
                     switch (textView.getType()){
                         case Constants.FILTER_PREFERENCE_QUERY_ID:
                             changeQuery("");
+                            break;
                         case Constants.FILTER_PREFERENCE_SOURCE_ID:
                             changePerspective("");
+                            break;
                         case Constants.FILTER_PREFERENCE_LANGUAGE_ID:
                             changeLanguage("");
+                            break;
                         case Constants.FILTER_PREFERENCE_SORT_BY_ID:
                             changeSortBy("");
+                            break;
                         case Constants.FILTER_PREFERENCE_CATEGORY_ID:
                             changeCategory("");
+                            break;
                     }
+
+                    Animation anim = new AlphaAnimation(1,0);
+                    anim.setDuration(300);
+                    anim.setAnimationListener(new Animation.AnimationListener() {
+                        @Override
+                        public void onAnimationStart(Animation animation) {
+
+                        }
+
+                        @Override
+                        public void onAnimationEnd(Animation animation) {
+                            filterSelectionViewGroup.removeView(view);
+                        }
+
+                        @Override
+                        public void onAnimationRepeat(Animation animation) {
+
+                        }
+                    });
+                    view.startAnimation(anim);
                 }
+
             });
 
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(

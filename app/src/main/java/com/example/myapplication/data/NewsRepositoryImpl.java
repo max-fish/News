@@ -11,10 +11,13 @@ import com.example.myapplication.data.net.RequestGenerator;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class NewsRepositoryImpl implements NewsRepository {
 
+    private Set<String> visitedArticles = new HashSet<>();
 
     @Override
     public void getAllNews(final DataCallBack<List<DataModel>> callBack, Constants.NewsType newsType, Request request) {
@@ -63,5 +66,15 @@ public class NewsRepositoryImpl implements NewsRepository {
                 Application.addRecommendedRequest(request);
                 callBack.onEmit(dataModels);
             }
+    }
+
+    @Override
+    public void saveArticle(String url) {
+        visitedArticles.add(url);
+    }
+
+    @Override
+    public boolean checkArticle(String url) {
+        return visitedArticles.contains(url);
     }
 }

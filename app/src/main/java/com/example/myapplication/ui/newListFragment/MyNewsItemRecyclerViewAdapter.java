@@ -2,6 +2,7 @@ package com.example.myapplication.ui.newListFragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -13,8 +14,10 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.Application;
 import com.example.myapplication.R;
 import com.example.myapplication.data.model.DataModel;
 import com.example.myapplication.ui.DetailActivity;
@@ -53,13 +56,18 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         final DataModel mItem = mValues.get(position);
         putImage(mItem.getUrlToImage(), holder.mImageView);
         holder.mTitleView.setText(mItem.getTitle());
         holder.mDescriptionView.setText(mItem.getDescription());
         holder.source = mItem.getSource().getName();
-        holder.mItem.setOnClickListener(makeViewHolderOnClickListener(mItem));
+        holder.mItem.setOnClickListener(makeViewHolderOnClickListener(holder, mItem));
+        if(Application.getRepository().checkArticle(mItem.getUrl())){
+            holder.mTitleView.setTextColor(Color.GRAY);
+            holder.mDescriptionView.setTextColor(Color.GRAY);
+            holder.itemView.setBackground(null);
+        }
     }
 
     private void putImage(String url, ImageView imageView) {
@@ -74,7 +82,7 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
         }
     }
 
-    private View.OnClickListener makeViewHolderOnClickListener(final DataModel item) {
+    private View.OnClickListener makeViewHolderOnClickListener(final ViewHolder viewHolder, final DataModel item) {
         return new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,6 +91,10 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
             fillBundle(bundle, item);
             detailsIntent.putExtra("info", bundle);
             activity.startActivity(detailsIntent);
+            viewHolder.mTitleView.setTextColor(Color.GRAY);
+            viewHolder.mDescriptionView.setTextColor(Color.GRAY);
+            viewHolder.itemView.setBackground(null);
+            Application.getRepository().saveArticle(item.getUrl());
             }
         };
     }
@@ -158,13 +170,13 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-        public final TextView mTitleView;
-        public final TextView mDescriptionView;
-        public final ImageView mImageView;
-        public final View mItem;
+         final TextView mTitleView;
+         final TextView mDescriptionView;
+         final ImageView mImageView;
+         final View mItem;
         public String source;
 
-        public ViewHolder(View view) {
+         ViewHolder(View view) {
             super(view);
             mItem = view;
             mTitleView =  view.findViewById(R.id.news_item_title);

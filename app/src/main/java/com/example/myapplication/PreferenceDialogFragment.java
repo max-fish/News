@@ -271,7 +271,9 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
     }
 
     private void enableLanguageButtons() {
-        originalLanguage = Constants.EN_LANGUAGE;
+        if (originalFragment != null) {
+            originalFragment.changeLanguage(Constants.EN_LANGUAGE);
+        }
 
         enButton.setSelected(true);
 
