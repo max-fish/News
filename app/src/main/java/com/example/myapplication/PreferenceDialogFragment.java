@@ -132,10 +132,6 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
 
         initTypeBtn(originalSource, originalLanguage, originalSortBy);
 
-        addFilterPreferences(originalSource);
-        addFilterPreferences(originalLanguage);
-        addFilterPreferences(originalSortBy);
-
         if (originalLanguage.equals("") && originalSource.equals("")) {
             disableLanguageButtons();
         }

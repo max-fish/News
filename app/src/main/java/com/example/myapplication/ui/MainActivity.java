@@ -66,7 +66,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private FragmentManager fragmentManager;
-    private LinearLayout filterSelection;
     private BottomNavigationView navView;
 
     @Override
@@ -84,10 +83,6 @@ public class MainActivity extends AppCompatActivity {
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         LocationFinder.getLocation(this);
-
-        filterSelection = findViewById(R.id.filter_selection);
-
-
 
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -175,44 +170,4 @@ public class MainActivity extends AppCompatActivity {
          if (requestCode == LocationFinder.LOCATION_REQUEST_CODE && resultCode == RESULT_OK){
          }
     }
-
-    void addFilterPreferences(String preference) {
-        if(!TextUtils.isEmpty(preference)) {
-            if (filterSelection.getVisibility() == View.GONE)
-                filterSelection.setVisibility(View.VISIBLE);
-
-            TextView textView = new TextView(this);
-            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-                textView.setTypeface(getResources().getFont(R.font.ubuntu_r));
-            }
-            else{
-                textView.setTypeface(ResourcesCompat.getFont(this, R.font.ubuntu_r));
-            }
-            textView.setText(preference);
-            textView.setBackground(getResources().getDrawable(R.drawable.preference_button_border));
-            Drawable closeIcon = getResources().getDrawable(R.drawable.ic_close_white_24dp);
-            textView.setCompoundDrawablesWithIntrinsicBounds(null, null, closeIcon, null);
-
-            textView.setPadding(16, 0, 0, 0);
-            textView.setCompoundDrawablePadding(16);
-
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-            );
-
-            int px = (int) TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    8,
-                    getResources().getDisplayMetrics()
-            );
-
-            params.setMargins(px, px, 0, px);
-
-            textView.setLayoutParams(params);
-
-            filterSelection.addView(textView);
-        }
-    }
-
 }
