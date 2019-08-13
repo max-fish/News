@@ -10,6 +10,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Stack;
 
 public class Application extends android.app.Application {
@@ -30,7 +31,9 @@ public class Application extends android.app.Application {
 
     public static void setGoogleSignInClient(GoogleSignInClient signInClient){googleSignInClient = signInClient;}
 
-    public static GoogleSignInClient getGoogleSignInClient(){return googleSignInClient;}
+    public static void signOutOfNews(){
+        googleSignInClient.signOut();
+    }
 
 
     public static NewsRepository getRepository(){

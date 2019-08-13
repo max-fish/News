@@ -44,7 +44,6 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
     private ImageButton foxButton;
     private ImageButton msnbcButton;
 
-    private Button signOutButton;
     private Button enButton;
     private Button ruButton;
     private Button frButton;
@@ -61,8 +60,6 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
 
     private boolean languageButtonsDisabled;
 
-
-    private LinearLayout filterSelection;
 
     public PreferenceDialogFragment() {
         // Required empty public constructor
@@ -85,7 +82,7 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
         super.onCreate(savedInstanceState);
         String originalFragmentTag = getArguments().getString(getString(R.string.fragment_name_key));
         originalFragment = (NewsListFragment) getFragmentManager().findFragmentByTag(originalFragmentTag);
-        filterSelection = Objects.requireNonNull(getActivity()).findViewById(R.id.filter_selection);
+        LinearLayout filterSelection = Objects.requireNonNull(getActivity()).findViewById(R.id.filter_selection);
 
 
     }
@@ -102,11 +99,11 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        signOutButton = view.findViewById(R.id.sign_out_button);
+        Button signOutButton = view.findViewById(R.id.sign_out_button);
         signOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Application.getGoogleSignInClient().signOut();
+                Application.signOutOfNews();
                 Objects.requireNonNull(getActivity()).finish();
             }
         });
