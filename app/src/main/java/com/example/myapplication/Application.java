@@ -5,6 +5,7 @@ import android.util.Log;
 import com.example.myapplication.data.NewsRepository;
 import com.example.myapplication.data.NewsRepositoryImpl;
 import com.example.myapplication.data.model.DataModel;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 
 import java.util.HashMap;
 import java.util.List;
@@ -12,6 +13,8 @@ import java.util.Locale;
 import java.util.Stack;
 
 public class Application extends android.app.Application {
+
+    private static GoogleSignInClient googleSignInClient;
 
     private static List<DataModel> listNews;
 
@@ -24,6 +27,10 @@ public class Application extends android.app.Application {
     private static HashMap<String, String> countriesToISO = new HashMap<>();
 
     private static NewsRepository newsRepository;
+
+    public static void setGoogleSignInClient(GoogleSignInClient signInClient){googleSignInClient = signInClient;}
+
+    public static GoogleSignInClient getGoogleSignInClient(){return googleSignInClient;}
 
 
     public static NewsRepository getRepository(){

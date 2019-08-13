@@ -44,6 +44,7 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
     private ImageButton foxButton;
     private ImageButton msnbcButton;
 
+    private Button signOutButton;
     private Button enButton;
     private Button ruButton;
     private Button frButton;
@@ -101,6 +102,15 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        signOutButton = view.findViewById(R.id.sign_out_button);
+        signOutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Application.getGoogleSignInClient().signOut();
+                Objects.requireNonNull(getActivity()).finish();
+            }
+        });
+
         cnnButton = view.findViewById(R.id.source_cnn);
         cnnButton.setOnClickListener(this);
         bbcButton = view.findViewById(R.id.source_bbc);
