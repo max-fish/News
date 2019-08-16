@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -24,8 +25,10 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.myapplication.ui.login.LoginActivity;
 import com.example.myapplication.ui.newListFragment.MyNewsItemRecyclerViewAdapter;
 import com.example.myapplication.ui.newListFragment.NewsListFragment;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
 
@@ -103,8 +106,10 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
         signOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Application.signOutOfNews();
+                FirebaseAuth.getInstance().signOut();
                 Objects.requireNonNull(getActivity()).finish();
+                Intent loginIntent = new Intent(getActivity(), LoginActivity.class);
+                startActivity(loginIntent);
             }
         });
 

@@ -31,20 +31,6 @@ public class Application extends android.app.Application {
 
     private static NewsRepository newsRepository;
 
-    public static void setFirebaseUser(FirebaseUser firebaseUser) {
-        Application.firebaseUser = firebaseUser;
-    }
-
-    public static FirebaseUser getFirebaseUser() {
-        return firebaseUser;
-    }
-
-    public static void setGoogleSignInClient(GoogleSignInClient signInClient){googleSignInClient = signInClient;}
-
-    public static void signOutOfNews(){
-        googleSignInClient.signOut();
-    }
-
 
     public static NewsRepository getRepository(){
         return newsRepository;

@@ -72,18 +72,6 @@ public class LoginActivity extends AppCompatActivity
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        Application.setGoogleSignInClient(mGoogleSignInClient);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
-    }
-
-    private void showLoginFailed() {
-        Toast.makeText(getApplicationContext(), "error", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -100,6 +88,7 @@ public class LoginActivity extends AppCompatActivity
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -116,21 +105,10 @@ public class LoginActivity extends AppCompatActivity
             if (account != null) {
                 firebaseAuthWithGoogle(account);
             }
-
-            // Signed in successfully, show authenticated UI.
-            updateUI(account);
         } catch (ApiException e) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
             Log.w("SplashActivity", "signInResult:failed code=" + e.getStatusCode());
-            updateUI((GoogleSignInAccount) null);
-        }
-    }
-
-    private void updateUI(GoogleSignInAccount account) {
-        if (account != null) {
-            Intent mainIntent = new Intent(this, MainActivity.class);
-            startActivity(mainIntent);
         }
     }
 
@@ -145,22 +123,14 @@ public class LoginActivity extends AppCompatActivity
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("LoginActivity", "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
+                            Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(mainIntent);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("LoginActivity", "signInWithCredential:failure", task.getException());
                             //Snackbar.make(findViewById(R.id.main_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
-                            updateUI((FirebaseUser) null);
                         }
                     }
                 });
     }
-
-    private void updateUI(FirebaseUser user) {
-        if(user != null){
-            Intent mainIntent = new Intent(this, MainActivity.class);
-            startActivity(mainIntent);
-            }
-        }
-    }
+}

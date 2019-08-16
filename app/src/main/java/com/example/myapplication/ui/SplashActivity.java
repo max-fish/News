@@ -24,6 +24,7 @@ import com.example.myapplication.data.model.DataModel;
 import com.example.myapplication.ui.login.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.List;
 
@@ -35,6 +36,8 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        FirebaseDatabase.getInstance().getReference("user").child("article").keepSynced(true);
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_splash);
@@ -48,14 +51,6 @@ public class SplashActivity extends AppCompatActivity {
             }
         }).start();
     }
-
-    private void delay() {
-            try {
-                Thread.sleep(1000);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
 
     private void start() {
         Log.d("SplashActivity", "started");

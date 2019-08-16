@@ -11,6 +11,8 @@ import com.example.myapplication.Request;
 import com.example.myapplication.data.callback.DataCallBack;
 import com.example.myapplication.data.model.DataModel;
 import com.example.myapplication.data.net.RequestGenerator;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,8 +27,6 @@ import java.util.List;
 import java.util.Set;
 
 public class NewsRepositoryImpl implements NewsRepository {
-
-    private Set<String> visitedArticles = new HashSet<>();
 
     @Override
     public void getAllNews(final DataCallBack<List<DataModel>> callBack, Constants.NewsType newsType, Request request) {
@@ -80,16 +80,16 @@ public class NewsRepositoryImpl implements NewsRepository {
 
     @Override
     public void saveArticle(String url) {
-        visitedArticles.add(url);
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("user").push();
-        myRef.child("article").setValue(url);
+        DatabaseReference myRef = database.getReference(FirebaseAuth.getInstance().getUid());
+        String key = myRef.push().getKey();
+        myRef.child(key).setValue(url);
     }
 
     @Override
     public void checkArticle(final QueryCallBack queryCallBack, String url) {
         DatabaseReference myRef = FirebaseDatabase.getInstance().getReference();
-        Query query = myRef.child("user").orderByChild("article").equalTo(url);
+        Query query = myRef.child(FirebaseAuth.getInstance().getUid()).orderByValue().equalTo(url);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
