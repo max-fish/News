@@ -12,6 +12,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,6 +25,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -67,12 +72,18 @@ public class MainActivity extends AppCompatActivity {
 
     private FragmentManager fragmentManager;
     private BottomNavigationView navView;
+    private ConstraintLayout welcomeTextContainer;
+    private TextView welcomeTextTitle;
+    private TextView welcomeTextName;
+    private ConstraintLayout mainLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+        //LocationFinder.getLocation(this);
 
         Toolbar preferenceToolbar = findViewById(R.id.preference_toolbar);
         setSupportActionBar(preferenceToolbar);
@@ -82,13 +93,82 @@ public class MainActivity extends AppCompatActivity {
         navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        LocationFinder.getLocation(this);
+        mainLayout = findViewById(R.id.main_layout);
 
+        welcomeTextContainer = findViewById(R.id.welcome_text_container);
+        welcomeTextTitle = findViewById(R.id.welcome_text_title);
+        welcomeTextName = findViewById(R.id.welcome_text_name);
+
+        welcomeTextName.setText(getIntent().getStringExtra("userName"));
+
+        final Animation fadeInAnimationTitle = new AlphaAnimation(0,1);
+        final Animation fadeInAnimationName = new AlphaAnimation(0,1);
+        final Animation fadeOutAnimation = AnimationUtils.loadAnimation(this, android.R.anim.fade_out);
+
+        fadeInAnimationTitle.setStartOffset(1000);
+        fadeInAnimationTitle.setDuration(1000);
+        fadeInAnimationName.setDuration(1000);
+        fadeOutAnimation.setDuration(1000);
+
+        fadeInAnimationTitle.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                welcomeTextName.setVisibility(View.VISIBLE);
+            welcomeTextName.startAnimation(fadeInAnimationName);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        fadeInAnimationName.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                welcomeTextContainer.startAnimation(fadeOutAnimation);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        fadeOutAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mainLayout.removeView(welcomeTextContainer);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        welcomeTextTitle.setAnimation(fadeInAnimationTitle);
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, NewsListFragment.newInstance(Constants.NewsType.RECCOMENDED), getString(R.string.top_headline_fragment_name));
         fragmentTransaction.addToBackStack(getString(R.string.top_headline_fragment_name));
         fragmentTransaction.commit();
+
+
     }
 
     @Override

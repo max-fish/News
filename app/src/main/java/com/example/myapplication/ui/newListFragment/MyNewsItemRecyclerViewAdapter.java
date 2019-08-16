@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.Application;
+import com.example.myapplication.QueryCallBack;
 import com.example.myapplication.R;
 import com.example.myapplication.data.model.DataModel;
 import com.example.myapplication.ui.DetailActivity;
@@ -63,11 +64,14 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
         holder.mDescriptionView.setText(mItem.getDescription());
         holder.source = mItem.getSource().getName();
         holder.mItem.setOnClickListener(makeViewHolderOnClickListener(holder, mItem));
-        if(Application.getRepository().checkArticle(mItem.getUrl())){
-            holder.mTitleView.setTextColor(Color.GRAY);
-            holder.mDescriptionView.setTextColor(Color.GRAY);
-            holder.itemView.setBackground(null);
-        }
+        Application.getRepository().checkArticle(new QueryCallBack() {
+            @Override
+            public void onFound() {
+                holder.mTitleView.setTextColor(Color.GRAY);
+                holder.mDescriptionView.setTextColor(Color.GRAY);
+                holder.itemView.setBackground(null);
+            }
+        }, mItem.getUrl());
     }
 
     private void putImage(String url, ImageView imageView) {

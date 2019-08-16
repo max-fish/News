@@ -2,12 +2,21 @@ package com.example.myapplication.data;
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.example.myapplication.Application;
 import com.example.myapplication.Constants;
+import com.example.myapplication.QueryCallBack;
 import com.example.myapplication.Request;
 import com.example.myapplication.data.callback.DataCallBack;
 import com.example.myapplication.data.model.DataModel;
 import com.example.myapplication.data.net.RequestGenerator;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -61,6 +70,7 @@ public class NewsRepositoryImpl implements NewsRepository {
                         .setCategory(request.getCategory())
                         .build();
                 requestGenerator.execute(callBack, newsType);
+                callBack.onCompleted();
             } else {
                 Log.d("NewsRepository", "same old");
                 Application.addRecommendedRequest(request);
@@ -71,10 +81,27 @@ public class NewsRepositoryImpl implements NewsRepository {
     @Override
     public void saveArticle(String url) {
         visitedArticles.add(url);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("user").push();
+        myRef.child("article").setValue(url);
     }
 
     @Override
-    public boolean checkArticle(String url) {
-        return visitedArticles.contains(url);
+    public void checkArticle(final QueryCallBack queryCallBack, String url) {
+        DatabaseReference myRef = FirebaseDatabase.getInstance().getReference();
+        Query query = myRef.child("user").orderByChild("article").equalTo(url);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    queryCallBack.onFound();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 }

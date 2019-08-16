@@ -1,5 +1,5 @@
 package com.example.myapplication;
 
-public interface PreferenceCallBack {
+public interface QueryCallBack {
     void onFound();
 }

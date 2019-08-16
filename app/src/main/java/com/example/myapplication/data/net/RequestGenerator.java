@@ -49,14 +49,14 @@ public class RequestGenerator {
                 public void onResponse(Call<DataModelCall> call, Response<DataModelCall> response) {
                     if (response.body() != null) {
                         List<DataModel> results = response.body().getArticles();
-                        callBack.onEmit(results);
+                            callBack.onEmit(results);
                             Application.setRecommendedNews(results);
                     }
                 }
 
                 @Override
                 public void onFailure(Call<DataModelCall> call, Throwable t) {
-                    callBack.onError(t);
+                        callBack.onError(t);
                 }
             });
         }

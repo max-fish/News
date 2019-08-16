@@ -5,6 +5,9 @@ public class Constants {
         ALL, RECCOMENDED;
     }
 
+    public static final Request DEFAULT_REQUEST =
+            new Request("", "cnn", "en", "publishedAt", "");
+
     static final String CNN_SOURCE = "cnn";
     static final String BBC_SOURCE = "bbc-news";
     static final String FOX_SOURCE = "fox-news";
