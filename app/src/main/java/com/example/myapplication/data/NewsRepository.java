@@ -21,7 +21,7 @@ public interface NewsRepository {
 
     void changeSortBy(String sortBy);
 
-    void changeCateogry(String category);
+    void changeCategory(String category);
 
     void submitRequest(String query, String source, String language, String sortBy, String category);
 

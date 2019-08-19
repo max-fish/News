@@ -95,12 +95,13 @@ public class NewsRepositoryImpl implements NewsRepository {
     }
 
     @Override
-    public void changeCateogry(String category) {
+    public void changeCategory(String category) {
 
     }
 
     @Override
     public void submitRequest(String query, String source, String language, String sortBy, String category) {
+        Request request = new Request(query, source, language, sortBy, category);
 
     }
 

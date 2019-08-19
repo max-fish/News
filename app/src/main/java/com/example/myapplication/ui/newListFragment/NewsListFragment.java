@@ -109,7 +109,6 @@ public class NewsListFragment extends Fragment {
                 @Override
                 public void onEmit(List<DataModel> data) {
                     recyclerView.setAdapter(new MyNewsItemRecyclerViewAdapter(data, Objects.requireNonNull(getActivity()), recyclerView));
-
                 }
 
                 @Override
