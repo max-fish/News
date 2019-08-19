@@ -2,9 +2,9 @@ package com.example.myapplication.data;
 
 
 import com.example.myapplication.Constants;
-import com.example.myapplication.QueryCallBack;
+import com.example.myapplication.data.callbacks.QueryCallBack;
 import com.example.myapplication.Request;
-import com.example.myapplication.data.callback.DataCallBack;
+import com.example.myapplication.data.callbacks.DataCallBack;
 import com.example.myapplication.data.model.DataModel;
 
 import java.util.List;

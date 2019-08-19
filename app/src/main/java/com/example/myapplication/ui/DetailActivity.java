@@ -5,7 +5,10 @@ import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.method.LinkMovementMethod;
+import android.transition.Slide;
+import android.transition.Transition;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -29,6 +32,9 @@ public class DetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        Slide slide = new Slide();
+        slide.setSlideEdge(Gravity.END);
+        getWindow().setEnterTransition(slide);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 

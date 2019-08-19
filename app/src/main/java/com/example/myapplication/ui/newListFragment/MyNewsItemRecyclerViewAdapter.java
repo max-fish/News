@@ -1,6 +1,7 @@
 package com.example.myapplication.ui.newListFragment;
 
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -18,7 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.Application;
-import com.example.myapplication.QueryCallBack;
+import com.example.myapplication.data.callbacks.QueryCallBack;
 import com.example.myapplication.R;
 import com.example.myapplication.data.model.DataModel;
 import com.example.myapplication.ui.DetailActivity;
@@ -94,7 +95,7 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
             Bundle bundle = new Bundle();
             fillBundle(bundle, item);
             detailsIntent.putExtra("info", bundle);
-            activity.startActivity(detailsIntent);
+            activity.startActivity(detailsIntent, ActivityOptions.makeSceneTransitionAnimation(activity).toBundle());
             viewHolder.mTitleView.setTextColor(Color.GRAY);
             viewHolder.mDescriptionView.setTextColor(Color.GRAY);
             viewHolder.itemView.setBackground(null);

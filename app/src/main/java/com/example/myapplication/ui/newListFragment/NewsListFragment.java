@@ -14,9 +14,7 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
-import android.widget.Filter;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -31,10 +29,8 @@ import com.example.myapplication.Application;
 import com.example.myapplication.Constants;
 import com.example.myapplication.R;
 import com.example.myapplication.Request;
-import com.example.myapplication.data.callback.DataCallBack;
+import com.example.myapplication.data.callbacks.DataCallBack;
 import com.example.myapplication.data.model.DataModel;
-
-import org.w3c.dom.Text;
 
 import java.util.List;
 import java.util.Objects;

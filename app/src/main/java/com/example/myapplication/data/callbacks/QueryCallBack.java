@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.data.callbacks;
 
 public interface QueryCallBack {
     void onFound();

@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.example.myapplication.Application;
 import com.example.myapplication.Constants;
-import com.example.myapplication.data.callback.DataCallBack;
+import com.example.myapplication.data.callbacks.DataCallBack;
 import com.example.myapplication.data.model.DataModel;
 import com.example.myapplication.data.model.DataModelCall;
 

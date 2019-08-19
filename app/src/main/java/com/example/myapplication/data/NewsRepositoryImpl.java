@@ -6,13 +6,12 @@ import androidx.annotation.NonNull;
 
 import com.example.myapplication.Application;
 import com.example.myapplication.Constants;
-import com.example.myapplication.QueryCallBack;
+import com.example.myapplication.data.callbacks.QueryCallBack;
 import com.example.myapplication.Request;
-import com.example.myapplication.data.callback.DataCallBack;
+import com.example.myapplication.data.callbacks.DataCallBack;
 import com.example.myapplication.data.model.DataModel;
 import com.example.myapplication.data.net.RequestGenerator;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,9 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class NewsRepositoryImpl implements NewsRepository {
 

@@ -1,16 +1,10 @@
 package com.example.myapplication.ui;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.transition.Transition;
 
-import android.app.Activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.transition.Fade;
 import android.util.Log;
 import android.view.Window;
@@ -19,7 +13,7 @@ import android.widget.ProgressBar;
 import com.example.myapplication.Application;
 import com.example.myapplication.Constants;
 import com.example.myapplication.R;
-import com.example.myapplication.data.callback.DataCallBack;
+import com.example.myapplication.data.callbacks.DataCallBack;
 import com.example.myapplication.data.model.DataModel;
 import com.example.myapplication.ui.login.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;

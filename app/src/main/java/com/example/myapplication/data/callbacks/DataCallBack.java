@@ -1,4 +1,4 @@
-package com.example.myapplication.data.callback;
+package com.example.myapplication.data.callbacks;
 
 public interface DataCallBack<T> {
     void onEmit(T data);

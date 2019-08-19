@@ -94,12 +94,14 @@ public class LoginActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == Activity.RESULT_OK && requestCode == RC_SIGN_IN) {
+            Log.d("LoginActivity","signed in");
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
         }
     }
 
     private void handleSignInResult(Task<GoogleSignInAccount> completedTask) {
+        Log.d("LoginActivity", "auth with google");
         try {
             GoogleSignInAccount account = completedTask.getResult(ApiException.class);
             if (account != null) {
@@ -112,7 +114,7 @@ public class LoginActivity extends AppCompatActivity
         }
     }
 
-    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+    private void firebaseAuthWithGoogle(final GoogleSignInAccount acct) {
         Log.d("LoginActivity", "firebaseAuthWithGoogle:" + acct.getId());
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
@@ -124,6 +126,7 @@ public class LoginActivity extends AppCompatActivity
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("LoginActivity", "signInWithCredential:success");
                             Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
+                            mainIntent.putExtra("userName", acct.getDisplayName());
                             startActivity(mainIntent);
                         } else {
                             // If sign in fails, display a message to the user.
