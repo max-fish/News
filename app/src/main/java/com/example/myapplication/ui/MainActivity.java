@@ -1,23 +1,16 @@
 package com.example.myapplication.ui;
 
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.view.animation.DecelerateInterpolator;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -26,17 +19,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.myapplication.Application;
 import com.example.myapplication.Constants;
-import com.example.myapplication.PreferenceDialogFragment;
 import com.example.myapplication.R;
 import com.example.myapplication.LocationFinder;
-import com.example.myapplication.TopHeadlinesPreferenceDialogFragment;
 import com.example.myapplication.ui.newListFragment.NewsListFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -49,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
             switch (item.getItemId()) {
                 case R.id.news_recommended:
-                    runFragment(getString(R.string.top_headline_fragment_name), NewsListFragment.newInstance(Constants.NewsType.RECCOMENDED));
+                    runFragment(getString(R.string.top_headline_fragment_name), NewsListFragment.newInstance(Constants.NewsType.RECOMMENDED));
                     return true;
                 case R.id.news_all:
                     runFragment(getString(R.string.all_fragment_name), NewsListFragment.newInstance(Constants.NewsType.ALL));
@@ -164,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
         welcomeTextTitle.setAnimation(fadeInAnimationTitle);
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, NewsListFragment.newInstance(Constants.NewsType.RECCOMENDED), getString(R.string.top_headline_fragment_name));
+        fragmentTransaction.replace(R.id.fragment_container, NewsListFragment.newInstance(Constants.NewsType.RECOMMENDED), getString(R.string.top_headline_fragment_name));
         fragmentTransaction.addToBackStack(getString(R.string.top_headline_fragment_name));
         fragmentTransaction.commit();
 
@@ -208,7 +197,7 @@ public class MainActivity extends AppCompatActivity {
         return fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount() - 1);
     }
 
-    @Override
+    /*@Override
     public void onBackPressed() {
         if (findFirstFragmentOfStack(fragmentManager).getName().equals(getString(R.string.top_headline_fragment_name))) {
             Log.d("MainActivity", "home");
@@ -219,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
             clearStack(fragmentManager);
             navView.setSelectedItemId(R.id.news_recommended);
         }
-    }
+    }*/
 
     public boolean openSettings(MenuItem item) {
         FragmentManager fm = getSupportFragmentManager();

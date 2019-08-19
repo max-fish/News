@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.transition.Fade;
 import android.util.Log;
 import android.view.Window;
-import android.widget.ProgressBar;
 
 import com.example.myapplication.Application;
 import com.example.myapplication.Constants;
@@ -35,8 +34,6 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_splash);
-        ProgressBar progressBar = findViewById(R.id.splash_progress_bar);
-        progressBar.setIndeterminate(true);
         Log.d("SplashActivity", "onCreate");
         new Thread(new Runnable() {
             @Override
@@ -66,6 +63,7 @@ public class SplashActivity extends AppCompatActivity {
                 getWindow().setExitTransition(fadeOut);
                 final Intent mainIntent = new Intent(this, MainActivity.class);
                 mainIntent.putExtra("userName", user.getDisplayName());
+                mainIntent.putExtra("isFromLogin", false);
                 Application.getRepository().getRecommendedNews(new DataCallBack<List<DataModel>>() {
                     @Override
                     public void onEmit(List<DataModel> data) {
@@ -86,7 +84,7 @@ public class SplashActivity extends AppCompatActivity {
                     public void onError(Throwable throwable) {
 
                     }
-                }, Constants.NewsType.RECCOMENDED, Constants.DEFAULT_REQUEST);
+                }, Constants.NewsType.RECOMMENDED, Constants.DEFAULT_REQUEST);
             }
         }
     }

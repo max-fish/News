@@ -1,17 +1,17 @@
-package com.example.myapplication;
+package com.example.myapplication.data;
 
 
 public class Request {
 
     private String query;
-    private String perspective;
+    private String source;
     private String language;
     private String sortBy;
     private String category;
 
-    public Request(String query, String perspective, String language, String sortBy, String category){
+    public Request(String query, String source, String language, String sortBy, String category){
         this.query = query;
-        this.perspective = perspective;
+        this.source = source;
         this.language = language;
         this.sortBy = sortBy;
         this.category = category;
@@ -31,13 +31,13 @@ public class Request {
         return query;
     }
 
-    public String getPerspective() {
-        return perspective;
+    public String getSource() {
+        return source;
     }
 
 
     public boolean equals(Request request){
-        return query.equals(request.getQuery()) && perspective.equals(request.getPerspective()) &&
+        return query.equals(request.getQuery()) && source.equals(request.getSource()) &&
                 language.equals(request.getLanguage()) && sortBy.equals(request.getSortBy())
                 && category.equals(request.getCategory());
     }

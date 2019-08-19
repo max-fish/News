@@ -1,8 +1,6 @@
-package com.example.myapplication;
+package com.example.myapplication.ui;
 
 import android.content.Intent;
-import android.graphics.Typeface;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -12,23 +10,32 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 
-import android.text.TextUtils;
-import android.text.method.MovementMethod;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.myapplication.Constants;
+import com.example.myapplication.R;
 import com.example.myapplication.ui.login.LoginActivity;
+import com.example.myapplication.ui.newListFragment.CircleTransform;
 import com.example.myapplication.ui.newListFragment.MyNewsItemRecyclerViewAdapter;
 import com.example.myapplication.ui.newListFragment.NewsListFragment;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
 
@@ -102,14 +109,32 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        setProfileInfo(view);
         Button signOutButton = view.findViewById(R.id.sign_out_button);
         signOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 FirebaseAuth.getInstance().signOut();
-                Objects.requireNonNull(getActivity()).finish();
-                Intent loginIntent = new Intent(getActivity(), LoginActivity.class);
-                startActivity(loginIntent);
+                GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                        .requestIdToken(getString(R.string.default_web_client_id))
+                        .requestEmail()
+                        .build();
+                GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(view.getContext(), gso);
+                mGoogleSignInClient.signOut()
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (Objects.requireNonNull(getActivity()).getIntent().getBooleanExtra("isFromLogin", false)) {
+                                    getActivity().finish();
+                                    Toast.makeText(view.getContext(), "signed out", Toast.LENGTH_SHORT).show();
+                                }
+                                else{
+                                    Intent loginIntent = new Intent(getActivity(), LoginActivity.class);
+                                    startActivity(loginIntent);
+                                    getActivity().finish();
+                                }
+                            }
+                        });
             }
         });
 
@@ -138,7 +163,7 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
         popularityButton = view.findViewById(R.id.sortBy_popularity);
         popularityButton.setOnClickListener(this);
 
-        originalSource = originalFragment.getCurrentRequest().getPerspective();
+        originalSource = originalFragment.getCurrentRequest().getSource();
         originalLanguage = originalFragment.getCurrentRequest().getLanguage();
         originalSortBy = originalFragment.getCurrentRequest().getSortBy();
 
@@ -148,6 +173,23 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
             disableLanguageButtons();
         }
         super.onViewCreated(view, savedInstanceState);
+    }
+
+    private void setProfileInfo(@NonNull View view) {
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (currentUser != null && getActivity() != null) {
+            ImageView profilePicture = view.findViewById(R.id.profile_picture);
+            int radius = (int) getActivity().getResources().getDimension(R.dimen.radius_image);
+            TextView profileName = view.findViewById(R.id.profile_name);
+            TextView profileEmail = view.findViewById(R.id.profile_email);
+            Picasso
+                    .get()
+                    .load(currentUser.getPhotoUrl())
+                    .transform(new CircleTransform(radius,0))
+                    .into(profilePicture);
+            profileName.setText(currentUser.getDisplayName());
+            profileEmail.setText(currentUser.getEmail());
+        }
     }
 
     @Override
@@ -240,7 +282,7 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
         if (adapter != null)
             ((MyNewsItemRecyclerViewAdapter) adapter).deleteAllItems();
         if (originalFragment != null)
-            originalFragment.changePerspective(source);
+            originalFragment.changeSource(source);
         if (languageButtonsDisabled)
             enableLanguageButtons();
     }

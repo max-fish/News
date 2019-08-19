@@ -1,4 +1,4 @@
-package com.example.myapplication;
+package com.example.myapplication.ui;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.Constants;
+import com.example.myapplication.R;
 import com.example.myapplication.ui.newListFragment.MyNewsItemRecyclerViewAdapter;
 
 public class TopHeadlinesPreferenceDialogFragment extends PreferenceDialogFragment

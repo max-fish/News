@@ -39,7 +39,7 @@ public class RequestGenerator {
     public void execute(final DataCallBack<List<DataModel>> callBack, final Constants.NewsType newsType) {
         Log.i("NewsListFragment", "Retro.getService().listRepos");
 
-        if (newsType == Constants.NewsType.RECCOMENDED) {
+        if (newsType == Constants.NewsType.RECOMMENDED) {
 
             Call<DataModelCall> reposRecommended = Retro.getServiceRecommended().listRepos(query, fromDate,
                     sortBy, source, language, category, country, API_KEY);

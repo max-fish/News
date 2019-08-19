@@ -4,16 +4,9 @@
     android:layout_height="wrap_content"
     android:padding="16dp">
 
-    <TableRow
-        android:gravity="right"
-        >
-        <Button
-            android:text="Sign Out"
-            android:id="@+id/sign_out_button"
-            android:textColor="@color/white"
-            android:background="@drawable/splash_background"
-            android:fontFamily="@font/ubuntu_b"
-            />
+    <TableRow>
+
+        <include layout="@layout/user_profile" />
     </TableRow>
 
     <TableRow>

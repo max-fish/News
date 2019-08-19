@@ -5,7 +5,7 @@
     <string name="title_all">Everything</string>
     <string name="title_info">About us</string>
     <string name="country_prompt">Choose a country</string>
-    <string name="perspective_prompt">Choose a perspective</string>
+    <string name="source_prompt">Choose a source</string>
     <string name="source_preference_button">Source button</string>
     <string name="language_preference_button">Language button</string>
     <string name="sorting_preference_button">Sorting button</string>
@@ -29,4 +29,9 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="welcomeTextTitle">Welcome,</string>
+    <string name="sign_in_message">Please, sign in</string>
+    <string name="profile_name">Profile Name</string>
+    <string name="profile_email">Profile Email</string>
+    <string name="profile_pic_content_description">The profile picture of the signed-in user</string>
+    <string name="sign_out_button_text">Sign Out</string>
 </resources>

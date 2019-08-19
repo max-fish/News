@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.myapplication.data.NewsRepository;
 import com.example.myapplication.data.NewsRepositoryImpl;
+import com.example.myapplication.data.Request;
 import com.example.myapplication.data.model.DataModel;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.firebase.auth.FirebaseUser;
@@ -14,10 +15,6 @@ import java.util.Locale;
 import java.util.Stack;
 
 public class Application extends android.app.Application {
-
-    private static FirebaseUser firebaseUser;
-
-    private static GoogleSignInClient googleSignInClient;
 
     private static List<DataModel> listNews;
 

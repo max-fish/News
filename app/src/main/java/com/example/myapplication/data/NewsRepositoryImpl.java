@@ -7,7 +7,6 @@ import androidx.annotation.NonNull;
 import com.example.myapplication.Application;
 import com.example.myapplication.Constants;
 import com.example.myapplication.data.callbacks.QueryCallBack;
-import com.example.myapplication.Request;
 import com.example.myapplication.data.callbacks.DataCallBack;
 import com.example.myapplication.data.model.DataModel;
 import com.example.myapplication.data.net.RequestGenerator;
@@ -37,7 +36,7 @@ public class NewsRepositoryImpl implements NewsRepository {
                         .setQuery(request.getQuery())
                         .setFromDate(modifiedDate)
                         .setSortBy(request.getSortBy())
-                        .setSource(request.getPerspective())
+                        .setSource(request.getSource())
                         .setLanguage(request.getLanguage())
                         .build();
                 requestGenerator.execute(callBack, newsType);
@@ -56,13 +55,13 @@ public class NewsRepositoryImpl implements NewsRepository {
                 Date date = new Date();
                 String modifiedDate = new SimpleDateFormat("yyyy-MM-dd").format(date);
                 Application.addRecommendedRequest(request);
-                Log.d("NewsRepository", request.getPerspective());
+                Log.d("NewsRepository", request.getSource());
                 Log.d("NewsRepository", "getting new");
                 RequestGenerator requestGenerator = new RequestGenerator.Builder()
                         .setQuery(request.getQuery())
                         .setFromDate(modifiedDate)
                         .setSortBy(request.getSortBy())
-                        .setSource(request.getPerspective())
+                        .setSource(request.getSource())
                         .setLanguage(request.getLanguage())
                         .setCategory(request.getCategory())
                         .build();
@@ -73,6 +72,41 @@ public class NewsRepositoryImpl implements NewsRepository {
                 Application.addRecommendedRequest(request);
                 callBack.onEmit(dataModels);
             }
+    }
+
+    @Override
+    public void changeQuery(String query) {
+
+    }
+
+    @Override
+    public void changeSource(String source) {
+
+    }
+
+    @Override
+    public void changeLanguage(String language) {
+
+    }
+
+    @Override
+    public void changeSortBy(String sortBy) {
+
+    }
+
+    @Override
+    public void changeCateogry(String category) {
+
+    }
+
+    @Override
+    public void submitRequest(String query, String source, String language, String sortBy, String category) {
+
+    }
+
+    @Override
+    public void submitRequest(Request request) {
+
     }
 
     @Override

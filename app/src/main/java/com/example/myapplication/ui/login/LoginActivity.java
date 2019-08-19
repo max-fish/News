@@ -52,6 +52,8 @@ public class LoginActivity extends AppCompatActivity
 
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
+    ProgressBar progressBar;
+
     private static final int RC_SIGN_IN = 813;
     GoogleSignInClient mGoogleSignInClient;
 
@@ -64,9 +66,7 @@ public class LoginActivity extends AppCompatActivity
         signInButton.setSize(SignInButton.SIZE_STANDARD);
         findViewById(R.id.sign_in_button).setOnClickListener(this);
 
-        Button button = findViewById(R.id.google_button);
-        button.setOnClickListener(this);
-
+        progressBar = findViewById(R.id.login_progress_bar);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -79,6 +79,7 @@ public class LoginActivity extends AppCompatActivity
     public void onClick(View view) {
         Log.d("LoginActivity", "clicked");
         if (view.getId() == R.id.sign_in_button) {
+            progressBar.setVisibility(View.VISIBLE);
             signIn();
         }
     }
@@ -127,12 +128,14 @@ public class LoginActivity extends AppCompatActivity
                             Log.d("LoginActivity", "signInWithCredential:success");
                             Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
                             mainIntent.putExtra("userName", acct.getDisplayName());
+                            mainIntent.putExtra("isFromLogin", true);
                             startActivity(mainIntent);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("LoginActivity", "signInWithCredential:failure", task.getException());
                             //Snackbar.make(findViewById(R.id.main_layout), "Authentication Failed.", Snackbar.LENGTH_SHORT).show();
                         }
+                        progressBar.setVisibility(View.INVISIBLE);
                     }
                 });
     }

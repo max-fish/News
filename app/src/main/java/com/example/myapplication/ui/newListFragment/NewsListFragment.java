@@ -28,7 +28,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.example.myapplication.Application;
 import com.example.myapplication.Constants;
 import com.example.myapplication.R;
-import com.example.myapplication.Request;
+import com.example.myapplication.data.Request;
 import com.example.myapplication.data.callbacks.DataCallBack;
 import com.example.myapplication.data.model.DataModel;
 
@@ -79,7 +79,7 @@ public class NewsListFragment extends Fragment {
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                submitRequest(currentRequest.getQuery(), currentRequest.getPerspective(),
+                submitRequest(currentRequest.getQuery(), currentRequest.getSource(),
                         currentRequest.getLanguage(), currentRequest.getSortBy(),
                         currentRequest.getCategory());
                 pullToRefresh.setRefreshing(false);
@@ -96,7 +96,7 @@ public class NewsListFragment extends Fragment {
         recyclerView.setLayoutAnimation(new LayoutAnimationController(anim));
 
 
-            submitRequest("", "cnn", "en", "publishedAt", "");
+        submitRequest(Constants.DEFAULT_REQUEST);
 
         addFilterPreferences();
 
@@ -123,7 +123,7 @@ public class NewsListFragment extends Fragment {
                         Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
                 }
             }, newsType, request);
-        } else if (newsType == Constants.NewsType.RECCOMENDED) {
+        } else if (newsType == Constants.NewsType.RECOMMENDED) {
             Application.getRepository().getRecommendedNews(new DataCallBack<List<DataModel>>() {
                 @Override
                 public void onEmit(List<DataModel> data) {
@@ -149,27 +149,27 @@ public class NewsListFragment extends Fragment {
     public void changeQuery(String query) {
         //removeFilterPreferences(Constants.FILTER_PREFERENCE_QUERY_ID);
         addFilterPreference(query, Constants.FILTER_PREFERENCE_QUERY_ID);
-        submitRequest(query, currentRequest.getPerspective(), currentRequest.getLanguage(),
+        submitRequest(query, currentRequest.getSource(), currentRequest.getLanguage(),
                 currentRequest.getSortBy(), currentRequest.getCategory());
     }
 
-    public void changePerspective(String perspective) {
+    public void changeSource(String source) {
         Log.d("NewsListFragment", "changing perspecitve");
         removeFilterPreferences(Constants.FILTER_PREFERENCE_CATEGORY_ID);
-        addFilterPreference(perspective, Constants.FILTER_PREFERENCE_SOURCE_ID);
-        submitRequest(currentRequest.getQuery(), perspective, currentRequest.getLanguage(),
+        addFilterPreference(source, Constants.FILTER_PREFERENCE_SOURCE_ID);
+        submitRequest(currentRequest.getQuery(), source, currentRequest.getLanguage(),
                 currentRequest.getSortBy(), "");
     }
 
     public void changeLanguage(String language){
         addFilterPreference(language, Constants.FILTER_PREFERENCE_LANGUAGE_ID);
-        submitRequest(currentRequest.getQuery(), currentRequest.getPerspective(), language,
+        submitRequest(currentRequest.getQuery(), currentRequest.getSource(), language,
                 currentRequest.getSortBy(), currentRequest.getCategory());
     }
 
     public void changeSortBy(String sortBy){
         addFilterPreference(sortBy, Constants.FILTER_PREFERENCE_SORT_BY_ID);
-        submitRequest(currentRequest.getQuery(), currentRequest.getPerspective(),
+        submitRequest(currentRequest.getQuery(), currentRequest.getSource(),
                 currentRequest.getLanguage(), sortBy, currentRequest.getCategory());
     }
 
@@ -188,9 +188,14 @@ public class NewsListFragment extends Fragment {
         currentRequest = request;
     }
 
+    private void submitRequest(Request request){
+        updateNews(request, recyclerView, newsType);
+        currentRequest = request;
+    }
+
     private void addFilterPreferences() {
         addFilterPreference(currentRequest.getQuery(), Constants.FILTER_PREFERENCE_QUERY_ID);
-        addFilterPreference(currentRequest.getPerspective(), Constants.FILTER_PREFERENCE_SOURCE_ID);
+        addFilterPreference(currentRequest.getSource(), Constants.FILTER_PREFERENCE_SOURCE_ID);
         addFilterPreference(currentRequest.getLanguage(), Constants.FILTER_PREFERENCE_LANGUAGE_ID);
         addFilterPreference(currentRequest.getSortBy(), Constants.FILTER_PREFERENCE_SORT_BY_ID);
         addFilterPreference(currentRequest.getCategory(), Constants.FILTER_PREFERENCE_CATEGORY_ID);
@@ -240,7 +245,7 @@ public class NewsListFragment extends Fragment {
                             changeQuery("");
                             break;
                         case Constants.FILTER_PREFERENCE_SOURCE_ID:
-                            changePerspective("");
+                            changeSource("");
                             break;
                         case Constants.FILTER_PREFERENCE_LANGUAGE_ID:
                             changeLanguage("");
