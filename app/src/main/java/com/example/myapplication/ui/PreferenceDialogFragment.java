@@ -18,10 +18,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.myapplication.Application;
 import com.example.myapplication.Constants;
 import com.example.myapplication.R;
 import com.example.myapplication.ui.login.LoginActivity;
@@ -49,6 +49,10 @@ import java.util.Objects;
  */
 public class PreferenceDialogFragment extends DialogFragment implements View.OnClickListener {
     private NewsListFragment originalFragment;
+    private PreferencesView preferencesView;
+
+    Constants.NewsType newsType;
+
     private ImageButton cnnButton;
     private ImageButton bbcButton;
     private ImageButton foxButton;
@@ -75,30 +79,22 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @return A new instance of fragment PreferenceDialogFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static PreferenceDialogFragment newInstance() {
-        PreferenceDialogFragment fragment = new PreferenceDialogFragment();
-        return fragment;
+    static PreferenceDialogFragment newInstance() {
+        return new PreferenceDialogFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String originalFragmentTag = getArguments().getString(getString(R.string.fragment_name_key));
-        originalFragment = (NewsListFragment) getFragmentManager().findFragmentByTag(originalFragmentTag);
-        LinearLayout filterSelection = Objects.requireNonNull(getActivity()).findViewById(R.id.filter_selection);
-
+        String originalFragmentTag = Objects.requireNonNull(getArguments()).getString(getString(R.string.fragment_name_key));
+        originalFragment = (NewsListFragment) Objects.requireNonNull(getFragmentManager()).findFragmentByTag(originalFragmentTag);
+        newsType = (Constants.NewsType) Objects.requireNonNull(Objects.requireNonNull(originalFragment).getArguments()).get("newsType");
+        preferencesView = Objects.requireNonNull(getActivity()).findViewById(R.id.filter_selection);
 
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         return provideYourFragmentView(inflater, container, savedInstanceState);
     }
@@ -163,9 +159,9 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
         popularityButton = view.findViewById(R.id.sortBy_popularity);
         popularityButton.setOnClickListener(this);
 
-        originalSource = originalFragment.getCurrentRequest().getSource();
-        originalLanguage = originalFragment.getCurrentRequest().getLanguage();
-        originalSortBy = originalFragment.getCurrentRequest().getSortBy();
+        originalSource = Application.getRepository().getCurrentRequest().getSource();
+        originalLanguage = Application.getRepository().getCurrentRequest().getLanguage();
+        originalSortBy = Application.getRepository().getCurrentRequest().getSortBy();
 
         initTypeBtn(originalSource, originalLanguage, originalSortBy);
 
@@ -281,8 +277,9 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
         RecyclerView.Adapter adapter = originalFragment.getRecyclerView().getAdapter();
         if (adapter != null)
             ((MyNewsItemRecyclerViewAdapter) adapter).deleteAllItems();
-        if (originalFragment != null)
-            originalFragment.changeSource(source);
+            Application.getRepository().changeSource(originalFragment, newsType, source);
+            preferencesView.addFilterPreference
+                    (originalFragment, newsType, source, Constants.FILTER_PREFERENCE_SOURCE_ID);
         if (languageButtonsDisabled)
             enableLanguageButtons();
     }
@@ -291,18 +288,18 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
         RecyclerView.Adapter adapter = originalFragment.getRecyclerView().getAdapter();
         if (adapter != null)
             ((MyNewsItemRecyclerViewAdapter) adapter).deleteAllItems();
-        if (originalFragment != null) {
-            originalFragment.changeLanguage(language);
-        }
+            Application.getRepository().changeLanguage(originalFragment, newsType, language);
+            preferencesView.addFilterPreference
+                    (originalFragment, newsType, language, Constants.FILTER_PREFERENCE_LANGUAGE_ID);
     }
 
     private void setSortByToListFragment(String sortBy) {
         RecyclerView.Adapter adapter = originalFragment.getRecyclerView().getAdapter();
         if (adapter != null)
             ((MyNewsItemRecyclerViewAdapter) adapter).deleteAllItems();
-        if (originalFragment != null) {
-            originalFragment.changeSortBy(sortBy);
-        }
+            Application.getRepository().changeSortBy(originalFragment, newsType, sortBy);
+            preferencesView.addFilterPreference
+                    (originalFragment, newsType, sortBy, Constants.FILTER_PREFERENCE_SORT_BY_ID);
     }
 
     NewsListFragment getOriginalFragment() {
@@ -325,9 +322,7 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
     }
 
     private void enableLanguageButtons() {
-        if (originalFragment != null) {
-            originalFragment.changeLanguage(Constants.EN_LANGUAGE);
-        }
+            Application.getRepository().changeLanguage(originalFragment, newsType, Constants.EN_LANGUAGE);
 
         enButton.setSelected(true);
 

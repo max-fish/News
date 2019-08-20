@@ -31,17 +31,18 @@ import com.example.myapplication.R;
 import com.example.myapplication.data.Request;
 import com.example.myapplication.data.callbacks.DataCallBack;
 import com.example.myapplication.data.model.DataModel;
+import com.example.myapplication.ui.PreferencesView;
 
 import java.util.List;
 import java.util.Objects;
 
 
-public class NewsListFragment extends Fragment {
+public class NewsListFragment extends Fragment implements DataCallBack<List<DataModel>>,
+        View.OnClickListener {
 
-    private Request currentRequest;
     private Constants.NewsType newsType;
     private RecyclerView recyclerView;
-    private LinearLayout filterSelection;
+    private PreferencesView preferencesView;
 
     public NewsListFragment() {
     }
@@ -57,12 +58,9 @@ public class NewsListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         if (getArguments() != null) {
             newsType = (Constants.NewsType) getArguments().getSerializable("newsType");
         }
-
-        filterSelection = Objects.requireNonNull(getActivity()).findViewById(R.id.filter_selection);
 
         Log.i("NewsListFragment", "onCreate");
     }
@@ -74,14 +72,14 @@ public class NewsListFragment extends Fragment {
 
         final SwipeRefreshLayout pullToRefresh = view.findViewById(R.id.pull_to_refresh);
 
+        preferencesView = Objects.requireNonNull(getActivity()).findViewById(R.id.filter_selection);
+
         recyclerView = view.findViewById(R.id.list);
 
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                submitRequest(currentRequest.getQuery(), currentRequest.getSource(),
-                        currentRequest.getLanguage(), currentRequest.getSortBy(),
-                        currentRequest.getCategory());
+                Application.getRepository().refresh(NewsListFragment.this, newsType);
                 pullToRefresh.setRefreshing(false);
             }
         });
@@ -96,227 +94,48 @@ public class NewsListFragment extends Fragment {
         recyclerView.setLayoutAnimation(new LayoutAnimationController(anim));
 
 
-        submitRequest(Constants.DEFAULT_REQUEST);
+        Application.getRepository().submitDefaultRequest(this, newsType);
 
         addFilterPreferences();
 
         return view;
     }
 
-    private void updateNews(Request request, final RecyclerView recyclerView, Constants.NewsType newsType) {
-        if (newsType == Constants.NewsType.ALL) {
-            Application.getRepository().getAllNews(new DataCallBack<List<DataModel>>() {
-                @Override
-                public void onEmit(List<DataModel> data) {
-                    recyclerView.setAdapter(new MyNewsItemRecyclerViewAdapter(data, Objects.requireNonNull(getActivity()), recyclerView));
-                }
-
-                @Override
-                public void onCompleted() {
-
-                }
-
-                @Override
-                public void onError(Throwable throwable) {
-                    if (getActivity() != null)
-                        Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
-                }
-            }, newsType, request);
-        } else if (newsType == Constants.NewsType.RECOMMENDED) {
-            Application.getRepository().getRecommendedNews(new DataCallBack<List<DataModel>>() {
-                @Override
-                public void onEmit(List<DataModel> data) {
-                    recyclerView.setAdapter(new MyNewsItemRecyclerViewAdapter(data, Objects.requireNonNull(getActivity()), recyclerView));
-                }
-
-                @Override
-                public void onCompleted() {
-
-                }
-
-                @Override
-                public void onError(Throwable throwable) {
-                    if (getActivity() != null)
-                        Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
-                }
-            }, newsType, request);
-        }
-
-    }
-
-
-    public void changeQuery(String query) {
-        //removeFilterPreferences(Constants.FILTER_PREFERENCE_QUERY_ID);
-        addFilterPreference(query, Constants.FILTER_PREFERENCE_QUERY_ID);
-        submitRequest(query, currentRequest.getSource(), currentRequest.getLanguage(),
-                currentRequest.getSortBy(), currentRequest.getCategory());
-    }
-
-    public void changeSource(String source) {
-        Log.d("NewsListFragment", "changing perspecitve");
-        removeFilterPreferences(Constants.FILTER_PREFERENCE_CATEGORY_ID);
-        addFilterPreference(source, Constants.FILTER_PREFERENCE_SOURCE_ID);
-        submitRequest(currentRequest.getQuery(), source, currentRequest.getLanguage(),
-                currentRequest.getSortBy(), "");
-    }
-
-    public void changeLanguage(String language){
-        addFilterPreference(language, Constants.FILTER_PREFERENCE_LANGUAGE_ID);
-        submitRequest(currentRequest.getQuery(), currentRequest.getSource(), language,
-                currentRequest.getSortBy(), currentRequest.getCategory());
-    }
-
-    public void changeSortBy(String sortBy){
-        addFilterPreference(sortBy, Constants.FILTER_PREFERENCE_SORT_BY_ID);
-        submitRequest(currentRequest.getQuery(), currentRequest.getSource(),
-                currentRequest.getLanguage(), sortBy, currentRequest.getCategory());
-    }
-
-    public void changeCategory(String category){
-        removeFilterPreferences(Constants.FILTER_PREFERENCE_SOURCE_ID);
-        removeFilterPreferences(Constants.FILTER_PREFERENCE_LANGUAGE_ID);
-        addFilterPreference(category, Constants.FILTER_PREFERENCE_CATEGORY_ID);
-        submitRequest(currentRequest.getQuery(), "", "",
-                currentRequest.getSortBy(), category);
-    }
-
-    private void submitRequest(String query, String perspective, String language, String sortBy,
-                               String category) {
-        Request request = new Request(query, perspective, language, sortBy, category);
-        updateNews(request, recyclerView, newsType);
-        currentRequest = request;
-    }
-
-    private void submitRequest(Request request){
-        updateNews(request, recyclerView, newsType);
-        currentRequest = request;
-    }
-
     private void addFilterPreferences() {
-        addFilterPreference(currentRequest.getQuery(), Constants.FILTER_PREFERENCE_QUERY_ID);
-        addFilterPreference(currentRequest.getSource(), Constants.FILTER_PREFERENCE_SOURCE_ID);
-        addFilterPreference(currentRequest.getLanguage(), Constants.FILTER_PREFERENCE_LANGUAGE_ID);
-        addFilterPreference(currentRequest.getSortBy(), Constants.FILTER_PREFERENCE_SORT_BY_ID);
-        addFilterPreference(currentRequest.getCategory(), Constants.FILTER_PREFERENCE_CATEGORY_ID);
-
-    }
-
-    private void removeFilterPreferences(int type){
-        Log.d("NewsListFragment", "removing view");
-        ViewGroup filterSelectionViewGroup = filterSelection;
-
-        for(int i = 0; i < filterSelectionViewGroup.getChildCount(); i++){
-            if(filterSelectionViewGroup.getChildAt(i) instanceof  FilterPreferenceTextView){
-                FilterPreferenceTextView textView = (FilterPreferenceTextView) filterSelectionViewGroup.getChildAt(i);
-                if(textView.getType() == type){
-                    Log.d("NewsListFragment", "deleted");
-                    filterSelectionViewGroup.removeViewAt(i);
-                }
-            }
-        }
-    }
-
-    private void addFilterPreference(String preference, int type) {
-        Log.d("NewsListFragment", "adding preference" + preference);
-        if(!TextUtils.isEmpty(preference)) {
-            if (filterSelection.getVisibility() == View.GONE)
-                filterSelection.setVisibility(View.VISIBLE);
-
-            final FilterPreferenceTextView textView = new FilterPreferenceTextView(getContext(), type);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                textView.setTypeface(getResources().getFont(R.font.ubuntu_r));
-            } else {
-                textView.setTypeface(ResourcesCompat.getFont(Objects.requireNonNull(getContext()), R.font.ubuntu_r));
-            }
-            textView.setText(preference);
-            textView.setBackground(getResources().getDrawable(R.drawable.preference_button_border));
-            Drawable closeIcon = getResources().getDrawable(R.drawable.ic_close_white_24dp);
-            textView.setCompoundDrawablesWithIntrinsicBounds(null, null, closeIcon, null);
-            textView.setPadding(16, 0, 0, 0);
-            textView.setCompoundDrawablePadding(16);
-            textView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(final View view) {
-                    final ViewGroup filterSelectionViewGroup = filterSelection;
-                    Log.d("NewsListFragment", "delete clicked");
-                    switch (textView.getType()){
-                        case Constants.FILTER_PREFERENCE_QUERY_ID:
-                            changeQuery("");
-                            break;
-                        case Constants.FILTER_PREFERENCE_SOURCE_ID:
-                            changeSource("");
-                            break;
-                        case Constants.FILTER_PREFERENCE_LANGUAGE_ID:
-                            changeLanguage("");
-                            break;
-                        case Constants.FILTER_PREFERENCE_SORT_BY_ID:
-                            changeSortBy("");
-                            break;
-                        case Constants.FILTER_PREFERENCE_CATEGORY_ID:
-                            changeCategory("");
-                            break;
-                    }
-
-                    Animation anim = new AlphaAnimation(1,0);
-                    anim.setDuration(300);
-                    anim.setAnimationListener(new Animation.AnimationListener() {
-                        @Override
-                        public void onAnimationStart(Animation animation) {
-
-                        }
-
-                        @Override
-                        public void onAnimationEnd(Animation animation) {
-                            filterSelectionViewGroup.removeView(view);
-                        }
-
-                        @Override
-                        public void onAnimationRepeat(Animation animation) {
-
-                        }
-                    });
-                    view.startAnimation(anim);
-                }
-
-            });
-
-            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-            );
-
-            int px = (int) TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    8,
-                    getResources().getDisplayMetrics()
-            );
-
-            params.setMargins(px, px, 0, px);
-
-            textView.setLayoutParams(params);
-
-            filterSelection.addView(textView);
-        }
-    }
-
-    public Request getCurrentRequest() {
-        return currentRequest;
+        Request currentRequest = Application.getRepository().getCurrentRequest();
+        preferencesView.addFilterPreference(this, newsType, currentRequest.getQuery(), Constants.FILTER_PREFERENCE_QUERY_ID);
+        preferencesView.addFilterPreference(this, newsType, currentRequest.getSource(), Constants.FILTER_PREFERENCE_SOURCE_ID);
+        preferencesView.addFilterPreference(this, newsType, currentRequest.getLanguage(), Constants.FILTER_PREFERENCE_LANGUAGE_ID);
+        preferencesView.addFilterPreference(this, newsType, currentRequest.getSortBy(), Constants.FILTER_PREFERENCE_SORT_BY_ID);
+        preferencesView.addFilterPreference(this, newsType, currentRequest.getCategory(), Constants.FILTER_PREFERENCE_CATEGORY_ID);
     }
 
     public RecyclerView getRecyclerView(){
         return recyclerView;
     }
 
-    private static class FilterPreferenceTextView extends AppCompatTextView {
-        private int type;
-        public FilterPreferenceTextView(Context context, int type){
-            super(context);
-            this.type = type;
-        }
-        public int getType(){
-            return type;
-        }
+    public Constants.NewsType getNewsType(){
+        return newsType;
+    }
+
+    @Override
+    public void onEmit(List<DataModel> data) {
+        recyclerView.setAdapter(new MyNewsItemRecyclerViewAdapter(data, Objects.requireNonNull(getActivity()), recyclerView));
+    }
+
+    @Override
+    public void onCompleted() {
 
     }
 
+    @Override
+    public void onError(Throwable throwable) {
+        if (getActivity() != null)
+            Toast.makeText(getActivity(), "Error", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onClick(View view) {
+
+    }
 }

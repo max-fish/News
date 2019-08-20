@@ -9,23 +9,27 @@ import com.example.myapplication.data.model.DataModel;
 import java.util.List;
 
 public interface NewsRepository {
-    void getAllNews(DataCallBack<List<DataModel>> callback, Constants.NewsType newsType, Request request);
+    void getAllNews(DataCallBack<List<DataModel>> callback, Request request);
 
-    void getRecommendedNews(DataCallBack<List<DataModel>> callBack, Constants.NewsType newsType, Request request);
+    void getRecommendedNews(DataCallBack<List<DataModel>> callBack, Request request);
 
-    void changeQuery(String query);
+    void changeQuery(DataCallBack<List<DataModel>> callBack, Constants.NewsType newsType, String query);
 
-    void changeSource(String source);
+    void changeSource(DataCallBack<List<DataModel>> callBack, Constants.NewsType newsType, String source);
 
-    void changeLanguage(String language);
+    void changeLanguage(DataCallBack<List<DataModel>> callBack, Constants.NewsType newsType, String language);
 
-    void changeSortBy(String sortBy);
+    void changeSortBy(DataCallBack<List<DataModel>> callBack, Constants.NewsType newsType, String sortBy);
 
-    void changeCategory(String category);
+    void changeCategory(DataCallBack<List<DataModel>> callBack, Constants.NewsType newsType, String category);
 
-    void submitRequest(String query, String source, String language, String sortBy, String category);
+    void submitRequest(DataCallBack<List<DataModel>> callBack, Constants.NewsType newsType, Request request);
 
-    void submitRequest(Request request);
+    void submitDefaultRequest(DataCallBack<List<DataModel>> callBack, Constants.NewsType newsType);
+
+    Request getCurrentRequest();
+
+    void refresh(DataCallBack<List<DataModel>> callBack, Constants.NewsType newsType);
 
     void saveArticle(String url);
 

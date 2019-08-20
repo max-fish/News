@@ -20,7 +20,7 @@
         app:titleTextColor="@color/white" />
        <!-- app:subtitleTextColor="@color/white"-->
 
-    <LinearLayout
+    <com.example.myapplication.ui.PreferencesView
         android:id="@+id/filter_selection"
         android:orientation="horizontal" android:layout_width="match_parent"
         android:layout_height="wrap_content"

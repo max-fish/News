@@ -23,6 +23,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.myapplication.Application;
 import com.example.myapplication.Constants;
 import com.example.myapplication.R;
 import com.example.myapplication.LocationFinder;
@@ -173,7 +174,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 if(currentFragment instanceof NewsListFragment){
-                    ((NewsListFragment) currentFragment).changeQuery(query);
+                    NewsListFragment currentNewsListFragment = (NewsListFragment) currentFragment;
+                    Application.getRepository().changeQuery(currentNewsListFragment,
+                            currentNewsListFragment.getNewsType(), query);
                     return true;
                 }
                 return false;

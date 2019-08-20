@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.myapplication.Application;
 import com.example.myapplication.Constants;
 import com.example.myapplication.R;
 import com.example.myapplication.ui.newListFragment.MyNewsItemRecyclerViewAdapter;
@@ -35,7 +36,7 @@ implements View.OnClickListener
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        originalCategory = getOriginalFragment().getCurrentRequest().getCategory();
+        originalCategory = Application.getRepository().getCurrentRequest().getCategory();
     }
 
     @Override
@@ -64,7 +65,6 @@ implements View.OnClickListener
     public View provideYourFragmentView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.preferences_selection, parent, false);
         if(view instanceof TableLayout){
-            Log.d("TopHeadlines", "Tablelayout!");
             TableLayout tableLayout = (TableLayout) view;
             TableRow categoryRow = new TableRow(getContext());
             categoryRow.addView(inflater.inflate(R.layout.category_selection, parent, false));
@@ -133,7 +133,7 @@ implements View.OnClickListener
         RecyclerView.Adapter adapter = getOriginalFragment().getRecyclerView().getAdapter();
         if (adapter != null)
             ((MyNewsItemRecyclerViewAdapter) adapter).deleteAllItems();
-        getOriginalFragment().changeCategory(category);
+        Application.getRepository().changeCategory(getOriginalFragment(), newsType, category);
     }
 
     void clearCategoryOptions(){

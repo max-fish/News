@@ -84,7 +84,7 @@ public class SplashActivity extends AppCompatActivity {
                     public void onError(Throwable throwable) {
 
                     }
-                }, Constants.NewsType.RECOMMENDED, Constants.DEFAULT_REQUEST);
+                }, Constants.DEFAULT_REQUEST);
             }
         }
     }

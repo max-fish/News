@@ -1,5 +1,6 @@
 package com.example.myapplication.data;
 
+import android.provider.ContactsContract;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -24,8 +25,10 @@ import java.util.List;
 
 public class NewsRepositoryImpl implements NewsRepository {
 
+    private Request currentRequest = Constants.DEFAULT_REQUEST;
+
     @Override
-    public void getAllNews(final DataCallBack<List<DataModel>> callBack, Constants.NewsType newsType, Request request) {
+    public void getAllNews(final DataCallBack<List<DataModel>> callBack, Request request) {
             List<DataModel> dataModels = Application.getNews();
             if (dataModels == null || dataModels.size() == 0 || Application.getAllRequestStack().isEmpty()
                     || !request.equals(Application.getDeletePreviousAllRequest())) {
@@ -39,7 +42,7 @@ public class NewsRepositoryImpl implements NewsRepository {
                         .setSource(request.getSource())
                         .setLanguage(request.getLanguage())
                         .build();
-                requestGenerator.execute(callBack, newsType);
+                requestGenerator.execute(callBack, Constants.NewsType.ALL);
             } else {
                 Application.addAllRequest(request);
                 callBack.onEmit(dataModels);
@@ -47,7 +50,7 @@ public class NewsRepositoryImpl implements NewsRepository {
     }
 
     @Override
-    public void getRecommendedNews(DataCallBack<List<DataModel>> callBack, Constants.NewsType newsType, Request request) {
+    public void getRecommendedNews(DataCallBack<List<DataModel>> callBack, Request request) {
         Log.d("NewsRepository", "Got here");
             List<DataModel> dataModels = Application.getRecommendedNews();
             if (dataModels == null || dataModels.size() == 0 || Application.getRecommendedRequestStack().isEmpty()
@@ -65,7 +68,7 @@ public class NewsRepositoryImpl implements NewsRepository {
                         .setLanguage(request.getLanguage())
                         .setCategory(request.getCategory())
                         .build();
-                requestGenerator.execute(callBack, newsType);
+                requestGenerator.execute(callBack, Constants.NewsType.RECOMMENDED);
                 callBack.onCompleted();
             } else {
                 Log.d("NewsRepository", "same old");
@@ -75,39 +78,77 @@ public class NewsRepositoryImpl implements NewsRepository {
     }
 
     @Override
-    public void changeQuery(String query) {
-
+    public void changeQuery(DataCallBack<List<DataModel>> callBack, Constants.NewsType newsType, String query) {
+        Request request = new Request(query, currentRequest.getSource(),
+                currentRequest.getLanguage(), currentRequest.getSortBy(),
+                currentRequest.getCategory());
+        submitRequest(callBack, newsType, request);
     }
 
     @Override
-    public void changeSource(String source) {
-
+    public void changeSource(DataCallBack<List<DataModel>> callBack, Constants.NewsType newsType, String source) {
+        Request request = new Request(currentRequest.getQuery(), source, currentRequest.getLanguage(),
+                currentRequest.getSortBy(), "");
+        submitRequest(callBack, newsType, request);
     }
 
     @Override
-    public void changeLanguage(String language) {
-
+    public void changeLanguage(DataCallBack<List<DataModel>> callBack, Constants.NewsType newsType, String language) {
+        Request request = new Request(currentRequest.getQuery(), currentRequest.getSource(), language,
+                currentRequest.getSortBy(), currentRequest.getCategory());
+        submitRequest(callBack, newsType, request);
     }
 
     @Override
-    public void changeSortBy(String sortBy) {
-
+    public void changeSortBy(DataCallBack<List<DataModel>> callBack, Constants.NewsType newsType, String sortBy) {
+        Request request = new Request(currentRequest.getQuery(), currentRequest.getSource(),
+                currentRequest.getLanguage(), sortBy, currentRequest.getCategory());
+        submitRequest(callBack, newsType, request);
     }
 
     @Override
-    public void changeCategory(String category) {
-
+    public void changeCategory(DataCallBack<List<DataModel>> callBack, Constants.NewsType newsType, String category) {
+        Request request = new Request(currentRequest.getQuery(), "", "",
+                currentRequest.getSortBy(), category);
+        submitRequest(callBack, newsType, request);
     }
 
     @Override
-    public void submitRequest(String query, String source, String language, String sortBy, String category) {
-        Request request = new Request(query, source, language, sortBy, category);
-
+    public void submitRequest(DataCallBack<List<DataModel>> callBack, Constants.NewsType newsType, Request request) {
+        if(newsType == Constants.NewsType.RECOMMENDED){
+            getRecommendedNews(callBack, request);
+            currentRequest = request;
+        }
+        else if(newsType == Constants.NewsType.ALL){
+            getAllNews(callBack, request);
+            currentRequest = request;
+        }
     }
 
     @Override
-    public void submitRequest(Request request) {
+    public void submitDefaultRequest(DataCallBack<List<DataModel>> callBack, Constants.NewsType newsType) {
+        if(newsType == Constants.NewsType.RECOMMENDED){
+            getRecommendedNews(callBack, Constants.DEFAULT_REQUEST);
+            currentRequest = Constants.DEFAULT_REQUEST;
+        }
+        else if(newsType == Constants.NewsType.ALL){
+            getAllNews(callBack, Constants.DEFAULT_REQUEST);
+            currentRequest = Constants.DEFAULT_REQUEST;
+        }
+    }
 
+    public void refresh(DataCallBack<List<DataModel>> callBack, Constants.NewsType newsType){
+        if(newsType == Constants.NewsType.RECOMMENDED){
+            getRecommendedNews(callBack, currentRequest);
+        }
+        else if(newsType == Constants.NewsType.ALL){
+            getAllNews(callBack, currentRequest);
+        }
+    }
+
+    @Override
+    public Request getCurrentRequest() {
+        return currentRequest;
     }
 
     @Override
