@@ -14,6 +14,5 @@ public interface GithubServiceRecommended {
                                   @Query("sources") String source,
                                   @Query("language") String language,
                                   @Query("category") String category,
-                                  @Query("country") String country,
                                   @Query("apiKey") String apiKey);
 }

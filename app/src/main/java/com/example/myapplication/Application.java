@@ -1,30 +1,24 @@
 package com.example.myapplication;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.os.Build;
 import android.util.Log;
+import android.widget.Toast;
 
-import com.example.myapplication.data.NewsRepository;
-import com.example.myapplication.data.NewsRepositoryImpl;
-import com.example.myapplication.data.Request;
-import com.example.myapplication.data.model.DataModel;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.firebase.auth.FirebaseUser;
+import androidx.annotation.NonNull;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Stack;
+import com.example.myapplication.data.repository.NewsRepository;
+import com.example.myapplication.data.repository.NewsRepositoryImpl;
+import com.example.myapplication.ui.MainActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
+
+import java.util.Objects;
 
 public class Application extends android.app.Application {
-
-    private static List<DataModel> listNews;
-
-    private static List<DataModel> listRecommendedNews;
-
-    private static Stack<Request> recommendedRequestStack = new Stack<>();
-
-    private static Stack<Request> allRequestStack = new Stack<>();
-
-    private static HashMap<String, String> countriesToISO = new HashMap<>();
 
     private static NewsRepository newsRepository;
 
@@ -32,43 +26,6 @@ public class Application extends android.app.Application {
     public static NewsRepository getRepository(){
         return newsRepository;
     }
-
-    public static void setNews(List<DataModel> news) {
-        Log.i("Application", "setNews listRepos " + news.size());
-        listNews = news;
-    }
-
-    public static List<DataModel> getNews() {
-        if (listNews != null)
-        Log.i("Application", "getNews listRepos " + listNews.size());
-        else
-            Log.i("Application", "getNews listRepos = null ");
-        return listNews;
-    }
-
-    public static void setRecommendedNews(List<DataModel> news){
-        listRecommendedNews = news;
-    }
-
-    public static List<DataModel> getRecommendedNews(){
-        return listRecommendedNews;
-    }
-
-    public static void addRecommendedRequest(Request request){
-        recommendedRequestStack.push(request);
-    }
-
-    public static void addAllRequest(Request request){
-        allRequestStack.push(request);
-    }
-
-    public static Stack<Request> getRecommendedRequestStack(){return recommendedRequestStack;}
-
-    public static Stack<Request> getAllRequestStack() {return allRequestStack;}
-
-    public static Request getDeletePreviousRecommendedRequest(){return recommendedRequestStack.pop();}
-
-    public static Request getDeletePreviousAllRequest(){return  allRequestStack.pop();}
 
     private static String location;
 
@@ -80,20 +37,27 @@ public class Application extends android.app.Application {
         return location;
     }
 
-    public static HashMap<String, String> getCountriesToISO(){
-        return countriesToISO;
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(Constants.CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            if (notificationManager != null) {
+                notificationManager.createNotificationChannel(channel);
+            }
+        }
     }
-
-
     @Override
     public void onCreate() {
         super.onCreate();
+        createNotificationChannel();
         newsRepository = new NewsRepositoryImpl();
-
-        for(String iso : Locale.getISOCountries()){
-            Locale locale = new Locale("", iso);
-            countriesToISO.put(locale.getDisplayCountry(), iso);
-        }
-
     }
 }

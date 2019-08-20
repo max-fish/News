@@ -1,4 +1,4 @@
-package com.example.myapplication.ui;
+package com.example.myapplication.ui.preferences;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -23,6 +23,8 @@ import com.example.myapplication.data.callbacks.DataCallBack;
 import com.example.myapplication.data.model.DataModel;
 import java.util.List;
 import java.util.Objects;
+
+import static com.example.myapplication.Constants.FilterPreferenceIDs.*;
 
 public class PreferencesView extends LinearLayout {
 
@@ -62,23 +64,20 @@ public class PreferencesView extends LinearLayout {
                     final ViewGroup filterSelectionViewGroup = PreferencesView.this;
                     Log.d("NewsListFragment", "delete clicked");
                     switch (textView.getType()){
-                        case Constants.FILTER_PREFERENCE_QUERY_ID:
+                        case FILTER_PREFERENCE_QUERY_ID:
                             Application.getRepository().changeQuery(callBack, newsType, "");
                             break;
-                        case Constants.FILTER_PREFERENCE_SOURCE_ID:
-                            Application.getRepository().changeSource(callBack, newsType, "");
-                            removeFilterPreferences(Constants.FILTER_PREFERENCE_CATEGORY_ID);
-                            break;
-                        case Constants.FILTER_PREFERENCE_LANGUAGE_ID:
+                        case FILTER_PREFERENCE_SOURCE_ID:
                             Application.getRepository().changeSource(callBack, newsType, "");
                             break;
-                        case Constants.FILTER_PREFERENCE_SORT_BY_ID:
+                        case FILTER_PREFERENCE_LANGUAGE_ID:
+                            Application.getRepository().changeSource(callBack, newsType, "");
+                            break;
+                        case FILTER_PREFERENCE_SORT_BY_ID:
                             Application.getRepository().changeSortBy(callBack, newsType, "");
                             break;
-                        case Constants.FILTER_PREFERENCE_CATEGORY_ID:
+                        case FILTER_PREFERENCE_CATEGORY_ID:
                             Application.getRepository().changeCategory(callBack, newsType, "");
-                            removeFilterPreferences(Constants.FILTER_PREFERENCE_SOURCE_ID);
-                            removeFilterPreferences(Constants.FILTER_PREFERENCE_LANGUAGE_ID);
                             break;
                     }
 
@@ -124,7 +123,7 @@ public class PreferencesView extends LinearLayout {
         }
     }
 
-    private void removeFilterPreferences(int type){
+    public void removeFilterPreference(int type){
         Log.d("NewsListFragment", "removing view");
 
         for(int i = 0; i < this.getChildCount(); i++){
@@ -140,11 +139,11 @@ public class PreferencesView extends LinearLayout {
 
     private static class FilterPreferenceTextView extends AppCompatTextView {
         private int type;
-        public FilterPreferenceTextView(Context context, int type){
+        FilterPreferenceTextView(Context context, int type){
             super(context);
             this.type = type;
         }
-        public int getType(){
+        int getType(){
             return type;
         }
 

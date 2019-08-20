@@ -1,7 +1,8 @@
-package com.example.myapplication.data;
+package com.example.myapplication.data.repository;
 
 
 import com.example.myapplication.Constants;
+import com.example.myapplication.data.Request;
 import com.example.myapplication.data.callbacks.QueryCallBack;
 import com.example.myapplication.data.callbacks.DataCallBack;
 import com.example.myapplication.data.model.DataModel;
@@ -9,6 +10,10 @@ import com.example.myapplication.data.model.DataModel;
 import java.util.List;
 
 public interface NewsRepository {
+    void setAllNewsList(List<DataModel> newsList);
+
+    void setRecommendedNewsList(List<DataModel> newsList);
+
     void getAllNews(DataCallBack<List<DataModel>> callback, Request request);
 
     void getRecommendedNews(DataCallBack<List<DataModel>> callBack, Request request);

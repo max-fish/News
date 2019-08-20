@@ -1,4 +1,4 @@
-package com.example.myapplication.ui;
+package com.example.myapplication.ui.preferences;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -39,6 +39,9 @@ import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
 
+import static com.example.myapplication.Constants.RequestDefinitions.*;
+import static com.example.myapplication.Constants.FilterPreferenceIDs.*;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,8 +52,8 @@ import java.util.Objects;
  */
 public class PreferenceDialogFragment extends DialogFragment implements View.OnClickListener {
     private NewsListFragment originalFragment;
-    private PreferencesView preferencesView;
 
+    PreferencesView preferencesView;
     Constants.NewsType newsType;
 
     private ImageButton cnnButton;
@@ -79,7 +82,7 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
         // Required empty public constructor
     }
 
-    static PreferenceDialogFragment newInstance() {
+    public static PreferenceDialogFragment newInstance() {
         return new PreferenceDialogFragment();
     }
 
@@ -99,7 +102,7 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
         return provideYourFragmentView(inflater, container, savedInstanceState);
     }
 
-    public View provideYourFragmentView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
+    View provideYourFragmentView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.preferences_selection, parent, false);
     }
 
@@ -123,8 +126,7 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
                                 if (Objects.requireNonNull(getActivity()).getIntent().getBooleanExtra("isFromLogin", false)) {
                                     getActivity().finish();
                                     Toast.makeText(view.getContext(), "signed out", Toast.LENGTH_SHORT).show();
-                                }
-                                else{
+                                } else {
                                     Intent loginIntent = new Intent(getActivity(), LoginActivity.class);
                                     startActivity(loginIntent);
                                     getActivity().finish();
@@ -181,7 +183,7 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
             Picasso
                     .get()
                     .load(currentUser.getPhotoUrl())
-                    .transform(new CircleTransform(radius,0))
+                    .transform(new CircleTransform(radius, 0))
                     .into(profilePicture);
             profileName.setText(currentUser.getDisplayName());
             profileEmail.setText(currentUser.getEmail());
@@ -195,37 +197,37 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
         String sortBy = originalSortBy;
         switch (view.getId()) {
             case R.id.source_cnn:
-                source = Constants.CNN_SOURCE;
+                source = CNN_SOURCE;
                 break;
             case R.id.source_bbc:
-                source = Constants.BBC_SOURCE;
+                source = BBC_SOURCE;
                 break;
             case R.id.source_fox:
-                source = Constants.FOX_SOURCE;
+                source = FOX_SOURCE;
                 break;
             case R.id.source_msnbc:
-                source = Constants.MSNBC_SOURCE;
+                source = MSNBC_SOURCE;
                 break;
             case R.id.language_en:
-                language = Constants.EN_LANGUAGE;
+                language = EN_LANGUAGE;
                 break;
             case R.id.language_ru:
-                language = Constants.RU_LANGUAGE;
+                language = RU_LANGUAGE;
                 break;
             case R.id.language_fr:
-                language = Constants.FR_LANGUAGE;
+                language = FR_LANGUAGE;
                 break;
             case R.id.language_es:
-                language = Constants.ES_LANGUAGE;
+                language = ES_LANGUAGE;
                 break;
             case R.id.sortBy_publishedAt:
-                sortBy = Constants.PUBLISHED_AT_SORT;
+                sortBy = PUBLISHED_AT_SORT;
                 break;
             case R.id.sortBy_relevancy:
-                sortBy = Constants.RELEVANCY_SORT;
+                sortBy = RELEVANCY_SORT;
                 break;
             case R.id.sortBy_popularity:
-                sortBy = Constants.POPULARITY_SORT;
+                sortBy = POPULARITY_SORT;
                 break;
         }
         initTypeBtn(source, language, sortBy);
@@ -258,28 +260,30 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
         if (originalSortBy == null)
             return;
 
-        cnnButton.setSelected(originalSource.equals(Constants.CNN_SOURCE));
-        bbcButton.setSelected(originalSource.equals(Constants.BBC_SOURCE));
-        foxButton.setSelected(originalSource.equals(Constants.FOX_SOURCE));
-        msnbcButton.setSelected(originalSource.equals(Constants.MSNBC_SOURCE));
+        cnnButton.setSelected(originalSource.equals(CNN_SOURCE));
+        bbcButton.setSelected(originalSource.equals(BBC_SOURCE));
+        foxButton.setSelected(originalSource.equals(FOX_SOURCE));
+        msnbcButton.setSelected(originalSource.equals(MSNBC_SOURCE));
 
-        enButton.setSelected(originalLanguage.equals(Constants.EN_LANGUAGE));
-        ruButton.setSelected(originalLanguage.equals(Constants.RU_LANGUAGE));
-        frButton.setSelected(originalLanguage.equals(Constants.FR_LANGUAGE));
-        esButton.setSelected(originalLanguage.equals(Constants.ES_LANGUAGE));
+        enButton.setSelected(originalLanguage.equals(EN_LANGUAGE));
+        ruButton.setSelected(originalLanguage.equals(RU_LANGUAGE));
+        frButton.setSelected(originalLanguage.equals(FR_LANGUAGE));
+        esButton.setSelected(originalLanguage.equals(ES_LANGUAGE));
 
-        publishedAtButton.setSelected(originalSortBy.equals(Constants.PUBLISHED_AT_SORT));
-        relevancyButton.setSelected(originalSortBy.equals(Constants.RELEVANCY_SORT));
-        popularityButton.setSelected(originalSortBy.equals(Constants.POPULARITY_SORT));
+        publishedAtButton.setSelected(originalSortBy.equals(PUBLISHED_AT_SORT));
+        relevancyButton.setSelected(originalSortBy.equals(RELEVANCY_SORT));
+        popularityButton.setSelected(originalSortBy.equals(POPULARITY_SORT));
     }
 
     private void setSourceToListFragment(String source) {
         RecyclerView.Adapter adapter = originalFragment.getRecyclerView().getAdapter();
         if (adapter != null)
             ((MyNewsItemRecyclerViewAdapter) adapter).deleteAllItems();
-            Application.getRepository().changeSource(originalFragment, newsType, source);
-            preferencesView.addFilterPreference
-                    (originalFragment, newsType, source, Constants.FILTER_PREFERENCE_SOURCE_ID);
+        Application.getRepository().changeSource(originalFragment, newsType, source);
+        preferencesView.removeFilterPreference(FILTER_PREFERENCE_SOURCE_ID);
+        preferencesView.removeFilterPreference(FILTER_PREFERENCE_CATEGORY_ID);
+        preferencesView.addFilterPreference
+                (originalFragment, newsType, source, FILTER_PREFERENCE_SOURCE_ID);
         if (languageButtonsDisabled)
             enableLanguageButtons();
     }
@@ -288,18 +292,20 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
         RecyclerView.Adapter adapter = originalFragment.getRecyclerView().getAdapter();
         if (adapter != null)
             ((MyNewsItemRecyclerViewAdapter) adapter).deleteAllItems();
-            Application.getRepository().changeLanguage(originalFragment, newsType, language);
-            preferencesView.addFilterPreference
-                    (originalFragment, newsType, language, Constants.FILTER_PREFERENCE_LANGUAGE_ID);
+        Application.getRepository().changeLanguage(originalFragment, newsType, language);
+        preferencesView.removeFilterPreference(FILTER_PREFERENCE_LANGUAGE_ID);
+        preferencesView.addFilterPreference
+                (originalFragment, newsType, language, FILTER_PREFERENCE_LANGUAGE_ID);
     }
 
     private void setSortByToListFragment(String sortBy) {
         RecyclerView.Adapter adapter = originalFragment.getRecyclerView().getAdapter();
         if (adapter != null)
             ((MyNewsItemRecyclerViewAdapter) adapter).deleteAllItems();
-            Application.getRepository().changeSortBy(originalFragment, newsType, sortBy);
-            preferencesView.addFilterPreference
-                    (originalFragment, newsType, sortBy, Constants.FILTER_PREFERENCE_SORT_BY_ID);
+        preferencesView.removeFilterPreference(FILTER_PREFERENCE_SORT_BY_ID);
+        Application.getRepository().changeSortBy(originalFragment, newsType, sortBy);
+        preferencesView.addFilterPreference
+                (originalFragment, newsType, sortBy, FILTER_PREFERENCE_SORT_BY_ID);
     }
 
     NewsListFragment getOriginalFragment() {
@@ -322,8 +328,9 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
     }
 
     private void enableLanguageButtons() {
-            Application.getRepository().changeLanguage(originalFragment, newsType, Constants.EN_LANGUAGE);
-
+        Application.getRepository().changeLanguage(originalFragment, newsType, EN_LANGUAGE);
+        preferencesView.addFilterPreference
+                (originalFragment, newsType, EN_LANGUAGE, FILTER_PREFERENCE_LANGUAGE_ID);
         enButton.setSelected(true);
 
         enButton.setEnabled(true);

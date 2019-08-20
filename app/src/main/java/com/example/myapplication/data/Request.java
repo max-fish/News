@@ -36,9 +36,9 @@ public class Request {
     }
 
 
-    public boolean equals(Request request){
-        return query.equals(request.getQuery()) && source.equals(request.getSource()) &&
-                language.equals(request.getLanguage()) && sortBy.equals(request.getSortBy())
-                && category.equals(request.getCategory());
+    public boolean notEquals(Request request){
+        return !query.equals(request.getQuery()) || !source.equals(request.getSource()) ||
+                !language.equals(request.getLanguage()) || !sortBy.equals(request.getSortBy())
+                || !category.equals(request.getCategory());
     }
 }

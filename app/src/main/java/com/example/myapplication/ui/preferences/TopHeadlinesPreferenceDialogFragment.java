@@ -1,7 +1,6 @@
-package com.example.myapplication.ui;
+package com.example.myapplication.ui.preferences;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +13,11 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.myapplication.Application;
-import com.example.myapplication.Constants;
 import com.example.myapplication.R;
 import com.example.myapplication.ui.newListFragment.MyNewsItemRecyclerViewAdapter;
+
+import static com.example.myapplication.Constants.RequestDefinitions.*;
+import static com.example.myapplication.Constants.FilterPreferenceIDs.*;
 
 public class TopHeadlinesPreferenceDialogFragment extends PreferenceDialogFragment
 implements View.OnClickListener
@@ -78,31 +79,31 @@ implements View.OnClickListener
         String category = originalCategory;
         switch(view.getId()){
             case R.id.category_business:
-                category = Constants.BUSINESS_CATEGORY;
+                category = BUSINESS_CATEGORY;
                 clearOriginalSource();
                 break;
             case R.id.category_entertainment:
-                category = Constants.ENTERTAINMENT_CATEGORY;
+                category = ENTERTAINMENT_CATEGORY;
                 clearOriginalSource();
                 break;
             case R.id.category_general:
-                category = Constants.GENERAL_CATEGORY;
+                category = GENERAL_CATEGORY;
                 clearOriginalSource();
                 break;
             case R.id.category_health:
-                category = Constants.HEALTH_CATEGORY;
+                category = HEALTH_CATEGORY;
                 clearOriginalSource();
                 break;
             case R.id.category_science:
-                category = Constants.SCIENCE_CATEGORY;
+                category = SCIENCE_CATEGORY;
                 clearOriginalSource();
                 break;
             case R.id.category_sports:
-                category = Constants.SPORTS_CATEGORY;
+                category = SPORTS_CATEGORY;
                 clearOriginalSource();
                 break;
             case R.id.category_technology:
-                category = Constants.TECHNOLOGY_CATEGORY;
+                category = TECHNOLOGY_CATEGORY;
                 clearOriginalSource();
                 break;
         }
@@ -119,13 +120,13 @@ implements View.OnClickListener
             return;
         }
 
-        business.setSelected(originalCategory.equals(Constants.BUSINESS_CATEGORY));
-        entertainment.setSelected(originalCategory.equals(Constants.ENTERTAINMENT_CATEGORY));
-        general.setSelected(originalCategory.equals(Constants.GENERAL_CATEGORY));
-        health.setSelected(originalCategory.equals(Constants.HEALTH_CATEGORY));
-        science.setSelected(originalCategory.equals(Constants.SCIENCE_CATEGORY));
-        sports.setSelected(originalCategory.equals(Constants.SPORTS_CATEGORY));
-        technology.setSelected(originalCategory.equals(Constants.TECHNOLOGY_CATEGORY));
+        business.setSelected(originalCategory.equals(BUSINESS_CATEGORY));
+        entertainment.setSelected(originalCategory.equals(ENTERTAINMENT_CATEGORY));
+        general.setSelected(originalCategory.equals(GENERAL_CATEGORY));
+        health.setSelected(originalCategory.equals(HEALTH_CATEGORY));
+        science.setSelected(originalCategory.equals(SCIENCE_CATEGORY));
+        sports.setSelected(originalCategory.equals(SPORTS_CATEGORY));
+        technology.setSelected(originalCategory.equals(TECHNOLOGY_CATEGORY));
 
     }
 
@@ -134,6 +135,10 @@ implements View.OnClickListener
         if (adapter != null)
             ((MyNewsItemRecyclerViewAdapter) adapter).deleteAllItems();
         Application.getRepository().changeCategory(getOriginalFragment(), newsType, category);
+        preferencesView.removeFilterPreference(FILTER_PREFERENCE_SOURCE_ID);
+        preferencesView.removeFilterPreference(FILTER_PREFERENCE_LANGUAGE_ID);
+        preferencesView.removeFilterPreference(FILTER_PREFERENCE_CATEGORY_ID);
+        preferencesView.addFilterPreference(getOriginalFragment(), newsType, category, FILTER_PREFERENCE_CATEGORY_ID);
     }
 
     void clearCategoryOptions(){

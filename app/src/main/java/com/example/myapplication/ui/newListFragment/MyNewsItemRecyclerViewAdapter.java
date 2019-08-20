@@ -41,7 +41,7 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
 
     private int radius;
 
-    public MyNewsItemRecyclerViewAdapter(List<DataModel> items, Activity activity, RecyclerView recyclerView) {
+    MyNewsItemRecyclerViewAdapter(List<DataModel> items, Activity activity, RecyclerView recyclerView) {
         mValues = items;
         this.activity = activity;
         this.recyclerView = recyclerView;
@@ -50,8 +50,9 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
         radius = (int) activity.getResources().getDimension(R.dimen.radius_image);
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.news_item, parent, false);
         return new ViewHolder(view);
@@ -63,7 +64,6 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
         putImage(mItem.getUrlToImage(), holder.mImageView);
         holder.mTitleView.setText(mItem.getTitle());
         holder.mDescriptionView.setText(mItem.getDescription());
-        holder.source = mItem.getSource().getName();
         holder.mItem.setOnClickListener(makeViewHolderOnClickListener(holder, mItem));
         Application.getRepository().checkArticle(new QueryCallBack() {
             @Override
@@ -179,8 +179,6 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
          final TextView mDescriptionView;
          final ImageView mImageView;
          final View mItem;
-        public String source;
-
          ViewHolder(View view) {
             super(view);
             mItem = view;

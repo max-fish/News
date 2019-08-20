@@ -22,12 +22,11 @@ public class RequestGenerator {
     private String source;
     private String language;
     private String category;
-    private String country;
     private static final String API_KEY = "47075dc90ef54c6f8a0880b20a3ceffc";
 
 
-    public RequestGenerator(String query, String fromDate, String sortBy, String source,
-                            String language, String category) {
+    private RequestGenerator(String query, String fromDate, String sortBy, String source,
+                             String language, String category) {
         this.query = query;
         this.fromDate = fromDate;
         this.sortBy = sortBy;
@@ -42,25 +41,24 @@ public class RequestGenerator {
         if (newsType == Constants.NewsType.RECOMMENDED) {
 
             Call<DataModelCall> reposRecommended = Retro.getServiceRecommended().listRepos(query, fromDate,
-                    sortBy, source, language, category, country, API_KEY);
+                    sortBy, source, language, category, API_KEY);
 
             reposRecommended.enqueue(new Callback<DataModelCall>() {
                 @Override
                 public void onResponse(Call<DataModelCall> call, Response<DataModelCall> response) {
                     if (response.body() != null) {
                         List<DataModel> results = response.body().getArticles();
-                            callBack.onEmit(results);
-                            Application.setRecommendedNews(results);
+                        callBack.onEmit(results);
+                        Application.getRepository().setRecommendedNewsList(results);
                     }
                 }
 
                 @Override
                 public void onFailure(Call<DataModelCall> call, Throwable t) {
-                        callBack.onError(t);
+                    callBack.onError(t);
                 }
             });
-        }
-        else if(newsType == Constants.NewsType.ALL){
+        } else if (newsType == Constants.NewsType.ALL) {
             Call<DataModelCall> reposAll = Retro.getServiceAll().listRepos(query, fromDate, sortBy,
                     source, language, API_KEY);
             reposAll.enqueue(new Callback<DataModelCall>() {
@@ -69,7 +67,7 @@ public class RequestGenerator {
                     if (response.body() != null) {
                         List<DataModel> results = response.body().getArticles();
                         callBack.onEmit(results);
-                            Application.setNews(results);
+                        Application.getRepository().setAllNewsList(results);
                     }
                 }
 
@@ -81,7 +79,7 @@ public class RequestGenerator {
         }
     }
 
-    public static class Builder{
+    public static class Builder {
         private String query;
         private String fromDate;
         private String sortBy;
@@ -90,7 +88,8 @@ public class RequestGenerator {
         private String category;
         private String country;
 
-        public Builder(){}
+        public Builder() {
+        }
 
 
         public Builder setQuery(String query) {
@@ -108,22 +107,23 @@ public class RequestGenerator {
             this.sortBy = sortBy;
             return this;
         }
+
         public Builder setSource(String source) {
             this.source = source;
             return this;
         }
 
-        public Builder setLanguage(String language){
+        public Builder setLanguage(String language) {
             this.language = language;
             return this;
         }
 
-        public Builder setCategory(String category){
+        public Builder setCategory(String category) {
             this.category = category;
             return this;
         }
 
-        public RequestGenerator build(){
+        public RequestGenerator build() {
             return new RequestGenerator(query, fromDate, sortBy, source, language, category);
         }
     }

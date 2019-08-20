@@ -1,13 +1,9 @@
 package com.example.myapplication.ui;
 
 import android.content.Intent;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.method.LinkMovementMethod;
 import android.transition.Slide;
-import android.transition.Transition;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -18,14 +14,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.myapplication.Application;
 import com.example.myapplication.R;
 import com.squareup.picasso.Picasso;
+
+import java.util.Objects;
 
 public class DetailActivity extends AppCompatActivity {
     private TextView title;
     private TextView description;
-    private ImageView source;
+    private TextView source;
     private TextView content;
     private ImageView image;
     private ImageView link;
@@ -48,9 +45,11 @@ public class DetailActivity extends AppCompatActivity {
 
         Bundle inBundle = getIntent().getBundleExtra("info");
 
-        getBundleDataOut(inBundle);
+        if (inBundle != null) {
+            getBundleDataOut(inBundle);
+        }
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
     }
@@ -69,14 +68,15 @@ public class DetailActivity extends AppCompatActivity {
         title.setText(bundle.getString("title"));
         description.setText(bundle.getString("description"));
         content.setText(bundle.getString("content"));
-                 Picasso
+        Picasso
                 .get()
                 .load(bundle.getString("urlToImage"))
                 .into(image);
+        source.setText(bundle.getString("source"));
         link.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent browserIntent = new Intent (Intent.ACTION_VIEW, Uri.parse(bundle.getString("url")));
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(bundle.getString("url")));
                 startActivity(browserIntent);
             }
         });

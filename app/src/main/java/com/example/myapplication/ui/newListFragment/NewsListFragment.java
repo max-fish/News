@@ -1,25 +1,16 @@
 package com.example.myapplication.ui.newListFragment;
 
-import android.content.Context;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatTextView;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,10 +22,12 @@ import com.example.myapplication.R;
 import com.example.myapplication.data.Request;
 import com.example.myapplication.data.callbacks.DataCallBack;
 import com.example.myapplication.data.model.DataModel;
-import com.example.myapplication.ui.PreferencesView;
+import com.example.myapplication.ui.preferences.PreferencesView;
 
 import java.util.List;
 import java.util.Objects;
+
+import static com.example.myapplication.Constants.FilterPreferenceIDs.*;
 
 
 public class NewsListFragment extends Fragment implements DataCallBack<List<DataModel>>,
@@ -103,11 +96,11 @@ public class NewsListFragment extends Fragment implements DataCallBack<List<Data
 
     private void addFilterPreferences() {
         Request currentRequest = Application.getRepository().getCurrentRequest();
-        preferencesView.addFilterPreference(this, newsType, currentRequest.getQuery(), Constants.FILTER_PREFERENCE_QUERY_ID);
-        preferencesView.addFilterPreference(this, newsType, currentRequest.getSource(), Constants.FILTER_PREFERENCE_SOURCE_ID);
-        preferencesView.addFilterPreference(this, newsType, currentRequest.getLanguage(), Constants.FILTER_PREFERENCE_LANGUAGE_ID);
-        preferencesView.addFilterPreference(this, newsType, currentRequest.getSortBy(), Constants.FILTER_PREFERENCE_SORT_BY_ID);
-        preferencesView.addFilterPreference(this, newsType, currentRequest.getCategory(), Constants.FILTER_PREFERENCE_CATEGORY_ID);
+        preferencesView.addFilterPreference(this, newsType, currentRequest.getQuery(), FILTER_PREFERENCE_QUERY_ID);
+        preferencesView.addFilterPreference(this, newsType, currentRequest.getSource(), FILTER_PREFERENCE_SOURCE_ID);
+        preferencesView.addFilterPreference(this, newsType, currentRequest.getLanguage(), FILTER_PREFERENCE_LANGUAGE_ID);
+        preferencesView.addFilterPreference(this, newsType, currentRequest.getSortBy(), FILTER_PREFERENCE_SORT_BY_ID);
+        preferencesView.addFilterPreference(this, newsType, currentRequest.getCategory(), FILTER_PREFERENCE_CATEGORY_ID);
     }
 
     public RecyclerView getRecyclerView(){

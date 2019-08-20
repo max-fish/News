@@ -34,4 +34,6 @@
     <string name="profile_email">Profile Email</string>
     <string name="profile_pic_content_description">The profile picture of the signed-in user</string>
     <string name="sign_out_button_text">Sign Out</string>
+    <string name="channel_name">new news notification</string>
+    <string name="channel_description">used when there is breaking news to be delivered</string>
 </resources>

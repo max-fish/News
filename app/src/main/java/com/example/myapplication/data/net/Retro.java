@@ -3,7 +3,7 @@ package com.example.myapplication.data.net;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class Retro {
+class Retro {
     final static String baseUrl = "https://newsapi.org/";
 
     public static GithubServiceRecommended getServiceRecommended() {

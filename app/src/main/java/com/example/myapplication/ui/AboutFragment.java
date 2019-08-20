@@ -14,12 +14,11 @@ import androidx.fragment.app.Fragment;
 import com.example.myapplication.R;
 
 
-public class AboutFragment extends Fragment {
+class AboutFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_about, container, false);
-        return view;
+        return inflater.inflate(R.layout.fragment_about, container, false);
     }
 }

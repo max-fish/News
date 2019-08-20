@@ -2,7 +2,6 @@ package com.example.myapplication.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -28,6 +27,8 @@ import com.example.myapplication.Constants;
 import com.example.myapplication.R;
 import com.example.myapplication.LocationFinder;
 import com.example.myapplication.ui.newListFragment.NewsListFragment;
+import com.example.myapplication.ui.preferences.PreferenceDialogFragment;
+import com.example.myapplication.ui.preferences.TopHeadlinesPreferenceDialogFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
@@ -61,9 +62,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private FragmentManager fragmentManager;
-    private BottomNavigationView navView;
     private ConstraintLayout welcomeTextContainer;
-    private TextView welcomeTextTitle;
     private TextView welcomeTextName;
     private ConstraintLayout mainLayout;
 
@@ -80,13 +79,13 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentManager = getSupportFragmentManager();
 
-        navView = findViewById(R.id.nav_view);
+        BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         mainLayout = findViewById(R.id.main_layout);
 
         welcomeTextContainer = findViewById(R.id.welcome_text_container);
-        welcomeTextTitle = findViewById(R.id.welcome_text_title);
+        TextView welcomeTextTitle = findViewById(R.id.welcome_text_title);
         welcomeTextName = findViewById(R.id.welcome_text_name);
 
         welcomeTextName.setText(getIntent().getStringExtra("userName"));

@@ -68,14 +68,15 @@
         android:textSize="15sp"
         tools:text="content" />
 
-    <ImageView
+    <TextView
         android:id="@+id/detail_source"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/text_margin"
         android:layout_marginTop="16dp"
-        android:adjustViewBounds="true"
-        tools:src="@drawable/ic_bbc" />
+        android:fontFamily="@font/ubuntu_r"
+        android:textColor="#000000"
+        tools:text="source" />
 
     <ImageView
         android:id="@+id/detail_link"
