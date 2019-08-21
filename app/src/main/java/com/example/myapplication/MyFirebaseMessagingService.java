@@ -38,6 +38,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        Intent mainIntent = new Intent(getApplicationContext(), MainActivity.class);
+
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, Constants.CHANNEL_ID)
                 .setSmallIcon(R.drawable.apple_news_ios_icon)  //a resource for your custom small icon
                 .setContentTitle(remoteMessage.getData().get("title")) //the "title" value you sent in your notification
@@ -45,7 +47,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setAutoCancel(true)  //dismisses the notification on click
                 .setSound(defaultSoundUri)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setContentIntent(new PendingIntent()(this, MainActivity.class));
+                .setContentIntent(PendingIntent.getActivity(getApplicationContext(), 0,
+                        mainIntent, PendingIntent.FLAG_UPDATE_CURRENT));
 
         NotificationManager notificationManager = (NotificationManager)
                 getSystemService(Context.NOTIFICATION_SERVICE);
