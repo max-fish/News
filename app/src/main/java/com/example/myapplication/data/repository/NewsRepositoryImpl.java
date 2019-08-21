@@ -1,5 +1,8 @@
 package com.example.myapplication.data.repository;
 
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -10,6 +13,7 @@ import com.example.myapplication.data.callbacks.QueryCallBack;
 import com.example.myapplication.data.callbacks.DataCallBack;
 import com.example.myapplication.data.model.DataModel;
 import com.example.myapplication.data.net.RequestGenerator;
+import com.example.myapplication.ui.DetailActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -213,5 +217,23 @@ public class NewsRepositoryImpl implements NewsRepository {
                 }
             });
         }
+    }
+
+    @Override
+    public Intent getDetailIntent(Context context, String url) {
+        Intent detailIntent = new Intent(context, DetailActivity.class);
+        for(DataModel dataModel : listRecommendedNews){
+            if(dataModel.getUrl().equals(url)){
+                Bundle bundle = new Bundle();
+                bundle.putString("title", dataModel.getTitle());
+                bundle.putString("description", dataModel.getDescription());
+                bundle.putString("content", dataModel.getContent());
+                bundle.putString("urlToImage", dataModel.getUrlToImage());
+                bundle.putString("source", dataModel.getSource().getName());
+                bundle.putString("url", dataModel.getUrl());
+                detailIntent.putExtra("info", bundle);
+            }
+        }
+        return detailIntent;
     }
 }

@@ -1,6 +1,9 @@
 package com.example.myapplication.data.repository;
 
 
+import android.content.Context;
+import android.content.Intent;
+
 import com.example.myapplication.Constants;
 import com.example.myapplication.data.Request;
 import com.example.myapplication.data.callbacks.QueryCallBack;
@@ -39,5 +42,7 @@ public interface NewsRepository {
     void saveArticle(String url);
 
     void checkArticle(QueryCallBack queryCallBack, String url);
+
+    Intent getDetailIntent(Context context, String url);
 
 }

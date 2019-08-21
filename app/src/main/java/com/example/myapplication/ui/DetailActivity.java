@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.transition.Slide;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -73,6 +74,7 @@ public class DetailActivity extends AppCompatActivity {
                 .load(bundle.getString("urlToImage"))
                 .into(image);
         source.setText(bundle.getString("source"));
+        Log.d("Detail", bundle.getString("url"));
         link.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

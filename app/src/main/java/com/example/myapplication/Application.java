@@ -3,20 +3,11 @@ package com.example.myapplication;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.os.Build;
-import android.util.Log;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 
 import com.example.myapplication.data.repository.NewsRepository;
 import com.example.myapplication.data.repository.NewsRepositoryImpl;
-import com.example.myapplication.ui.MainActivity;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.google.firebase.iid.InstanceIdResult;
-
-import java.util.Objects;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 public class Application extends android.app.Application {
 
@@ -57,6 +48,7 @@ public class Application extends android.app.Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        FirebaseMessaging.getInstance().subscribeToTopic("test");
         createNotificationChannel();
         newsRepository = new NewsRepositoryImpl();
     }

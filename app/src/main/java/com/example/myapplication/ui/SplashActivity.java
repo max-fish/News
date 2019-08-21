@@ -64,6 +64,7 @@ public class SplashActivity extends AppCompatActivity {
                 final Intent mainIntent = new Intent(this, MainActivity.class);
                 mainIntent.putExtra("userName", user.getDisplayName());
                 mainIntent.putExtra("isFromLogin", false);
+                mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 Application.getRepository().getRecommendedNews(new DataCallBack<List<DataModel>>() {
                     @Override
                     public void onEmit(List<DataModel> data) {
