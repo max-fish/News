@@ -63,7 +63,7 @@ public class NewsRepositoryImpl implements NewsRepository {
     @Override
     public void getAllNews(final DataCallBack<List<DataModel>> callBack, Request request) {
         List<DataModel> dataModels = getAllNewsList();
-        if (dataModels == null || dataModels.size() == 0 || currentRequest.notEquals(previousRequest)) {
+        if (dataModels == null || dataModels.size() == 0 || request.notEquals(previousRequest)) {
             Date date = new Date();
             String modifiedDate = new SimpleDateFormat("yyyy-MM-dd").format(date);
             RequestGenerator requestGenerator = new RequestGenerator.Builder()
@@ -74,6 +74,7 @@ public class NewsRepositoryImpl implements NewsRepository {
                     .setLanguage(request.getLanguage())
                     .build();
             requestGenerator.execute(callBack, Constants.NewsType.ALL);
+            callBack.onCompleted();
         } else {
             callBack.onEmit(dataModels);
         }
@@ -83,7 +84,7 @@ public class NewsRepositoryImpl implements NewsRepository {
     public void getRecommendedNews(DataCallBack<List<DataModel>> callBack, Request request) {
         Log.d("NewsRepository", "Got here");
         List<DataModel> dataModels = getRecommendedNews();
-        if (dataModels == null || dataModels.size() == 0 || currentRequest.notEquals(previousRequest)) {
+        if (dataModels == null || dataModels.size() == 0 || request.notEquals(previousRequest)) {
             Date date = new Date();
             String modifiedDate = new SimpleDateFormat("yyyy-MM-dd").format(date);
             Log.d("NewsRepository", request.getSource());

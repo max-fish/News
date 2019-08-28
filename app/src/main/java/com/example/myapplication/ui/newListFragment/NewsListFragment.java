@@ -36,6 +36,7 @@ public class NewsListFragment extends Fragment implements DataCallBack<List<Data
     private Constants.NewsType newsType;
     private RecyclerView recyclerView;
     private PreferencesView preferencesView;
+    private boolean dataLoaded = false;
 
     public NewsListFragment() {
     }
@@ -69,6 +70,9 @@ public class NewsListFragment extends Fragment implements DataCallBack<List<Data
 
         recyclerView = view.findViewById(R.id.list);
 
+        final Animation anim = AnimationUtils.loadAnimation(getContext(), android.R.anim.slide_in_left);
+        anim.setDuration(250);
+
         pullToRefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -81,15 +85,13 @@ public class NewsListFragment extends Fragment implements DataCallBack<List<Data
         // Set the adapter
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
 
-        Animation anim = AnimationUtils.loadAnimation(getContext(), android.R.anim.slide_in_left);
-        anim.setDuration(250);
 
-        recyclerView.setLayoutAnimation(new LayoutAnimationController(anim));
+            recyclerView.setLayoutAnimation(new LayoutAnimationController(anim));
 
 
-        Application.getRepository().submitDefaultRequest(this, newsType);
 
-        addFilterPreferences();
+            Application.getRepository().submitDefaultRequest(this, newsType);
+            addFilterPreferences();
 
         return view;
     }
@@ -102,6 +104,7 @@ public class NewsListFragment extends Fragment implements DataCallBack<List<Data
         preferencesView.addFilterPreference(this, newsType, currentRequest.getSortBy(), FILTER_PREFERENCE_SORT_BY_ID);
         preferencesView.addFilterPreference(this, newsType, currentRequest.getCategory(), FILTER_PREFERENCE_CATEGORY_ID);
     }
+
 
     public RecyclerView getRecyclerView(){
         return recyclerView;
@@ -118,7 +121,7 @@ public class NewsListFragment extends Fragment implements DataCallBack<List<Data
 
     @Override
     public void onCompleted() {
-
+        dataLoaded = true;
     }
 
     @Override

@@ -70,9 +70,6 @@ public class PreferencesView extends LinearLayout {
                         case FILTER_PREFERENCE_SOURCE_ID:
                             Application.getRepository().changeSource(callBack, newsType, "");
                             break;
-                        case FILTER_PREFERENCE_LANGUAGE_ID:
-                            Application.getRepository().changeSource(callBack, newsType, "");
-                            break;
                         case FILTER_PREFERENCE_SORT_BY_ID:
                             Application.getRepository().changeSortBy(callBack, newsType, "");
                             break;
@@ -135,6 +132,10 @@ public class PreferencesView extends LinearLayout {
                 }
             }
         }
+    }
+
+    public void removeAllPreferences(){
+        this.removeAllViews();
     }
 
     private static class FilterPreferenceTextView extends AppCompatTextView {

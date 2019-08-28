@@ -1,8 +1,10 @@
 package com.example.myapplication.ui;
 
+import android.app.Service;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -11,6 +13,7 @@ import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,10 +30,11 @@ import com.example.myapplication.Constants;
 import com.example.myapplication.R;
 import com.example.myapplication.ui.newListFragment.NewsListFragment;
 import com.example.myapplication.ui.preferences.PreferenceDialogFragment;
+import com.example.myapplication.ui.preferences.PreferencesView;
 import com.example.myapplication.ui.preferences.TopHeadlinesPreferenceDialogFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import org.w3c.dom.Text;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -56,9 +60,22 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void runFragment(String tag, Fragment fragment) {
+        PreferencesView preferencesView = findViewById(R.id.filter_selection);
+        if(preferencesView.getChildCount() > 0){
+            preferencesView.removeAllPreferences();
+        }
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.fragment_container, fragment, tag);
+        if(fragmentExists(tag)){
+            Log.d("MainActivity", "fragment exists");
+            fragmentTransaction.replace(R.id.fragment_container, Objects.requireNonNull(fragmentManager.findFragmentByTag(tag)),
+                    tag);
+        }
+        else{
+            Log.d("MainActivity", "DNE");
+            fragmentTransaction.replace(R.id.fragment_container, fragment, tag);
+        }
         fragmentTransaction.addToBackStack(tag);
+        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         fragmentTransaction.commit();
     }
 
@@ -80,7 +97,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         setContentView(R.layout.activity_main);
-
 
         Toolbar preferenceToolbar = findViewById(R.id.preference_toolbar);
         setSupportActionBar(preferenceToolbar);
@@ -134,6 +150,11 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         return true;
+    }
+
+    private boolean fragmentExists(String tag){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        return (fragmentManager.findFragmentByTag(tag) != null);
     }
 
     private void clearStack(FragmentManager fragmentManager) {

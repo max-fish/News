@@ -36,4 +36,5 @@
     <string name="sign_out_button_text">Sign Out</string>
     <string name="channel_name">new news notification</string>
     <string name="channel_description">used when there is breaking news to be delivered</string>
+    <string name="make_fake_news_button_title">Make fake news</string>
 </resources>
