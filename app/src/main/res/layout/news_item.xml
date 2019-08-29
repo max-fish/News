@@ -17,7 +17,7 @@
         android:layout_marginTop="1dp"
         android:layout_marginBottom="1dp"
         android:contentDescription="The image representing the article"
-        app:layout_constraintBottom_toBottomOf="@+id/news_item_description"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,7 +30,7 @@
         android:layout_marginTop="8dp"
         android:maxLines="2"
         android:textAppearance="?attr/textAppearanceListItem"
-        android:paddingRight="8dp"
+        android:paddingEnd="8dp"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/news_item_image"

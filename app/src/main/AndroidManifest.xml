@@ -2,11 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.myapplication">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
-    <uses-feature android:name="android.hardware.camera2"
-        android:required="true" />
-
     <application
         android:name=".Application"
         android:allowBackup="true"
@@ -14,6 +9,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true">
+        <activity android:name=".ui.FakeNews"
+            android:label="Fake News"
+            android:theme="@style/AppTheme"/>
         <activity
             android:name=".ui.SplashActivity"
             android:theme="@style/splashScreen">
@@ -40,7 +38,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme" />
 
-        <service android:name=".MyFirebaseMessagingService"
+        <service
+            android:name=".MyFirebaseMessagingService"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -49,5 +48,12 @@
             </intent-filter>
         </service>
     </application>
+    <uses-feature
+        android:name="android.hardware.camera2"
+        android:required="true" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
 </manifest>
