@@ -23,14 +23,14 @@ import java.util.List;
 
 public class SplashActivity extends AppCompatActivity {
 
-
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
-        FirebaseDatabase.getInstance().getReference("user").child("article").keepSynced(true);
+        mAuth = FirebaseAuth.getInstance();
+
+
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_splash);
@@ -54,6 +54,7 @@ public class SplashActivity extends AppCompatActivity {
             if(user == null){
                 Log.d("SplashActivity", "there is no user");
                 Intent loginIntent = new Intent(this, LoginActivity.class);
+                loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(loginIntent);
             }
             else{
@@ -64,7 +65,7 @@ public class SplashActivity extends AppCompatActivity {
                 final Intent mainIntent = new Intent(this, MainActivity.class);
                 mainIntent.putExtra("userName", user.getDisplayName());
                 mainIntent.putExtra("isFromLogin", false);
-                mainIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 Application.getRepository().getRecommendedNews(new DataCallBack<List<DataModel>>() {
                     @Override
                     public void onEmit(List<DataModel> data) {
@@ -88,4 +89,12 @@ public class SplashActivity extends AppCompatActivity {
                 }, Constants.DEFAULT_REQUEST);
             }
         }
+
+    @Override
+    protected void onResume() {
+        Log.d("SplashActivity", "resumed");
+        super.onResume();
+        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+        updateUI(firebaseUser);
     }
+}

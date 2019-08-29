@@ -1,6 +1,5 @@
 package com.example.myapplication.ui;
 
-import android.app.Service;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -13,7 +12,6 @@ import android.view.Window;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -36,7 +34,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.Objects;
 
+
+
 public class MainActivity extends AppCompatActivity {
+    private BottomNavigationView navView;
+    private String currentFragmentTag;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -76,6 +78,7 @@ public class MainActivity extends AppCompatActivity {
         }
         fragmentTransaction.addToBackStack(tag);
         fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        currentFragmentTag = tag;
         fragmentTransaction.commit();
     }
 
@@ -104,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentManager = getSupportFragmentManager();
 
-        BottomNavigationView navView = findViewById(R.id.nav_view);
+        navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         mainLayout = findViewById(R.id.main_layout);
@@ -116,22 +119,21 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, NewsListFragment.newInstance(Constants.NewsType.RECOMMENDED), getString(R.string.top_headline_fragment_name));
-        fragmentTransaction.addToBackStack(getString(R.string.top_headline_fragment_name));
+        currentFragmentTag = getString(R.string.top_headline_fragment_name);
         fragmentTransaction.commit();
 
 
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+   public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.preferences, menu);
 
         SearchView searchItem = (SearchView) menu.findItem(R.id.action_search).getActionView();
 
         searchItem.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            String fragmentTag = findFirstFragmentOfStack(getSupportFragmentManager()).getName();
-            Fragment currentFragment = getSupportFragmentManager().findFragmentByTag(fragmentTag);
+            Fragment currentFragment = getSupportFragmentManager().findFragmentByTag(currentFragmentTag);
 
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -163,40 +165,34 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private FragmentManager.BackStackEntry findFirstFragmentOfStack(FragmentManager fragmentManager) {
-        return fragmentManager.getBackStackEntryAt(fragmentManager.getBackStackEntryCount() - 1);
-    }
-
-    /*@Override
+    @Override
     public void onBackPressed() {
-        if (findFirstFragmentOfStack(fragmentManager).getName().equals(getString(R.string.top_headline_fragment_name))) {
+        if (currentFragmentTag.equals(getString(R.string.top_headline_fragment_name))) {
             Log.d("MainActivity", "home");
             //clearStack(fragmentManager);
             super.onBackPressed();
         } else {
             Log.d("MainActivity", "not home");
-            clearStack(fragmentManager);
             navView.setSelectedItemId(R.id.news_recommended);
         }
-    }*/
+    }
 
     public boolean openSettings(MenuItem item) {
         FragmentManager fm = getSupportFragmentManager();
-        FragmentManager.BackStackEntry fragment = findFirstFragmentOfStack(fragmentManager);
-        if (fragment.getName().equals(getString(R.string.top_headline_fragment_name))) {
+        if (currentFragmentTag.equals(getString(R.string.top_headline_fragment_name))) {
             TopHeadlinesPreferenceDialogFragment topHeadlinesPreferenceDialogFragment =
                     TopHeadlinesPreferenceDialogFragment.newInstance();
             Bundle settingsBundle = new Bundle();
-            settingsBundle.putString(getString(R.string.fragment_name_key), fragment.getName());
+            settingsBundle.putString(getString(R.string.fragment_name_key), currentFragmentTag);
             topHeadlinesPreferenceDialogFragment.setArguments(settingsBundle);
             topHeadlinesPreferenceDialogFragment.show(fm, getString(R.string.preferences_fragment));
             return true;
         }
-        if (fragment.getName().equals(getString(R.string.all_fragment_name))) {
+        if (currentFragmentTag.equals(getString(R.string.all_fragment_name))) {
             PreferenceDialogFragment preferenceDialogFragment =
                     PreferenceDialogFragment.newInstance();
             Bundle settingsBundle = new Bundle();
-            settingsBundle.putString(getString(R.string.fragment_name_key), fragment.getName());
+            settingsBundle.putString(getString(R.string.fragment_name_key), currentFragmentTag);
             preferenceDialogFragment.setArguments(settingsBundle);
             preferenceDialogFragment.show(fm, getString(R.string.preferences_fragment));
             return true;

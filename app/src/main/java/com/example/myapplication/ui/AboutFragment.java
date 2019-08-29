@@ -3,6 +3,7 @@ package com.example.myapplication.ui;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -41,7 +43,7 @@ public class AboutFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        Button uploadImageButton = view.findViewById(R.id.upload_image_button);
+        ImageButton uploadImageButton = view.findViewById(R.id.upload_image_button);
         uploadedImage = view.findViewById(R.id.user_image_upload);
         uploadImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,7 +52,7 @@ public class AboutFragment extends Fragment {
                 startActivityForResult(galleryIntent, LOAD_IMAGE);
             }
         });
-        Button useCameraButton = view.findViewById(R.id.user_camera_button);
+        ImageButton useCameraButton = view.findViewById(R.id.user_camera_button);
         useCameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

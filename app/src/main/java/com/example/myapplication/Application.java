@@ -7,6 +7,7 @@ import android.os.Build;
 
 import com.example.myapplication.data.repository.NewsRepository;
 import com.example.myapplication.data.repository.NewsRepositoryImpl;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 public class Application extends android.app.Application {
@@ -49,6 +50,9 @@ public class Application extends android.app.Application {
     public void onCreate() {
         super.onCreate();
         FirebaseMessaging.getInstance().subscribeToTopic("test");
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        FirebaseDatabase.getInstance().getReference("user").child("article").keepSynced(true);
+
         createNotificationChannel();
         newsRepository = new NewsRepositoryImpl();
     }
