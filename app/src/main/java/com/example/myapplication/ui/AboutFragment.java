@@ -24,7 +24,7 @@ public class AboutFragment extends Fragment {
         makeFakeNews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent makeFakeNewsIntent = new Intent(getActivity(), FakeNews.class);
+                Intent makeFakeNewsIntent = new Intent(getActivity(), FakeNewsActivity.class);
                 startActivity(makeFakeNewsIntent);
             }
         });

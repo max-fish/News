@@ -37,4 +37,5 @@
     <string name="channel_name">new news notification</string>
     <string name="channel_description">used when there is breaking news to be delivered</string>
     <string name="make_fake_news_button_title">Make fake news</string>
+    <string name="fake_news_transition_name">fakeNews</string>
 </resources>

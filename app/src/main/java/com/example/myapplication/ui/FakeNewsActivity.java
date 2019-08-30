@@ -2,7 +2,9 @@ package com.example.myapplication.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityOptionsCompat;
 
+import android.graphics.drawable.BitmapDrawable;
 import android.text.TextUtils;
 import android.transition.Slide;
 
@@ -11,11 +13,9 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -25,12 +25,13 @@ import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Objects;
 
-public class FakeNews extends AppCompatActivity {
+public class FakeNewsActivity extends AppCompatActivity {
 
-    private EditText title;
+    private TextInputLayout title;
 
     private EditText description;
 
@@ -44,6 +45,8 @@ public class FakeNews extends AppCompatActivity {
 
     private ImageView uploadedImage;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Slide slideIn = new Slide();
@@ -55,7 +58,7 @@ public class FakeNews extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-    title = findViewById(R.id.user_input_title);
+    title = findViewById(R.id.title_text_input_layout);
     description = findViewById(R.id.user_input_description);
     content = findViewById(R.id.user_input_content);
         Button submitButton = findViewById(R.id.submit_button);
@@ -84,24 +87,22 @@ public class FakeNews extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if(TextUtils.isEmpty(title.getText().toString()) || TextUtils.isEmpty(description.getText().toString())){
+            if(TextUtils.isEmpty(Objects.requireNonNull(title.getEditText()).getText().toString()) || TextUtils.isEmpty(description.getText().toString())){
                 Snackbar.make(findViewById(R.id.fake_news_activity), "Please enter a title and a description", Snackbar.LENGTH_SHORT).show();
             }
             else {
-                View fakeNewsView = getLayoutInflater().inflate(R.layout.news_item, fakeNewsContainer, false);
-                TextView fakeTitle = fakeNewsView.findViewById(R.id.news_item_title);
-                fakeTitle.setText(title.getText().toString());
+                Intent madeFakeNewsIntent = new Intent(FakeNewsActivity.this, MadeFakeNews.class);
+                madeFakeNewsIntent.putExtra("fakeNewsTitle", title.getEditText().getText().toString());
+                ActivityOptionsCompat options = ActivityOptionsCompat
+                        .makeSceneTransitionAnimation(FakeNewsActivity.this, title, getString(R.string.fake_news_transition_name));
+                startActivity(madeFakeNewsIntent, options.toBundle());
 
-                TextView fakeDescription = fakeNewsView.findViewById(R.id.news_item_description);
-                fakeDescription.setText(description.getText().toString());
-
-                ImageView fakeImage = fakeNewsView.findViewById(R.id.news_item_image);
-                fakeImage.setImageDrawable(uploadedImage.getDrawable());
-                fakeNewsContainer.addView(fakeNewsView);
             }
         }
     });
 }
+
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -109,14 +110,15 @@ public class FakeNews extends AppCompatActivity {
         if(requestCode == LOAD_IMAGE && resultCode == RESULT_OK && data != null){
             Uri selectedImage = data.getData();
             uploadedImage.setImageURI(selectedImage);
-            uploadedImage.setBackground(null);
-
+            BitmapDrawable drawable = (BitmapDrawable) uploadedImage.getDrawable();
+            Bitmap bitmap = drawable.getBitmap();
+            uploadedImage.setImageBitmap(ImageUtils.getRoundedCornerBitmap(bitmap, 80, 80,80,80,80,80,80,80));
         }
         if(requestCode == USE_CAMERA && resultCode == RESULT_OK && data != null){
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) Objects.requireNonNull(extras).get("data");
-            uploadedImage.setImageBitmap(imageBitmap);
-            uploadedImage.setBackground(null);
+            Bitmap roundedBitmap = ImageUtils.getRoundedCornerBitmap(imageBitmap, 80, 80,80,80,80,80,80,80);
+            uploadedImage.setImageBitmap(roundedBitmap);
         }
     }
 
@@ -128,24 +130,5 @@ public class FakeNews extends AppCompatActivity {
         } else {
             return super.onOptionsItemSelected(item);
         }
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        Log.d("FakeNews", "saving");
-        outState.putString("titleText", title.getText().toString());
-        outState.putString("descriptionText", description.getText().toString());
-        outState.putString("contentText", content.getText().toString());
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-        Log.d("FakeNews", "restoring");
-        super.onRestoreInstanceState(savedInstanceState);
-            title.setText(savedInstanceState.getString("titleText", ""));
-            description.setText(savedInstanceState.getString("descriptionText", ""));
-            content.setText(savedInstanceState.getString("contentText", ""));
-
     }
 }
