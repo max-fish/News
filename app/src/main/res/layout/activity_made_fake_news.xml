@@ -22,7 +22,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/text_margin"
-                android:transitionName="@string/fake_news_transition_name"
+                android:transitionName="@string/fake_news_transition_title"
                 android:fontFamily="@font/ubuntu_b"
                 android:textSize="36sp"
                 tools:text="title"
@@ -30,14 +30,16 @@
                 android:background="@null"/>
 
             <ImageView
-                android:id="@+id/detail_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/finished_fake_news_image"
+                android:layout_width="150dp"
+                android:layout_height="100dp"
+                android:scaleType="centerCrop"
+                android:transitionName="@string/fake_news_transition_image"
                 />
 
-            <TextView
-                android:id="@+id/detail_description"
-                android:layout_width="match_parent"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/finished_fake_news_description"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="8dp"
@@ -46,7 +48,9 @@
                 android:textColor="#000000"
                 android:textSize="15sp"
                 android:fontFamily="@font/ubuntu_r"
-                tools:text="description" />
+                tools:text="description"
+                android:transitionName="@string/fake_news_transition_description"
+                android:background="@null" />
 
             <View
                 android:layout_width="match_parent"
@@ -56,9 +60,9 @@
                 android:layout_marginEnd="16dp" />
 
 
-            <TextView
-                android:id="@+id/detail_content"
-                android:layout_width="match_parent"
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/finished_fake_news_Content"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
@@ -66,7 +70,9 @@
                 android:fontFamily="@font/ubuntu_r"
                 android:textColor="#000000"
                 android:textSize="15sp"
-                tools:text="content" />
+                tools:text="content"
+                android:transitionName="@string/fake_news_transition_content"
+                android:background="@null"/>
 
             <TextView
                 android:id="@+id/detail_source"
@@ -76,18 +82,9 @@
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/ubuntu_r"
                 android:textColor="#000000"
-                tools:text="source" />
-
-            <ImageView
-                android:id="@+id/detail_link"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:paddingBottom="8dp"
-                android:textColor="@color/colorPrimary"
-                android:src="@drawable/ic_link_black_24dp"
-                android:layout_gravity="center_horizontal"
-                tools:src="@drawable/ic_link_black_24dp" />
+                tools:text="source"
+                android:text="You"
+                android:layout_marginBottom="@dimen/text_margin"/>
         </LinearLayout>
 
     </ScrollView>

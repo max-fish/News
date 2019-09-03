@@ -11,6 +11,7 @@ import android.view.animation.LayoutAnimationController;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,7 +37,6 @@ public class NewsListFragment extends Fragment implements DataCallBack<List<Data
     private Constants.NewsType newsType;
     private RecyclerView recyclerView;
     private PreferencesView preferencesView;
-    private boolean dataLoaded = false;
 
     public NewsListFragment() {
     }
@@ -66,9 +66,10 @@ public class NewsListFragment extends Fragment implements DataCallBack<List<Data
 
         final SwipeRefreshLayout pullToRefresh = view.findViewById(R.id.pull_to_refresh);
 
-        preferencesView = Objects.requireNonNull(getActivity()).findViewById(R.id.filter_selection);
+        preferencesView = view.findViewById(R.id.filter_selection);
 
         recyclerView = view.findViewById(R.id.list);
+
 
         final Animation anim = AnimationUtils.loadAnimation(getContext(), android.R.anim.slide_in_left);
         anim.setDuration(250);
@@ -84,16 +85,20 @@ public class NewsListFragment extends Fragment implements DataCallBack<List<Data
         Log.d("NewsListFragment", "onCreateView");
         // Set the adapter
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
-
-
-            recyclerView.setLayoutAnimation(new LayoutAnimationController(anim));
-
-
-
-            Application.getRepository().submitDefaultRequest(this, newsType);
-            addFilterPreferences();
-
+        recyclerView.setLayoutAnimation(new LayoutAnimationController(anim));
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if(newsType == Constants.NewsType.RECOMMENDED) {
+            Application.getRepository().submitDefaultRequest(this, Constants.NewsType.RECOMMENDED);
+        }
+        else{
+            Application.getRepository().submitDefaultRequest(this, Constants.NewsType.ALL);
+        }
+        addFilterPreferences();
     }
 
     private void addFilterPreferences() {
@@ -121,7 +126,7 @@ public class NewsListFragment extends Fragment implements DataCallBack<List<Data
 
     @Override
     public void onCompleted() {
-        dataLoaded = true;
+
     }
 
     @Override

@@ -28,16 +28,13 @@ import com.example.myapplication.Constants;
 import com.example.myapplication.R;
 import com.example.myapplication.ui.newListFragment.NewsListFragment;
 import com.example.myapplication.ui.preferences.PreferenceDialogFragment;
-import com.example.myapplication.ui.preferences.PreferencesView;
 import com.example.myapplication.ui.preferences.TopHeadlinesPreferenceDialogFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.Objects;
 
 
-
 public class MainActivity extends AppCompatActivity {
-    private BottomNavigationView navView;
     private String currentFragmentTag;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -47,13 +44,13 @@ public class MainActivity extends AppCompatActivity {
 
             switch (item.getItemId()) {
                 case R.id.news_recommended:
-                    runFragment(getString(R.string.top_headline_fragment_name), NewsListFragment.newInstance(Constants.NewsType.RECOMMENDED));
+                    runFragment(getString(R.string.top_headline_fragment_name));
                     return true;
                 case R.id.news_all:
-                    runFragment(getString(R.string.all_fragment_name), NewsListFragment.newInstance(Constants.NewsType.ALL));
+                    runFragment(getString(R.string.all_fragment_name));
                     return true;
                 case R.id.about_us:
-                    runFragment(getString(R.string.about_fragment_name), new AboutFragment());
+                    runFragment(getString(R.string.about_fragment_name));
                     return true;
             }
             return false;
@@ -61,23 +58,24 @@ public class MainActivity extends AppCompatActivity {
     };
 
 
-    private void runFragment(String tag, Fragment fragment) {
-        PreferencesView preferencesView = findViewById(R.id.filter_selection);
-        if(preferencesView.getChildCount() > 0){
-            preferencesView.removeAllPreferences();
-        }
+    private void runFragment(String tag) {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        if(fragmentExists(tag)){
-            Log.d("MainActivity", "fragment exists");
-            fragmentTransaction.replace(R.id.fragment_container, Objects.requireNonNull(fragmentManager.findFragmentByTag(tag)),
-                    tag);
+        Fragment intendedFragment = fragmentManager.findFragmentByTag(tag);
+        if(intendedFragment != null){
+            fragmentTransaction.hide(Objects.requireNonNull(fragmentManager.findFragmentByTag(currentFragmentTag)));
+            fragmentTransaction.show(intendedFragment);
         }
         else{
-            Log.d("MainActivity", "DNE");
-            fragmentTransaction.replace(R.id.fragment_container, fragment, tag);
+            if(tag.equals(getString(R.string.top_headline_fragment_name))) {
+                fragmentTransaction.add(R.id.fragment_container, NewsListFragment.newInstance(Constants.NewsType.RECOMMENDED), tag);
+            }
+            else if(tag.equals(getString(R.string.all_fragment_name))){
+                fragmentTransaction.add(R.id.fragment_container, NewsListFragment.newInstance(Constants.NewsType.ALL), tag);
+            }
+            else if(tag.equals(getString(R.string.about_fragment_name))){
+                fragmentTransaction.add(R.id.fragment_container, new AboutFragment(), tag);
+            }
         }
-        fragmentTransaction.addToBackStack(tag);
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
         currentFragmentTag = tag;
         fragmentTransaction.commit();
     }
@@ -107,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentManager = getSupportFragmentManager();
 
-        navView = findViewById(R.id.nav_view);
+        BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         mainLayout = findViewById(R.id.main_layout);
@@ -154,12 +152,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    private boolean fragmentExists(String tag){
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        return (fragmentManager.findFragmentByTag(tag) != null);
-    }
-
-    private void clearStack(FragmentManager fragmentManager) {
+    private void clearStack() {
         for (int i = 0; i < fragmentManager.getBackStackEntryCount(); i++) {
             fragmentManager.popBackStack();
         }
@@ -168,34 +161,36 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         if (currentFragmentTag.equals(getString(R.string.top_headline_fragment_name))) {
-            Log.d("MainActivity", "home");
-            //clearStack(fragmentManager);
             super.onBackPressed();
         } else {
-            Log.d("MainActivity", "not home");
-            navView.setSelectedItemId(R.id.news_recommended);
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.hide(fragmentManager.findFragmentByTag(currentFragmentTag));
+            fragmentTransaction.show(fragmentManager.findFragmentByTag(getString(R.string.top_headline_fragment_name)));
+            currentFragmentTag = getString(R.string.top_headline_fragment_name);
+            fragmentTransaction.commit();
         }
     }
 
     public boolean openSettings(MenuItem item) {
-        FragmentManager fm = getSupportFragmentManager();
-        if (currentFragmentTag.equals(getString(R.string.top_headline_fragment_name))) {
-            TopHeadlinesPreferenceDialogFragment topHeadlinesPreferenceDialogFragment =
-                    TopHeadlinesPreferenceDialogFragment.newInstance();
-            Bundle settingsBundle = new Bundle();
-            settingsBundle.putString(getString(R.string.fragment_name_key), currentFragmentTag);
-            topHeadlinesPreferenceDialogFragment.setArguments(settingsBundle);
-            topHeadlinesPreferenceDialogFragment.show(fm, getString(R.string.preferences_fragment));
-            return true;
-        }
-        if (currentFragmentTag.equals(getString(R.string.all_fragment_name))) {
-            PreferenceDialogFragment preferenceDialogFragment =
-                    PreferenceDialogFragment.newInstance();
-            Bundle settingsBundle = new Bundle();
-            settingsBundle.putString(getString(R.string.fragment_name_key), currentFragmentTag);
-            preferenceDialogFragment.setArguments(settingsBundle);
-            preferenceDialogFragment.show(fm, getString(R.string.preferences_fragment));
-            return true;
+        if(item.getItemId() == R.id.action_settings) {
+            if (currentFragmentTag.equals(getString(R.string.top_headline_fragment_name))) {
+                TopHeadlinesPreferenceDialogFragment topHeadlinesPreferenceDialogFragment =
+                        TopHeadlinesPreferenceDialogFragment.newInstance();
+                Bundle settingsBundle = new Bundle();
+                settingsBundle.putString(getString(R.string.fragment_name_key), currentFragmentTag);
+                topHeadlinesPreferenceDialogFragment.setArguments(settingsBundle);
+                topHeadlinesPreferenceDialogFragment.show(fragmentManager, getString(R.string.preferences_fragment));
+                return true;
+            }
+            if (currentFragmentTag.equals(getString(R.string.all_fragment_name))) {
+                PreferenceDialogFragment preferenceDialogFragment =
+                        PreferenceDialogFragment.newInstance();
+                Bundle settingsBundle = new Bundle();
+                settingsBundle.putString(getString(R.string.fragment_name_key), currentFragmentTag);
+                preferenceDialogFragment.setArguments(settingsBundle);
+                preferenceDialogFragment.show(fragmentManager, getString(R.string.preferences_fragment));
+                return true;
+            }
         }
         return false;
     }

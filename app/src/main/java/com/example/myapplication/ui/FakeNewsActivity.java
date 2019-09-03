@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityOptionsCompat;
 
+import android.app.ActivityOptions;
 import android.graphics.drawable.BitmapDrawable;
 import android.text.TextUtils;
 import android.transition.Slide;
@@ -13,6 +14,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Pair;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,17 +27,18 @@ import android.widget.TextView;
 
 import com.example.myapplication.R;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
 import java.util.Objects;
 
 public class FakeNewsActivity extends AppCompatActivity {
 
-    private TextInputLayout title;
+    private TextInputEditText title;
 
-    private EditText description;
+    private TextInputEditText description;
 
-    private EditText content;
+    private TextInputEditText content;
 
     private LinearLayout fakeNewsContainer;
 
@@ -58,7 +61,7 @@ public class FakeNewsActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-    title = findViewById(R.id.title_text_input_layout);
+    title = findViewById(R.id.user_input_title);
     description = findViewById(R.id.user_input_description);
     content = findViewById(R.id.user_input_content);
         Button submitButton = findViewById(R.id.submit_button);
@@ -87,14 +90,25 @@ public class FakeNewsActivity extends AppCompatActivity {
         submitButton.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            if(TextUtils.isEmpty(Objects.requireNonNull(title.getEditText()).getText().toString()) || TextUtils.isEmpty(description.getText().toString())){
+            if(TextUtils.isEmpty(Objects.requireNonNull(title).getText().toString()) || TextUtils.isEmpty(description.getText().toString())){
                 Snackbar.make(findViewById(R.id.fake_news_activity), "Please enter a title and a description", Snackbar.LENGTH_SHORT).show();
             }
             else {
                 Intent madeFakeNewsIntent = new Intent(FakeNewsActivity.this, MadeFakeNews.class);
-                madeFakeNewsIntent.putExtra("fakeNewsTitle", title.getEditText().getText().toString());
-                ActivityOptionsCompat options = ActivityOptionsCompat
-                        .makeSceneTransitionAnimation(FakeNewsActivity.this, title, getString(R.string.fake_news_transition_name));
+                madeFakeNewsIntent.putExtra("fakeNewsTitle", title.getText().toString());
+                madeFakeNewsIntent.putExtra("fakeNewsDescription", description.getText().toString());
+                madeFakeNewsIntent.putExtra("fakeNewsContent", content.getText().toString());
+                madeFakeNewsIntent.putExtra("fakeNewsImage", ((BitmapDrawable) uploadedImage.getDrawable()).getBitmap());
+                Pair<View, String> titlePair = Pair.create((View) title, getString(R.string.fake_news_transition_title));
+                Pair<View, String> descriptionPair = Pair.create((View) description, getString(R.string.fake_news_transition_description));
+                Pair<View, String> contentPair = Pair.create((View) content, getString(R.string.fake_news_transition_content));
+                Pair<View, String> imagePair = Pair.create((View) uploadedImage, getString(R.string.fake_news_transition_image));
+                ActivityOptions options = ActivityOptions
+                        .makeSceneTransitionAnimation(FakeNewsActivity.this,
+                                titlePair,
+                                descriptionPair,
+                                contentPair,
+                                imagePair);
                 startActivity(madeFakeNewsIntent, options.toBundle());
 
             }

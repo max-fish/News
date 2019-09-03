@@ -30,17 +30,10 @@ public class SplashActivity extends AppCompatActivity {
         getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         mAuth = FirebaseAuth.getInstance();
 
-
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_splash);
         Log.d("SplashActivity", "onCreate");
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                start();
-            }
-        }).start();
+        start();
     }
 
     private void start() {
@@ -50,51 +43,21 @@ public class SplashActivity extends AppCompatActivity {
     }
 
 
-    private void updateUI(FirebaseUser user){
-            if(user == null){
-                Log.d("SplashActivity", "there is no user");
-                Intent loginIntent = new Intent(this, LoginActivity.class);
-                loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                startActivity(loginIntent);
-            }
-            else{
-                Log.d("SplashActivity", "there is a user");
-                Fade fadeOut = new Fade(Fade.MODE_OUT);
-                fadeOut.setDuration(2000);
-                getWindow().setExitTransition(fadeOut);
-                final Intent mainIntent = new Intent(this, MainActivity.class);
-                mainIntent.putExtra("userName", user.getDisplayName());
-                mainIntent.putExtra("isFromLogin", false);
-                mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                Application.getRepository().getRecommendedNews(new DataCallBack<List<DataModel>>() {
-                    @Override
-                    public void onEmit(List<DataModel> data) {
-
-                    }
-
-                    @Override
-                    public void onCompleted() {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                startActivity(mainIntent, ActivityOptions.makeSceneTransitionAnimation(SplashActivity.this).toBundle());
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onError(Throwable throwable) {
-
-                    }
-                }, Constants.DEFAULT_REQUEST);
-            }
+    private void updateUI(FirebaseUser user) {
+        if (user == null) {
+            Log.d("SplashActivity", "there is no user");
+            Intent loginIntent = new Intent(this, LoginActivity.class);
+            startActivity(loginIntent);
+        } else {
+            Log.d("SplashActivity", "there is a user");
+            Fade fadeOut = new Fade(Fade.MODE_OUT);
+            fadeOut.setDuration(2000);
+            getWindow().setExitTransition(fadeOut);
+            final Intent mainIntent = new Intent(this, MainActivity.class);
+            mainIntent.putExtra("userName", user.getDisplayName());
+            mainIntent.putExtra("isFromLogin", false);
+            startActivity(mainIntent, ActivityOptions.makeSceneTransitionAnimation(SplashActivity.this).toBundle());
         }
-
-    @Override
-    protected void onResume() {
-        Log.d("SplashActivity", "resumed");
-        super.onResume();
-        FirebaseUser firebaseUser = mAuth.getCurrentUser();
-        updateUI(firebaseUser);
+        finish();
     }
 }
