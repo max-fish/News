@@ -95,9 +95,15 @@ public class LoginActivity extends AppCompatActivity
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == Activity.RESULT_OK && requestCode == RC_SIGN_IN) {
-            Log.d("LoginActivity","signed in");
+            Log.d("LoginActivity","onActivityResult:signed in");
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             handleSignInResult(task);
+        }else if(resultCode == Activity.RESULT_CANCELED && requestCode == RC_SIGN_IN){
+            Toast.makeText(this, "Auth fail", Toast.LENGTH_LONG).show();
+            progressBar.setVisibility(View.GONE);
+            Log.d("LoginActivity","onActivityResult:fail");
+            Log.d("LoginActivity","onActivityResult:resultCode="+resultCode);
+            Log.d("LoginActivity","onActivityResult:requestCode="+requestCode);
         }
     }
 
