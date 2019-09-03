@@ -31,10 +31,12 @@
 
             <ImageView
                 android:id="@+id/finished_fake_news_image"
-                android:layout_width="150dp"
-                android:layout_height="100dp"
-                android:scaleType="centerCrop"
+                android:layout_width="380dp"
+                android:layout_height="wrap_content"
                 android:transitionName="@string/fake_news_transition_image"
+                android:layout_gravity="center"
+                android:scaleType="fitXY"
+                android:adjustViewBounds="true"
                 />
 
             <com.google.android.material.textfield.TextInputEditText
@@ -83,7 +85,7 @@
                 android:fontFamily="@font/ubuntu_r"
                 android:textColor="#000000"
                 tools:text="source"
-                android:text="You"
+                android:text="Source: You"
                 android:layout_marginBottom="@dimen/text_margin"/>
         </LinearLayout>
 

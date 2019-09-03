@@ -183,7 +183,7 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
             Picasso
                     .get()
                     .load(currentUser.getPhotoUrl())
-                    .transform(new CircleTransform(radius, 0))
+                    .transform(new CircleTransform(radius, radius, radius, radius, radius, radius, radius, radius))
                     .into(profilePicture);
             profileName.setText(currentUser.getDisplayName());
             profileEmail.setText(currentUser.getEmail());

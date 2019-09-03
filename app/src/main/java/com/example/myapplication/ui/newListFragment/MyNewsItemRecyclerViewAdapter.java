@@ -80,7 +80,7 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
             Picasso
                     .get()
                     .load(url)
-                    .transform(new CircleTransform(radius, 0))
+                    .transform(new CircleTransform(radius, radius, 0, 0, 0, 0, radius, radius))
                     .resizeDimen(R.dimen.news_item_pic_width, R.dimen.news_item_height)
                     .centerCrop()
                     .into(imageView);

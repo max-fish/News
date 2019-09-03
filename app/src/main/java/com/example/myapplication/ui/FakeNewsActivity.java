@@ -26,9 +26,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.ui.newListFragment.CircleTransform;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
 
@@ -48,6 +50,10 @@ public class FakeNewsActivity extends AppCompatActivity {
     private static final int USE_CAMERA = 1;
 
     private ImageView uploadedImage;
+
+    private Uri uploadedImageUri;
+
+    private float radius;
 
 
     @Override
@@ -70,6 +76,7 @@ public class FakeNewsActivity extends AppCompatActivity {
 
         ImageButton uploadImageButton = findViewById(R.id.upload_image_button);
         uploadedImage = findViewById(R.id.user_image_upload);
+        radius = getResources().getDimension(R.dimen.radius_image);
         uploadImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -114,7 +121,7 @@ public class FakeNewsActivity extends AppCompatActivity {
                     madeFakeNewsIntent.putExtra("fakeNewsTitle", title.getText().toString());
                     madeFakeNewsIntent.putExtra("fakeNewsDescription", description.getText().toString());
                     madeFakeNewsIntent.putExtra("fakeNewsContent", content.getText().toString());
-//                    madeFakeNewsIntent.putExtra("fakeNewsImage", ((BitmapDrawable) uploadedImage.getDrawable()).getBitmap());
+                    madeFakeNewsIntent.putExtra("fakeNewsImageUri", uploadedImageUri.toString());
                     Pair<View, String> titlePair = Pair.create((View) title, getString(R.string.fake_news_transition_title));
                     Pair<View, String> descriptionPair = Pair.create((View) description, getString(R.string.fake_news_transition_description));
                     Pair<View, String> contentPair = Pair.create((View) content, getString(R.string.fake_news_transition_content));
@@ -138,17 +145,16 @@ public class FakeNewsActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == LOAD_IMAGE && resultCode == RESULT_OK && data != null) {
             Uri selectedImage = data.getData();
-//            selectedImage.getPath()
-            uploadedImage.setImageURI(selectedImage);
-            BitmapDrawable drawable = (BitmapDrawable) uploadedImage.getDrawable();
-            Bitmap bitmap = drawable.getBitmap();
-            uploadedImage.setImageBitmap(ImageUtils.getRoundedCornerBitmap(bitmap, 80, 80, 80, 80, 80, 80, 80, 80));
+            Picasso
+                    .get()
+                    .load(selectedImage)
+                    .into(uploadedImage);
+            uploadedImageUri = selectedImage;
         }
         if (requestCode == USE_CAMERA && resultCode == RESULT_OK && data != null) {
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) Objects.requireNonNull(extras).get("data");
-            Bitmap roundedBitmap = ImageUtils.getRoundedCornerBitmap(imageBitmap, 80, 80, 80, 80, 80, 80, 80, 80);
-            uploadedImage.setImageBitmap(roundedBitmap);
+            uploadedImage.setImageBitmap(imageBitmap);
         }
     }
 

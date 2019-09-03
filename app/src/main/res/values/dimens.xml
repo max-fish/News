@@ -6,4 +6,6 @@
     <dimen name="radius_image">20dp</dimen>
     <dimen name="news_item_height">100dp</dimen>
     <dimen name="news_item_pic_width">150dp</dimen>
+    <dimen name="made_fake_news_pic_width">380dp</dimen>
+    <dimen name="made_fake_news_pic_height">100dp</dimen>
 </resources>

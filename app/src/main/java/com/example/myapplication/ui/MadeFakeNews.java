@@ -2,13 +2,13 @@ package com.example.myapplication.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ImageView;
 
 import com.example.myapplication.R;
 import com.google.android.material.textfield.TextInputEditText;
+import com.squareup.picasso.Picasso;
 
 public class MadeFakeNews extends AppCompatActivity {
 
@@ -27,6 +27,10 @@ public class MadeFakeNews extends AppCompatActivity {
         content.setText(getIntent().getStringExtra("fakeNewsContent"));
 
         ImageView image = findViewById(R.id.finished_fake_news_image);
-        image.setImageBitmap((Bitmap) getIntent().getParcelableExtra("fakeNewsImage"));
+
+        Picasso
+                .get()
+                .load(Uri.parse(getIntent().getStringExtra("fakeNewsImageUri")))
+                .into(image);
     }
 }
