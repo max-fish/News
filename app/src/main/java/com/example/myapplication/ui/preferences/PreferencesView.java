@@ -134,10 +134,6 @@ public class PreferencesView extends LinearLayout {
         }
     }
 
-    public void removeAllPreferences(){
-        this.removeAllViews();
-    }
-
     private static class FilterPreferenceTextView extends AppCompatTextView {
         private int type;
         FilterPreferenceTextView(Context context, int type){

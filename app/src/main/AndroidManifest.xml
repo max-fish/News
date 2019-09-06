@@ -4,9 +4,11 @@
     package="com.example.myapplication">
 
     <uses-feature
-        android:name="android.hardware.camera2"
-        android:required="true" />
+        android:name="android.hardware.camera"
+        android:required="false" />
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
 
     <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
 
@@ -22,14 +24,17 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".ui.MadeFakeNews"
             android:label="Made Fake News"
-            android:theme="@style/AppTheme"/>
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.FakeNewsActivity"
             android:label="Fake News"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.SplashActivity"
-            android:theme="@style/splashScreen">
+            android:theme="@style/splashScreen"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -39,7 +44,8 @@
         <activity
             android:name=".ui.LoginActivity"
             android:label="@string/title_activity_login"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.MainActivity"
             android:configChanges="orientation|screenSize|keyboard"
@@ -53,6 +59,16 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
         </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.myapplication.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
 
         <service
             android:name=".MyFirebaseMessagingService"

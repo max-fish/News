@@ -27,7 +27,7 @@
                 android:textSize="36sp"
                 tools:text="title"
                 android:layout_marginStart="@dimen/text_margin"
-                android:background="@null"/>
+                android:background="@null" />
 
             <ImageView
                 android:id="@+id/finished_fake_news_image"

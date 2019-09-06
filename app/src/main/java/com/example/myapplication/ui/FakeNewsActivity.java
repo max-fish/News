@@ -3,9 +3,13 @@ package com.example.myapplication.ui;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityOptionsCompat;
+import androidx.core.content.FileProvider;
 
 import android.app.ActivityOptions;
+import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.transition.Slide;
 
@@ -14,6 +18,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.util.Pair;
 import android.view.Gravity;
 import android.view.MenuItem;
@@ -26,12 +31,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.ui.TextSharedElementTransition.EnterSharedElementCallback;
+import com.example.myapplication.ui.TextSharedElementTransition.TransitionUtils;
 import com.example.myapplication.ui.newListFragment.CircleTransform;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 public class FakeNewsActivity extends AppCompatActivity {
@@ -58,14 +70,20 @@ public class FakeNewsActivity extends AppCompatActivity {
 
     private float radius;
 
+    String currentPhotoPath;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_fake_news);
+
+
         Slide slideIn = new Slide();
         slideIn.setSlideEdge(Gravity.END);
         getWindow().setEnterTransition(slideIn);
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fake_news);
+        getWindow().setSharedElementEnterTransition(TransitionUtils.makeSharedElementEnterTransition(this));
+        setEnterSharedElementCallback(new EnterSharedElementCallback(this));
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -89,46 +107,44 @@ public class FakeNewsActivity extends AppCompatActivity {
             }
         });
         ImageButton useCameraButton = findViewById(R.id.user_camera_button);
-        useCameraButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                    startActivityForResult(takePictureIntent, USE_CAMERA);
+
+        if(!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)){
+            useCameraButton.setClickable(false);
+        }
+
+        else {
+            useCameraButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                        dispatchTakePictureIntent();
+                    }
                 }
-            }
-        });
+            });
+        }
+
 
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 titleLayout.setError(null);
-                //View view1 = null;
-                //boolean isError = false;
 
                     if (TextUtils.isEmpty(Objects.requireNonNull(Objects.requireNonNull(title).getText()).toString())){
                         titleLayout.setError("Please enter a title");
                         titleLayout.setFocusable(true);
-                        //isError = true;
                     }
                     if(TextUtils.isEmpty(Objects.requireNonNull(description.getText()).toString())){
                         descriptionLayout.setError("Please enter a description");
                         descriptionLayout.setFocusable(true);
-                        //isError = true;
                     }
-
-//                    if (isError){
-//
-//                        view1.setFocusable(true);
-//                    }
-
                     else {
                     Intent madeFakeNewsIntent = new Intent(FakeNewsActivity.this, MadeFakeNews.class);
                     madeFakeNewsIntent.putExtra("fakeNewsTitle", title.getText().toString());
                     madeFakeNewsIntent.putExtra("fakeNewsDescription", description.getText().toString());
                     madeFakeNewsIntent.putExtra("fakeNewsContent", content.getText().toString());
-                    if(uploadedImageUri != null) {
-                        madeFakeNewsIntent.putExtra("fakeNewsImageUri", uploadedImageUri.toString());
+                    if(!TextUtils.isEmpty(currentPhotoPath)) {
+                        madeFakeNewsIntent.putExtra("fakeNewsImageUri", currentPhotoPath);
                     }
                     Pair<View, String> titlePair = Pair.create((View) title, getString(R.string.fake_news_transition_title));
                     Pair<View, String> descriptionPair = Pair.create((View) description, getString(R.string.fake_news_transition_description));
@@ -159,15 +175,72 @@ public class FakeNewsActivity extends AppCompatActivity {
                     .into(uploadedImage);
             uploadedImageUri = selectedImage;
         }
-        if (requestCode == USE_CAMERA && resultCode == RESULT_OK && data != null) {
-            Uri takenImage = data.getData();
-
-            Picasso
-                    .get()
-                    .load(takenImage)
-                    .into(uploadedImage);
-            uploadedImageUri = takenImage;
+        if (requestCode == USE_CAMERA && resultCode == RESULT_OK) {
+            setPic();
         }
+    }
+
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,  /* prefix */
+                ".jpg",         /* suffix */
+                storageDir      /* directory */
+        );
+
+        // Save a file: path for use with ACTION_VIEW intents
+        currentPhotoPath = image.getAbsolutePath();
+        return image;
+    }
+
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        // Ensure that there's a camera activity to handle the intent
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            // Create the File where the photo should go
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+                ex.printStackTrace();
+
+            }
+            // Continue only if the File was successfully created
+            if (photoFile != null) {
+                Uri photoURI = FileProvider.getUriForFile(this,
+                        "com.example.myapplication.fileprovider",
+                        photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
+                startActivityForResult(takePictureIntent, USE_CAMERA);
+            }
+        }
+    }
+
+    private void setPic() {
+        // Get the dimensions of the View
+        int targetW = uploadedImage.getWidth();
+        int targetH = uploadedImage.getHeight();
+
+        // Get the dimensions of the bitmap
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+
+        // Determine how much to scale down the image
+        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+
+        // Decode the image file into a Bitmap sized to fill the View
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+
+        Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath, bmOptions);
+        uploadedImage.setImageBitmap(bitmap);
     }
 
     @Override
