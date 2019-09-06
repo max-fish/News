@@ -3,7 +3,6 @@ package com.example.myapplication.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -35,6 +34,7 @@ import java.util.Objects;
 
 
 public class MainActivity extends AppCompatActivity {
+    private BottomNavigationView navView;
     private String currentFragmentTag;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentManager = getSupportFragmentManager();
 
-        BottomNavigationView navView = findViewById(R.id.nav_view);
+        navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         mainLayout = findViewById(R.id.main_layout);
@@ -168,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
             fragmentTransaction.show(fragmentManager.findFragmentByTag(getString(R.string.top_headline_fragment_name)));
             currentFragmentTag = getString(R.string.top_headline_fragment_name);
             fragmentTransaction.commit();
+            navView.setSelectedItemId(R.id.news_recommended);
         }
     }
 

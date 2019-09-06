@@ -24,7 +24,7 @@ import android.widget.Toast;
 import com.example.myapplication.Application;
 import com.example.myapplication.Constants;
 import com.example.myapplication.R;
-import com.example.myapplication.ui.login.LoginActivity;
+import com.example.myapplication.ui.LoginActivity;
 import com.example.myapplication.ui.newListFragment.CircleTransform;
 import com.example.myapplication.ui.newListFragment.MyNewsItemRecyclerViewAdapter;
 import com.example.myapplication.ui.newListFragment.NewsListFragment;
@@ -123,14 +123,10 @@ public class PreferenceDialogFragment extends DialogFragment implements View.OnC
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                                if (Objects.requireNonNull(getActivity()).getIntent().getBooleanExtra("isFromLogin", false)) {
-                                    getActivity().finish();
                                     Toast.makeText(view.getContext(), "signed out", Toast.LENGTH_SHORT).show();
-                                } else {
                                     Intent loginIntent = new Intent(getActivity(), LoginActivity.class);
-                                    startActivity(loginIntent);
-                                    getActivity().finish();
-                                }
+                                Objects.requireNonNull(getActivity()).finish();
+                                startActivity(loginIntent);
                             }
                         });
             }

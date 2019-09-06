@@ -1,50 +1,34 @@
-package com.example.myapplication.ui.login;
+package com.example.myapplication.ui;
 
 import android.app.Activity;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityOptionsCompat;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.transition.Slide;
 import android.util.Log;
-import android.view.KeyEvent;
-import android.view.MotionEvent;
+import android.view.Gravity;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.myapplication.Application;
 import com.example.myapplication.R;
-import com.example.myapplication.ui.MainActivity;
-import com.example.myapplication.ui.SplashActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.internal.BaseGmsClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 public class LoginActivity extends AppCompatActivity
@@ -59,6 +43,10 @@ public class LoginActivity extends AppCompatActivity
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        Slide slideUp = new Slide();
+        slideUp.setSlideEdge(Gravity.BOTTOM);
+        getWindow().setEnterTransition(slideUp);
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -134,8 +122,8 @@ public class LoginActivity extends AppCompatActivity
                             Log.d("LoginActivity", "signInWithCredential:success");
                             Intent mainIntent = new Intent(LoginActivity.this, MainActivity.class);
                             mainIntent.putExtra("userName", acct.getDisplayName());
-                            mainIntent.putExtra("isFromLogin", true);
                             startActivity(mainIntent);
+                            finish();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("LoginActivity", "signInWithCredential:failure", task.getException());

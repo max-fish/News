@@ -9,17 +9,8 @@ import android.transition.Fade;
 import android.util.Log;
 import android.view.Window;
 
-import com.example.myapplication.Application;
-import com.example.myapplication.Constants;
-import com.example.myapplication.R;
-import com.example.myapplication.data.callbacks.DataCallBack;
-import com.example.myapplication.data.model.DataModel;
-import com.example.myapplication.ui.login.LoginActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.List;
 
 public class SplashActivity extends AppCompatActivity {
 
@@ -33,11 +24,7 @@ public class SplashActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         Log.d("SplashActivity", "onCreate");
-        start();
-    }
 
-    private void start() {
-        Log.d("SplashActivity", "started");
         FirebaseUser currentUser = mAuth.getCurrentUser();
         updateUI(currentUser);
     }
@@ -55,7 +42,6 @@ public class SplashActivity extends AppCompatActivity {
             getWindow().setExitTransition(fadeOut);
             final Intent mainIntent = new Intent(this, MainActivity.class);
             mainIntent.putExtra("userName", user.getDisplayName());
-            mainIntent.putExtra("isFromLogin", false);
             startActivity(mainIntent, ActivityOptions.makeSceneTransitionAnimation(SplashActivity.this).toBundle());
         }
         finish();

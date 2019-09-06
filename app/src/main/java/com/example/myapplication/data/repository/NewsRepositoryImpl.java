@@ -74,10 +74,10 @@ public class NewsRepositoryImpl implements NewsRepository {
                     .setLanguage(request.getLanguage())
                     .build();
             requestGenerator.execute(callBack, Constants.NewsType.ALL);
-            callBack.onCompleted();
         } else {
             callBack.onEmit(dataModels);
         }
+        callBack.onCompleted();
     }
 
     @Override
@@ -98,11 +98,11 @@ public class NewsRepositoryImpl implements NewsRepository {
                     .setCategory(request.getCategory())
                     .build();
             requestGenerator.execute(callBack, Constants.NewsType.RECOMMENDED);
-            callBack.onCompleted();
         } else {
             Log.d("NewsRepository", "same old");
             callBack.onEmit(dataModels);
         }
+        callBack.onCompleted();
     }
 
     @Override

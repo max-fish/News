@@ -37,9 +37,12 @@ import java.util.Objects;
 public class FakeNewsActivity extends AppCompatActivity {
 
     private TextInputEditText title;
+
     private TextInputLayout titleLayout;
 
     private TextInputEditText description;
+
+    private TextInputLayout descriptionLayout;
 
     private TextInputEditText content;
 
@@ -70,6 +73,7 @@ public class FakeNewsActivity extends AppCompatActivity {
         title = findViewById(R.id.user_input_title);
         titleLayout = findViewById(R.id.title_text_input_layout);
         description = findViewById(R.id.user_input_description);
+        descriptionLayout = findViewById(R.id.description_text_input_layout);
         content = findViewById(R.id.user_input_content);
         Button submitButton = findViewById(R.id.submit_button);
         fakeNewsContainer = findViewById(R.id.fake_news_container);
@@ -99,29 +103,33 @@ public class FakeNewsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 titleLayout.setError(null);
-                View view1 = null;
-                boolean isError = false;
+                //View view1 = null;
+                //boolean isError = false;
 
-                if (TextUtils.isEmpty(Objects.requireNonNull(title).getText().toString()) || TextUtils.isEmpty(description.getText().toString())) {
-                    Snackbar.make(findViewById(R.id.fake_news_activity), "Please enter a title and a description", Snackbar.LENGTH_SHORT).show();
-                    if (TextUtils.isEmpty(Objects.requireNonNull(title).getText().toString())){
-                        titleLayout.setError("Error");
-                        view1 = title;
-                        isError = true;
+                    if (TextUtils.isEmpty(Objects.requireNonNull(Objects.requireNonNull(title).getText()).toString())){
+                        titleLayout.setError("Please enter a title");
+                        titleLayout.setFocusable(true);
+                        //isError = true;
+                    }
+                    if(TextUtils.isEmpty(Objects.requireNonNull(description.getText()).toString())){
+                        descriptionLayout.setError("Please enter a description");
+                        descriptionLayout.setFocusable(true);
+                        //isError = true;
                     }
 
-                    if (isError){
+//                    if (isError){
+//
+//                        view1.setFocusable(true);
+//                    }
 
-                        view1.setFocusable(true);
-                    }
-
-
-                } else {
+                    else {
                     Intent madeFakeNewsIntent = new Intent(FakeNewsActivity.this, MadeFakeNews.class);
                     madeFakeNewsIntent.putExtra("fakeNewsTitle", title.getText().toString());
                     madeFakeNewsIntent.putExtra("fakeNewsDescription", description.getText().toString());
                     madeFakeNewsIntent.putExtra("fakeNewsContent", content.getText().toString());
-                    madeFakeNewsIntent.putExtra("fakeNewsImageUri", uploadedImageUri.toString());
+                    if(uploadedImageUri != null) {
+                        madeFakeNewsIntent.putExtra("fakeNewsImageUri", uploadedImageUri.toString());
+                    }
                     Pair<View, String> titlePair = Pair.create((View) title, getString(R.string.fake_news_transition_title));
                     Pair<View, String> descriptionPair = Pair.create((View) description, getString(R.string.fake_news_transition_description));
                     Pair<View, String> contentPair = Pair.create((View) content, getString(R.string.fake_news_transition_content));
@@ -152,9 +160,13 @@ public class FakeNewsActivity extends AppCompatActivity {
             uploadedImageUri = selectedImage;
         }
         if (requestCode == USE_CAMERA && resultCode == RESULT_OK && data != null) {
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = (Bitmap) Objects.requireNonNull(extras).get("data");
-            uploadedImage.setImageBitmap(imageBitmap);
+            Uri takenImage = data.getData();
+
+            Picasso
+                    .get()
+                    .load(takenImage)
+                    .into(uploadedImage);
+            uploadedImageUri = takenImage;
         }
     }
 

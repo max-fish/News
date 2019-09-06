@@ -28,9 +28,14 @@ public class MadeFakeNews extends AppCompatActivity {
 
         ImageView image = findViewById(R.id.finished_fake_news_image);
 
-        Picasso
-                .get()
-                .load(Uri.parse(getIntent().getStringExtra("fakeNewsImageUri")))
-                .into(image);
+        String imageUriString = getIntent().getStringExtra("fakeNewsImageUri");
+
+        if(imageUriString != null) {
+            Uri imageUri = Uri.parse(imageUriString);
+            Picasso
+                    .get()
+                    .load(imageUri)
+                    .into(image);
+        }
     }
 }

@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -36,6 +37,7 @@ public class NewsListFragment extends Fragment implements DataCallBack<List<Data
 
     private Constants.NewsType newsType;
     private RecyclerView recyclerView;
+    private ProgressBar progressBar;
     private PreferencesView preferencesView;
 
     public NewsListFragment() {
@@ -68,6 +70,8 @@ public class NewsListFragment extends Fragment implements DataCallBack<List<Data
 
         preferencesView = view.findViewById(R.id.filter_selection);
 
+        progressBar = view.findViewById(R.id.news_progress_bar);
+
         recyclerView = view.findViewById(R.id.list);
 
 
@@ -92,6 +96,7 @@ public class NewsListFragment extends Fragment implements DataCallBack<List<Data
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        //progressBar.setVisibility(View.VISIBLE);
         if(newsType == Constants.NewsType.RECOMMENDED) {
             Application.getRepository().submitDefaultRequest(this, Constants.NewsType.RECOMMENDED);
         }
@@ -126,7 +131,7 @@ public class NewsListFragment extends Fragment implements DataCallBack<List<Data
 
     @Override
     public void onCompleted() {
-
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override
