@@ -2,13 +2,11 @@ package com.example.myapplication.ui;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.content.FileProvider;
 
 import android.app.ActivityOptions;
 import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.transition.Slide;
@@ -18,23 +16,17 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.util.Pair;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.example.myapplication.R;
-import com.example.myapplication.ui.TextSharedElementTransition.EnterSharedElementCallback;
 import com.example.myapplication.ui.TextSharedElementTransition.TransitionUtils;
-import com.example.myapplication.ui.newListFragment.CircleTransform;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.squareup.picasso.Picasso;
@@ -82,8 +74,6 @@ public class FakeNewsActivity extends AppCompatActivity {
         Slide slideIn = new Slide();
         slideIn.setSlideEdge(Gravity.END);
         getWindow().setEnterTransition(slideIn);
-        getWindow().setSharedElementEnterTransition(TransitionUtils.makeSharedElementEnterTransition(this));
-        setEnterSharedElementCallback(new EnterSharedElementCallback(this));
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
@@ -143,6 +133,7 @@ public class FakeNewsActivity extends AppCompatActivity {
                     madeFakeNewsIntent.putExtra("fakeNewsTitle", title.getText().toString());
                     madeFakeNewsIntent.putExtra("fakeNewsDescription", description.getText().toString());
                     madeFakeNewsIntent.putExtra("fakeNewsContent", content.getText().toString());
+                    madeFakeNewsIntent.putExtra("fakeNewsTitleSize", title.getTextSize());
                     if(!TextUtils.isEmpty(currentPhotoPath)) {
                         madeFakeNewsIntent.putExtra("fakeNewsImageUri", currentPhotoPath);
                     }
@@ -156,7 +147,7 @@ public class FakeNewsActivity extends AppCompatActivity {
                                     descriptionPair,
                                     contentPair,
                                     imagePair);
-                    startActivity(madeFakeNewsIntent, options.toBundle());
+                        startActivity(madeFakeNewsIntent, options.toBundle());
 
                 }
             }

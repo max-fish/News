@@ -1,10 +1,8 @@
 package com.example.myapplication.ui.TextSharedElementTransition;
 
-import android.content.Context;
 import android.transition.ChangeBounds;
 import android.transition.Transition;
 import android.transition.TransitionSet;
-import android.util.Log;
 
 import com.example.myapplication.R;
 
@@ -27,25 +25,23 @@ public final class TransitionUtils {
      * and location on screen, (2) gradually increase/decrease the shared element's
      * text size, and (3) gradually alters the shared element's text color through out
      * the transition.
+     * @return
      */
-    public static Transition makeSharedElementEnterTransition(Context context) {
+    public static android.transition.Transition makeSharedElementEnterTransition() {
         TransitionSet set = new TransitionSet();
         set.setOrdering(TransitionSet.ORDERING_TOGETHER);
 
 
         Transition changeBounds = new ChangeBounds();
         changeBounds.addTarget(R.id.user_input_title);
-        changeBounds.addTarget(context.getString(R.string.project_id));
+        //changeBounds.setDuration(500);
         set.addTransition(changeBounds);
 
-        Transition textSize = new TextSizeTransition();
-        textSize.addTarget(R.id.user_input_title);
-        textSize.addTarget(context.getString(R.string.project_id));
-        set.addTransition(textSize);
+        Transition changeSize = new TextSizeTransition();
+        changeSize.addTarget(R.id.user_input_title);
+        //changeSize.setDuration(500);
+        set.addTransition(changeSize);
 
         return set;
-    }
-
-    private TransitionUtils() {
     }
 }

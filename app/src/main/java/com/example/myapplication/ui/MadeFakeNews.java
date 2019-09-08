@@ -2,16 +2,24 @@ package com.example.myapplication.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.SharedElementCallback;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
+import android.util.TypedValue;
+import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.myapplication.R;
+import com.example.myapplication.ui.TextSharedElementTransition.TransitionUtils;
 import com.google.android.material.textfield.TextInputEditText;
+
+import java.util.List;
 
 public class MadeFakeNews extends AppCompatActivity {
 
@@ -23,17 +31,36 @@ public class MadeFakeNews extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_made_fake_news);
+        getWindow().setSharedElementEnterTransition(TransitionUtils.makeSharedElementEnterTransition());
+
+
+        final float startTextSize = getIntent().
+                getFloatExtra("fakeNewsTitleSize", -1);
+
+        setEnterSharedElementCallback(
+                new SharedElementCallback() {
+                    private float textSize = -1;
+                    @Override
+                    public void onSharedElementStart(List<String> sharedElementNames, List<View> sharedElements, List<View> sharedElementSnapshots) {
+                        Log.d("MadeFakeNews", "started");
+                        TextView titleTextView = (TextView) sharedElements.get(0);
+                        textSize = titleTextView.getTextSize();
+                        titleTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, startTextSize);
+                    }
+
+                    @Override
+                    public void onSharedElementEnd(List<String> sharedElementNames, List<View> sharedElements, List<View> sharedElementSnapshots) {
+                        if(textSize >=0){
+                            TextView titleTextView = (TextView) sharedElements.get(0);
+                            titleTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
+                        }
+                    }
+                }
+        );
 
         title = findViewById(R.id.finished_fake_news_title);
         title.setText(getIntent().getStringExtra("fakeNewsTitle"));
-//        Animation animation = new ScaleAnimation(
-//                0.4f, 1f,
-//                0.4f, 1f,
-//                Animation.RELATIVE_TO_SELF, 0f,
-//                Animation.RELATIVE_TO_SELF, 0f);
-//        animation.setDuration(1000);
-//        animation.setFillBefore(true);
-//        title.startAnimation(animation);
+
 
         TextInputEditText description = findViewById(R.id.finished_fake_news_description);
         description.setText(getIntent().getStringExtra("fakeNewsDescription"));
