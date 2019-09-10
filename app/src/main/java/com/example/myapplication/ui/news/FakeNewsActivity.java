@@ -1,4 +1,4 @@
-package com.example.myapplication.ui;
+package com.example.myapplication.ui.news;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,7 +26,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.example.myapplication.R;
-import com.example.myapplication.ui.TextSharedElementTransition.TransitionUtils;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.squareup.picasso.Picasso;
@@ -50,7 +49,6 @@ public class FakeNewsActivity extends AppCompatActivity {
 
     private TextInputEditText content;
 
-    private LinearLayout fakeNewsContainer;
 
     private static final int LOAD_IMAGE = 0;
 
@@ -70,7 +68,6 @@ public class FakeNewsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fake_news);
 
-
         Slide slideIn = new Slide();
         slideIn.setSlideEdge(Gravity.END);
         getWindow().setEnterTransition(slideIn);
@@ -78,13 +75,12 @@ public class FakeNewsActivity extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        title = findViewById(R.id.user_input_title);
+        title = findViewById(R.id.title_view);
         titleLayout = findViewById(R.id.title_text_input_layout);
         description = findViewById(R.id.user_input_description);
         descriptionLayout = findViewById(R.id.description_text_input_layout);
         content = findViewById(R.id.user_input_content);
         Button submitButton = findViewById(R.id.submit_button);
-        fakeNewsContainer = findViewById(R.id.fake_news_container);
 
         ImageButton uploadImageButton = findViewById(R.id.upload_image_button);
         uploadedImage = findViewById(R.id.user_image_upload);
@@ -98,11 +94,9 @@ public class FakeNewsActivity extends AppCompatActivity {
         });
         ImageButton useCameraButton = findViewById(R.id.user_camera_button);
 
-        if(!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)){
+        if (!getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)) {
             useCameraButton.setClickable(false);
-        }
-
-        else {
+        } else {
             useCameraButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -120,21 +114,20 @@ public class FakeNewsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 titleLayout.setError(null);
 
-                    if (TextUtils.isEmpty(Objects.requireNonNull(Objects.requireNonNull(title).getText()).toString())){
-                        titleLayout.setError("Please enter a title");
-                        titleLayout.setFocusable(true);
-                    }
-                    if(TextUtils.isEmpty(Objects.requireNonNull(description.getText()).toString())){
-                        descriptionLayout.setError("Please enter a description");
-                        descriptionLayout.setFocusable(true);
-                    }
-                    else {
+                if (TextUtils.isEmpty(Objects.requireNonNull(Objects.requireNonNull(title).getText()).toString())) {
+                    titleLayout.setError("Please enter a title");
+                    titleLayout.setFocusable(true);
+                }
+                if (TextUtils.isEmpty(Objects.requireNonNull(description.getText()).toString())) {
+                    descriptionLayout.setError("Please enter a description");
+                    descriptionLayout.setFocusable(true);
+                } else {
                     Intent madeFakeNewsIntent = new Intent(FakeNewsActivity.this, MadeFakeNews.class);
                     madeFakeNewsIntent.putExtra("fakeNewsTitle", title.getText().toString());
                     madeFakeNewsIntent.putExtra("fakeNewsDescription", description.getText().toString());
                     madeFakeNewsIntent.putExtra("fakeNewsContent", content.getText().toString());
                     madeFakeNewsIntent.putExtra("fakeNewsTitleSize", title.getTextSize());
-                    if(!TextUtils.isEmpty(currentPhotoPath)) {
+                    if (!TextUtils.isEmpty(currentPhotoPath)) {
                         madeFakeNewsIntent.putExtra("fakeNewsImageUri", currentPhotoPath);
                     }
                     Pair<View, String> titlePair = Pair.create((View) title, getString(R.string.fake_news_transition_title));
@@ -147,8 +140,7 @@ public class FakeNewsActivity extends AppCompatActivity {
                                     descriptionPair,
                                     contentPair,
                                     imagePair);
-                        startActivity(madeFakeNewsIntent, options.toBundle());
-
+                    startActivity(madeFakeNewsIntent, options.toBundle());
                 }
             }
         });
@@ -224,7 +216,7 @@ public class FakeNewsActivity extends AppCompatActivity {
         int photoH = bmOptions.outHeight;
 
         // Determine how much to scale down the image
-        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+        int scaleFactor = Math.min(photoW / targetW, photoH / targetH);
 
         // Decode the image file into a Bitmap sized to fill the View
         bmOptions.inJustDecodeBounds = false;

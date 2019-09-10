@@ -9,7 +9,7 @@
         android:layout_marginBottom="8dp"
         android:isScrollContainer="true"
         android:orientation="vertical"
-        tools:context=".ui.MadeFakeNews">
+        tools:context=".ui.news.MadeFakeNews">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -18,13 +18,13 @@
             android:background="@drawable/news_item_view_holder_border">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/finished_fake_news_title"
+                android:id="@+id/title_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/text_margin"
                 android:transitionName="@string/fake_news_transition_title"
                 android:fontFamily="@font/ubuntu_b"
-                android:textSize="36sp"
+                android:textSize="@dimen/large_text_size"
                 tools:text="title"
                 android:layout_marginStart="@dimen/text_margin"
                 android:background="@null" />

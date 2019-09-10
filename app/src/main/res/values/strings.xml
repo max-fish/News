@@ -41,4 +41,7 @@
     <string name="fake_news_transition_description">fakeNewsDescriptionTransition</string>
     <string name="fake_news_transition_content">fakeNewsDescriptionContent</string>
     <string name="fake_news_transition_image">fakeNewsTransitionImage</string>
+
+    <string name="title">title</string>
+    <string name="hello_world">hello_world</string>
 </resources>
