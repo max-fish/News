@@ -22,12 +22,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ui.MadeFakeNews"
+        <activity android:name=".ui.news.MadeFakeNews"
             android:label="Made Fake News"
             android:theme="@style/AppTheme"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".ui.FakeNewsActivity"
+            android:name=".ui.news.FakeNewsActivity"
             android:label="Fake News"
             android:theme="@style/AppTheme.Transparent"
             android:screenOrientation="portrait"/>
