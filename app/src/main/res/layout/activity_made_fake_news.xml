@@ -18,12 +18,11 @@
             android:background="@drawable/news_item_view_holder_border">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/finished_fake_news_title"
+                android:id="@+id/title_view"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="36dp"
                 android:layout_marginTop="@dimen/text_margin"
                 android:transitionName="@string/fake_news_transition_title"
-                android:fontFamily="@font/ubuntu_b"
                 android:textSize="36sp"
                 tools:text="title"
                 android:layout_marginStart="@dimen/text_margin"
@@ -40,7 +39,7 @@
                 />
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/finished_fake_news_description"
+                android:id="@+id/user_input_description"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -63,7 +62,7 @@
 
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/finished_fake_news_Content"
+                android:id="@+id/user_input_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"

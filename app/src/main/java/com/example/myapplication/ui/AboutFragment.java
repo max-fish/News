@@ -8,9 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.myapplication.R;
+import com.example.myapplication.ui.Effects.RevealAnimation;
+
+import java.util.Objects;
 
 public class AboutFragment extends Fragment {
 
@@ -24,11 +28,27 @@ public class AboutFragment extends Fragment {
         makeFakeNews.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent makeFakeNewsIntent = new Intent(getActivity(), FakeNewsActivity.class);
-                startActivity(makeFakeNewsIntent);
+                startRevealActivity(view);
             }
         });
 
         return view;
+    }
+
+    private void startRevealActivity(View v) {
+        //calculates the center of the View v you are passing
+        int revealX = (int) (v.getX() + v.getWidth() / 2);
+        int revealY = (int) (v.getY() + v.getHeight() / 2);
+
+        //create an intent, that launches the second activity and pass the x and y coordinates
+        Intent intent = new Intent(getActivity(), FakeNewsActivity.class);
+        intent.putExtra(RevealAnimation.EXTRA_CIRCULAR_REVEAL_X, revealX);
+        intent.putExtra(RevealAnimation.EXTRA_CIRCULAR_REVEAL_Y, revealY);
+
+        //just start the activity as an shared transition, but set the options bundle to null
+        ActivityCompat.startActivity(Objects.requireNonNull(getContext()), intent, null);
+
+        //to prevent strange behaviours override the pending transitions
+        Objects.requireNonNull(getActivity()).overridePendingTransition(0, 0);
     }
 }

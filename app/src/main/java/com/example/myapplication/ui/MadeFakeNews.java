@@ -10,13 +10,11 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.myapplication.R;
-import com.example.myapplication.ui.TextSharedElementTransition.TransitionUtils;
+import com.example.myapplication.Utils.TransitionUtils;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.List;
@@ -58,14 +56,14 @@ public class MadeFakeNews extends AppCompatActivity {
                 }
         );
 
-        title = findViewById(R.id.finished_fake_news_title);
+        title = findViewById(R.id.title_view);
         title.setText(getIntent().getStringExtra("fakeNewsTitle"));
 
 
-        TextInputEditText description = findViewById(R.id.finished_fake_news_description);
+        TextInputEditText description = findViewById(R.id.user_input_description);
         description.setText(getIntent().getStringExtra("fakeNewsDescription"));
 
-        TextInputEditText content = findViewById(R.id.finished_fake_news_Content);
+        TextInputEditText content = findViewById(R.id.user_input_content);
         content.setText(getIntent().getStringExtra("fakeNewsContent"));
 
         image = findViewById(R.id.finished_fake_news_image);

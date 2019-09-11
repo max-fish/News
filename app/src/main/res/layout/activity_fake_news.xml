@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.FakeNewsActivity">
+    tools:context=".ui.FakeNewsActivity"
+    android:background="?selectableItemBackground">
 
     <TextView
         android:layout_width="wrap_content"
@@ -46,7 +47,7 @@
             >
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/user_input_title"
+                android:id="@+id/title_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="title"

@@ -29,7 +29,7 @@
         <activity
             android:name=".ui.FakeNewsActivity"
             android:label="Fake News"
-            android:theme="@style/AppTheme"
+            android:theme="@style/AppTheme.Transparent"
             android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.SplashActivity"

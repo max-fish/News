@@ -11,7 +11,7 @@
     >
 
     <ImageView
-        android:id="@+id/news_item_image"
+        android:id="@+id/detail_image"
         android:layout_width="@dimen/news_item_pic_width"
         android:layout_height="match_parent"
         android:layout_marginStart="1dp"
@@ -21,7 +21,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop"
+        android:transitionName="@string/image_detail_transition_name"/>
 
     <TextView
         android:id="@+id/news_item_title"
@@ -35,7 +36,7 @@
         android:paddingEnd="8dp"
         android:textSize="18sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/news_item_image"
+        app:layout_constraintStart_toEndOf="@+id/detail_image"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         tools:text="gjgjhjhjhjvjvjvj" />
@@ -50,7 +51,7 @@
         android:textSize="12sp"
         android:textStyle="italic"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/news_item_image"
+        app:layout_constraintStart_toEndOf="@+id/detail_image"
         app:layout_constraintTop_toBottomOf="@+id/news_item_title"
         tools:text="as;dlkfjasd" />
 </androidx.constraintlayout.widget.ConstraintLayout>

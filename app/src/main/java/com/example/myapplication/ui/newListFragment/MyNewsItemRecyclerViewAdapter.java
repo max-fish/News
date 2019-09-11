@@ -7,6 +7,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.transition.TransitionInflater;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,7 @@ import com.example.myapplication.data.callbacks.QueryCallBack;
 import com.example.myapplication.R;
 import com.example.myapplication.data.model.DataModel;
 import com.example.myapplication.ui.DetailActivity;
+import com.example.myapplication.Utils.TransitionUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -95,7 +98,15 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
             Bundle bundle = new Bundle();
             fillBundle(bundle, item);
             detailsIntent.putExtra("info", bundle);
-            activity.startActivity(detailsIntent, ActivityOptions.makeSceneTransitionAnimation(activity).toBundle());
+
+
+            Pair imagePair = Pair.create(viewHolder.mImageView, activity.getString(R.string.image_detail_transition_name));
+
+            ActivityOptions activityOptions = ActivityOptions.makeSceneTransitionAnimation(
+                    activity,
+                    imagePair);
+            activity.startActivity(detailsIntent, activityOptions.toBundle());
+
             viewHolder.mTitleView.setTextColor(Color.GRAY);
             viewHolder.mDescriptionView.setTextColor(Color.GRAY);
             viewHolder.itemView.setBackground(null);
@@ -184,7 +195,7 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
             mItem = view;
             mTitleView =  view.findViewById(R.id.news_item_title);
             mDescriptionView = view.findViewById(R.id.news_item_description);
-            mImageView = view.findViewById(R.id.news_item_image);
+            mImageView = view.findViewById(R.id.detail_image);
         }
 
         @Override

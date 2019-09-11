@@ -3,11 +3,16 @@ package com.example.myapplication.ui;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.transition.Explode;
 import android.transition.Slide;
+import android.transition.TransitionInflater;
+import android.transition.Visibility;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -30,9 +35,6 @@ public class DetailActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
-        Slide slide = new Slide();
-        slide.setSlideEdge(Gravity.END);
-        getWindow().setEnterTransition(slide);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
@@ -44,6 +46,12 @@ public class DetailActivity extends AppCompatActivity {
         image = findViewById(R.id.detail_image);
         link = findViewById(R.id.detail_link);
 
+        getWindow().setEnterTransition(
+                TransitionInflater
+                        .from(this)
+                        .inflateTransition(R.transition.non_shared_to_detail));
+
+
         Bundle inBundle = getIntent().getBundleExtra("info");
 
         if (inBundle != null) {
@@ -52,7 +60,6 @@ public class DetailActivity extends AppCompatActivity {
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
     }
 
     @Override
@@ -74,7 +81,6 @@ public class DetailActivity extends AppCompatActivity {
                 .load(bundle.getString("urlToImage"))
                 .into(image);
         source.setText(bundle.getString("source"));
-        Log.d("Detail", bundle.getString("url"));
         link.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

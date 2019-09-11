@@ -12,6 +12,7 @@
     tools:context=".ui.DetailActivity">
 
     <LinearLayout
+        android:id="@+id/detail_info_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -31,8 +32,11 @@
 
     <ImageView
         android:id="@+id/detail_image"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:transitionName="@string/image_detail_transition_name"
+        android:contentDescription="@string/detail_image_content_description"
+        android:adjustViewBounds="true"
         />
 
     <TextView
@@ -49,6 +53,7 @@
         tools:text="description" />
 
     <View
+        android:id="@+id/detail_separator"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/colorPrimary"
