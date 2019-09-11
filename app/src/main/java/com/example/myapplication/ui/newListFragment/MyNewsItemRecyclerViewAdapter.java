@@ -7,7 +7,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.transition.TransitionInflater;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +24,6 @@ import com.example.myapplication.data.callbacks.QueryCallBack;
 import com.example.myapplication.R;
 import com.example.myapplication.data.model.DataModel;
 import com.example.myapplication.ui.DetailActivity;
-import com.example.myapplication.Utils.TransitionUtils;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;

@@ -44,4 +44,5 @@
 
     <string name="title">title</string>
     <string name="hello_world">hello_world</string>
+    <string name="image_detail_transition_name">imageDetailTransition</string>
 </resources>
