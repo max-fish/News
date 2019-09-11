@@ -33,10 +33,10 @@
     <ImageView
         android:id="@+id/detail_image"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:transitionName="@string/image_detail_transition_name"
         android:contentDescription="@string/detail_image_content_description"
-        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
         />
 
     <TextView

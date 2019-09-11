@@ -1,4 +1,4 @@
-package com.example.myapplication.ui.TextSharedElementTransition;
+package com.example.myapplication.Utils;
 
 import android.content.Context;
 import android.transition.ChangeBounds;
@@ -6,6 +6,7 @@ import android.transition.Transition;
 import android.transition.TransitionSet;
 import android.transition.Fade;
 import com.example.myapplication.R;
+import com.example.myapplication.ui.Effects.TextSizeTransition;
 
 public final class TransitionUtils {
 

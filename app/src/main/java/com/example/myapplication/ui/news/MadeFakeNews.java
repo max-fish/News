@@ -1,16 +1,16 @@
 package com.example.myapplication.ui.news;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.ImageView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.myapplication.R;
-import com.example.myapplication.ui.TextSharedElementTransition.TransitionUtils;
 import com.google.android.material.textfield.TextInputEditText;
+import com.example.myapplication.Utils.TransitionUtils;
 
 public class MadeFakeNews extends AppCompatActivity {
 

@@ -28,6 +28,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsItemRecyclerViewAdapter.ViewHolder> {
@@ -53,18 +54,37 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.news_item, parent, false);
-        return new ViewHolder(view);
+    public MyNewsItemRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        if(viewType == 0){
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.news_item_first, parent, false);
+            return new ViewHolder(view, viewType);
+        }
+        else{
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.news_item, parent, false);
+            return new ViewHolder(view, viewType);
+        }
+
+    }
+
+
+    @Override
+    public int getItemViewType(int position) {
+        return position;
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         final DataModel mItem = mValues.get(position);
-        putImage(mItem.getUrlToImage(), holder.mImageView);
+        if(position == 0){
+
+        }
+        putImage(mItem.getUrlToImage(), holder.mImageView, position);
         holder.mTitleView.setText(mItem.getTitle());
-        holder.mDescriptionView.setText(mItem.getDescription());
+        if(holder.mDescriptionView != null) {
+            holder.mDescriptionView.setText(mItem.getDescription());
+        }
         holder.mItem.setOnClickListener(makeViewHolderOnClickListener(holder, mItem));
         Application.getRepository().checkArticle(new QueryCallBack() {
             @Override
@@ -76,15 +96,27 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
         }, mItem.getUrl());
     }
 
-    private void putImage(String url, ImageView imageView) {
+    private void putImage(String url, ImageView imageView, int position) {
         if (!TextUtils.isEmpty(url)) {
-            Picasso
-                    .get()
-                    .load(url)
-                    .transform(new CircleTransform(radius, radius, 0, 0, 0, 0, radius, radius))
-                    .resizeDimen(R.dimen.news_item_pic_width, R.dimen.news_item_height)
-                    .centerCrop()
-                    .into(imageView);
+            if (position == 0) {
+                Picasso
+                        .get()
+                        .load(url)
+                        .transform(new CircleTransform(radius, radius, radius, radius, radius, radius, radius, radius))
+                        .placeholder(Objects.requireNonNull(activity.getDrawable(R.drawable.ic_image_grey_24dp)))
+                        .resizeDimen(R.dimen.first_pic_width, R.dimen.first_pic_height)
+                        .centerCrop()
+                        .into(imageView);
+            } else {
+                Picasso
+                        .get()
+                        .load(url)
+                        .transform(new CircleTransform(radius, radius, 0, 0, 0, 0, radius, radius))
+                        .resizeDimen(R.dimen.news_item_pic_width, R.dimen.news_item_height)
+                        .centerCrop()
+                        .placeholder(R.drawable.ic_image_grey_24dp)
+                        .into(imageView);
+            }
         }
     }
 
@@ -106,7 +138,9 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
             activity.startActivity(detailsIntent, activityOptions.toBundle());
 
             viewHolder.mTitleView.setTextColor(Color.GRAY);
-            viewHolder.mDescriptionView.setTextColor(Color.GRAY);
+            if(viewHolder.mDescriptionView != null) {
+                viewHolder.mDescriptionView.setTextColor(Color.GRAY);
+            }
             viewHolder.itemView.setBackground(null);
             Application.getRepository().saveArticle(item.getUrl());
             }
@@ -182,18 +216,27 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
         return mValues != null ? mValues.size() : 0;
     }
 
+
     public class ViewHolder extends RecyclerView.ViewHolder
     {
          final TextView mTitleView;
          final TextView mDescriptionView;
          final ImageView mImageView;
          final View mItem;
-         ViewHolder(View view) {
+         ViewHolder(View view, int viewType) {
             super(view);
-            mItem = view;
-            mTitleView =  view.findViewById(R.id.news_item_title);
-            mDescriptionView = view.findViewById(R.id.news_item_description);
-            mImageView = view.findViewById(R.id.detail_image);
+
+             mItem = view;
+             if(viewType == 0){
+                mImageView = view.findViewById(R.id.first_picture);
+                mTitleView = view.findViewById(R.id.detail_image);
+                mDescriptionView = null;
+            }
+            else {
+                mTitleView = view.findViewById(R.id.news_item_title);
+                mDescriptionView = view.findViewById(R.id.news_item_description);
+                mImageView = view.findViewById(R.id.detail_image);
+            }
         }
 
         @Override
