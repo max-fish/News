@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:paddingLeft="4dp"
     android:paddingRight="4dp"
@@ -24,17 +25,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ProgressBar
-                android:id="@+id/news_progress_bar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:visibility="visible"
-                android:indeterminate="true"
-                android:indeterminateTint="@color/colorPrimary"/>
 
-        <androidx.recyclerview.widget.RecyclerView xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
+        <androidx.recyclerview.widget.RecyclerView xmlns:tools="http://schemas.android.com/tools"
             android:id="@+id/list"
             android:name="com.example.myapplication.NewsListFragment"
             android:layout_width="match_parent"
@@ -42,7 +34,7 @@
             app:layoutManager="LinearLayoutManager"
             tools:context=".ui.newListFragment.NewsListFragment"
             tools:listitem="@layout/news_item"
-            android:background="@null"/>
+            android:background="@null" />
         </FrameLayout>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

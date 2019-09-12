@@ -8,6 +8,7 @@
         android:id="@+id/action_search"
         android:title="Search"
         android:icon="@drawable/ic_search_primary_24dp"
+        android:iconTint="@color/colorPrimary"
         app:showAsAction="ifRoom|collapseActionView"
         app:actionViewClass="androidx.appcompat.widget.SearchView" />
 
@@ -16,6 +17,7 @@
         android:id="@+id/action_settings"
         android:title="Settings"
         android:icon="@drawable/ic_settings_primary_24dp"
+        android:iconTint="@color/colorPrimary"
         app:showAsAction="ifRoom"
         android:onClick="openSettings"
         />

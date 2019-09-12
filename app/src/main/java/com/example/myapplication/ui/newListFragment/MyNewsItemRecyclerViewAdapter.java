@@ -77,9 +77,7 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         final DataModel mItem = mValues.get(position);
-        if(position == 0){
 
-        }
         putImage(mItem.getUrlToImage(), holder.mImageView, position);
         holder.mTitleView.setText(mItem.getTitle());
         if(holder.mDescriptionView != null) {
@@ -90,7 +88,10 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
             @Override
             public void onFound() {
                 holder.mTitleView.setTextColor(Color.GRAY);
-                holder.mDescriptionView.setTextColor(Color.GRAY);
+
+                if (holder.mDescriptionView != null) {
+                    holder.mDescriptionView.setTextColor(Color.GRAY);
+                }
                 holder.itemView.setBackground(null);
             }
         }, mItem.getUrl());
@@ -103,7 +104,7 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
                         .get()
                         .load(url)
                         .transform(new CircleTransform(radius, radius, radius, radius, radius, radius, radius, radius))
-                        .placeholder(Objects.requireNonNull(activity.getDrawable(R.drawable.ic_image_grey_24dp)))
+                        .placeholder(R.color.grey)
                         .resizeDimen(R.dimen.first_pic_width, R.dimen.first_pic_height)
                         .centerCrop()
                         .into(imageView);
@@ -114,7 +115,7 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
                         .transform(new CircleTransform(radius, radius, 0, 0, 0, 0, radius, radius))
                         .resizeDimen(R.dimen.news_item_pic_width, R.dimen.news_item_height)
                         .centerCrop()
-                        .placeholder(R.drawable.ic_image_grey_24dp)
+                        .placeholder(R.color.grey)
                         .into(imageView);
             }
         }

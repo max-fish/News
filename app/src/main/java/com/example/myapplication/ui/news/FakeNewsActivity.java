@@ -72,8 +72,8 @@ public class FakeNewsActivity extends AppCompatActivity {
         slideIn.setSlideEdge(Gravity.END);
         getWindow().setEnterTransition(slideIn);
 
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
+//        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         title = findViewById(R.id.title_view);
         titleLayout = findViewById(R.id.title_text_input_layout);

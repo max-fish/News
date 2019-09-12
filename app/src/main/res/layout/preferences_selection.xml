@@ -5,7 +5,6 @@
     android:padding="16dp">
 
     <TableRow>
-
         <include layout="@layout/user_profile" />
     </TableRow>
 

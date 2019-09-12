@@ -30,14 +30,17 @@ public class PreferencesView extends LinearLayout {
 
     public PreferencesView(Context context){
         super(context);
+        this.setBackground(null);
     }
 
     public PreferencesView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.setBackground(null);
     }
 
     public PreferencesView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        this.setBackground(null);
     }
 
     public void addFilterPreference(final DataCallBack<List<DataModel>> callBack, final Constants.NewsType newsType, String preference, int type) {

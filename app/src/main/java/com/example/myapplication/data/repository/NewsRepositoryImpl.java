@@ -25,6 +25,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import static com.example.myapplication.Constants.DEFAULT_REQUEST;
 
@@ -65,7 +66,7 @@ public class NewsRepositoryImpl implements NewsRepository {
         List<DataModel> dataModels = getAllNewsList();
         if (dataModels == null || dataModels.size() == 0 || request.notEquals(previousRequest)) {
             Date date = new Date();
-            String modifiedDate = new SimpleDateFormat("yyyy-MM-dd").format(date);
+            String modifiedDate = new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(date);
             RequestGenerator requestGenerator = new RequestGenerator.Builder()
                     .setQuery(request.getQuery())
                     .setFromDate(modifiedDate)
@@ -86,7 +87,7 @@ public class NewsRepositoryImpl implements NewsRepository {
         List<DataModel> dataModels = getRecommendedNews();
         if (dataModels == null || dataModels.size() == 0 || request.notEquals(previousRequest)) {
             Date date = new Date();
-            String modifiedDate = new SimpleDateFormat("yyyy-MM-dd").format(date);
+            String modifiedDate = new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(date);
             Log.d("NewsRepository", request.getSource());
             Log.d("NewsRepository", "getting new");
             RequestGenerator requestGenerator = new RequestGenerator.Builder()

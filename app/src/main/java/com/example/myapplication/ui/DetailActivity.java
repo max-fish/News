@@ -19,14 +19,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 
 import com.example.myapplication.R;
+import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
 
 public class DetailActivity extends AppCompatActivity {
-    private TextView title;
+    private CollapsingToolbarLayout title;
     private TextView description;
     private TextView source;
     private TextView content;
@@ -39,27 +43,25 @@ public class DetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail);
 
 
-        title = findViewById(R.id.detail_title);
+        title = findViewById(R.id.detail_actionbar);
         description = findViewById(R.id.detail_description);
         source = findViewById(R.id.detail_source);
         content = findViewById(R.id.detail_content);
         image = findViewById(R.id.detail_image);
         link = findViewById(R.id.detail_link);
 
-        getWindow().setEnterTransition(
-                TransitionInflater
-                        .from(this)
-                        .inflateTransition(R.transition.non_shared_to_detail));
-
 
         Bundle inBundle = getIntent().getBundleExtra("info");
+
+//        setSupportActionBar((Toolbar) findViewById(R.id.detail_actionbar));
+//
+//
+//        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         if (inBundle != null) {
             getBundleDataOut(inBundle);
         }
-
-        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
     @Override
@@ -73,13 +75,10 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void getBundleDataOut(final Bundle bundle) {
-        title.setText(bundle.getString("title"));
-        description.setText(bundle.getString("description"));
+        title.setTitle((bundle.getString("title")));
+        description.setText(bundle.getString("description")+bundle.getString("description")+bundle.getString("description")+bundle.getString("description")+bundle.getString("description")+bundle.getString("description")
+                +bundle.getString("description")+bundle.getString("description")+bundle.getString("description")+bundle.getString("description"));
         content.setText(bundle.getString("content"));
-        Picasso
-                .get()
-                .load(bundle.getString("urlToImage"))
-                .into(image);
         source.setText(bundle.getString("source"));
         link.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,5 +87,20 @@ public class DetailActivity extends AppCompatActivity {
                 startActivity(browserIntent);
             }
         });
+        ActivityCompat.postponeEnterTransition(this);
+        Picasso
+                .get()
+                .load(bundle.getString("urlToImage"))
+                .into(image, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        ActivityCompat.startPostponedEnterTransition(DetailActivity.this);
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+                        ActivityCompat.startPostponedEnterTransition(DetailActivity.this);
+                    }
+                });
     }
 }
