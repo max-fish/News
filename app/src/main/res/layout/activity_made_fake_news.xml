@@ -23,8 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/text_margin"
                 android:transitionName="@string/fake_news_transition_title"
-                android:fontFamily="@font/ubuntu_b"
-                android:textSize="@dimen/large_text_size"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Headline2"
                 tools:text="title"
                 android:layout_marginStart="@dimen/text_margin"
                 android:background="@null" />
@@ -48,8 +47,7 @@
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
                 android:textColor="#000000"
-                android:textSize="15sp"
-                android:fontFamily="@font/ubuntu_r"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                 tools:text="description"
                 android:transitionName="@string/fake_news_transition_description"
                 android:background="@null" />
@@ -69,9 +67,8 @@
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:fontFamily="@font/ubuntu_r"
-                android:textColor="#000000"
-                android:textSize="15sp"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textColor="@android:color/black"
                 tools:text="content"
                 android:transitionName="@string/fake_news_transition_content"
                 android:background="@null"/>
@@ -82,8 +79,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/text_margin"
                 android:layout_marginTop="16dp"
-                android:fontFamily="@font/ubuntu_r"
                 android:textColor="#000000"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
                 tools:text="source"
                 android:text="Source: You"
                 android:layout_marginBottom="@dimen/text_margin"/>

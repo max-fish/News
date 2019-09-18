@@ -61,7 +61,6 @@ public final class TransitionUtils {
 //        recolor.addTarget(R.id.title_view);
 //        recolor.addTarget(context.getString(R.string.hello_world));
 //        set.addTransition(recolor);
-
         Transition changeBounds = new ChangeBounds();
         changeBounds.addTarget(R.id.title_view);
         changeBounds.addTarget(context.getString(R.string.fake_news_transition_title));

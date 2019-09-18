@@ -112,7 +112,7 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
                 Picasso
                         .get()
                         .load(url)
-                        .transform(new CircleTransform(radius, radius, 0, 0, 0, 0, radius, radius))
+                        .transform(new CircleTransform(radius, radius, radius, radius, radius, radius, radius, radius))
                         .resizeDimen(R.dimen.news_item_pic_width, R.dimen.news_item_height)
                         .centerCrop()
                         .placeholder(R.color.grey)
@@ -230,7 +230,7 @@ public class MyNewsItemRecyclerViewAdapter extends RecyclerView.Adapter<MyNewsIt
              mItem = view;
              if(viewType == 0){
                 mImageView = view.findViewById(R.id.first_picture);
-                mTitleView = view.findViewById(R.id.detail_image);
+                mTitleView = view.findViewById(R.id.detail_title);
                 mDescriptionView = null;
             }
             else {

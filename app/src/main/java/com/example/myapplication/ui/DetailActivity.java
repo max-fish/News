@@ -3,16 +3,8 @@ package com.example.myapplication.ui;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.transition.Explode;
-import android.transition.Slide;
-import android.transition.TransitionInflater;
-import android.transition.Visibility;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,14 +15,15 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 
 import com.example.myapplication.R;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.example.myapplication.Utils.WindowUtils;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import java.util.Objects;
 
+
 public class DetailActivity extends AppCompatActivity {
-    private CollapsingToolbarLayout title;
+    private TextView title;
     private TextView description;
     private TextView source;
     private TextView content;
@@ -40,10 +33,13 @@ public class DetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_detail);
 
+        WindowUtils.setLightStatusBar(getWindow(), this);
 
-        title = findViewById(R.id.detail_actionbar);
+
+        title = findViewById(R.id.detail_title);
         description = findViewById(R.id.detail_description);
         source = findViewById(R.id.detail_source);
         content = findViewById(R.id.detail_content);
@@ -53,11 +49,13 @@ public class DetailActivity extends AppCompatActivity {
 
         Bundle inBundle = getIntent().getBundleExtra("info");
 
-//        setSupportActionBar((Toolbar) findViewById(R.id.detail_actionbar));
-//
-//
-//        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-//        getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        setSupportActionBar((Toolbar) findViewById(R.id.detail_actionbar));
+
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+
+        getSupportActionBar().setHomeAsUpIndicator(getDrawable(R.drawable.expanded_back_button));
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         if (inBundle != null) {
             getBundleDataOut(inBundle);
@@ -75,9 +73,8 @@ public class DetailActivity extends AppCompatActivity {
     }
 
     private void getBundleDataOut(final Bundle bundle) {
-        title.setTitle((bundle.getString("title")));
-        description.setText(bundle.getString("description")+bundle.getString("description")+bundle.getString("description")+bundle.getString("description")+bundle.getString("description")+bundle.getString("description")
-                +bundle.getString("description")+bundle.getString("description")+bundle.getString("description")+bundle.getString("description"));
+        title.setText(bundle.getString("title"));
+        description.setText(bundle.getString("description"));
         content.setText(bundle.getString("content"));
         source.setText(bundle.getString("source"));
         link.setOnClickListener(new View.OnClickListener() {

@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 
 import androidx.appcompat.widget.AppCompatTextView;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.core.widget.TextViewCompat;
 
 import com.example.myapplication.Application;
 import com.example.myapplication.Constants;
@@ -51,9 +52,9 @@ public class PreferencesView extends LinearLayout {
 
             final FilterPreferenceTextView textView = new FilterPreferenceTextView(getContext(), type);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                textView.setTypeface(getResources().getFont(R.font.ubuntu_r));
+                textView.setTextAppearance(R.style.TextAppearance_MaterialComponents_Button);
             } else {
-                textView.setTypeface(ResourcesCompat.getFont(Objects.requireNonNull(getContext()), R.font.ubuntu_r));
+                TextViewCompat.setTextAppearance(textView, R.style.TextAppearance_MaterialComponents_Button);
             }
             textView.setText(preference);
             textView.setBackground(getResources().getDrawable(R.drawable.preference_button_border));

@@ -19,9 +19,10 @@
 
     <TextView
         android:id="@+id/profile_name"
+        android:layout_marginStart="8dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/ubuntu_b"
+        android:fontFamily="@font/roboto_bold"
         android:text="@string/profile_name"
         android:textColor="@color/colorPrimary"
         app:layout_constraintStart_toEndOf="@+id/profile_picture"
@@ -31,8 +32,9 @@
         android:id="@+id/profile_email"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/ubuntu_l"
+        android:fontFamily="@font/roboto_regular"
         android:text="@string/profile_email"
+        android:layout_marginStart="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/profile_picture"
         app:layout_constraintStart_toEndOf="@+id/profile_picture" />
 
@@ -44,10 +46,10 @@
         android:stateListAnimator="@null"
         android:elevation="2dp"
         android:background="@color/colorPrimary"
-        android:fontFamily="@font/ubuntu_b"
         android:text="@string/sign_out_button_text"
         android:textColor="@color/white"
         android:textSize="12sp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

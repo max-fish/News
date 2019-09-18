@@ -12,15 +12,24 @@
         android:layout_gravity="center"
         android:src="@color/colorPrimary"/>
     <TextView
-        android:id="@+id/detail_image"
+        android:id="@+id/detail_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/ubuntu_b"
-        android:textSize="27sp"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline4"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="@dimen/text_margin"
         android:layout_marginTop="8dp"
         android:textColor="@android:color/black"
         tools:text="as;lkdfjad"
         android:transitionName="@string/image_detail_transition_name" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@android:color/black"
+        android:alpha="0.12"
+        android:layout_marginStart="@dimen/text_margin"
+        android:layout_marginEnd="@dimen/text_margin"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"/>
 </LinearLayout>

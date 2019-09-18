@@ -46,4 +46,5 @@
     <string name="hello_world">hello_world</string>
     <string name="image_detail_transition_name">imageDetailTransition</string>
     <string name="detail_image_content_description">the image associated with the article</string>
+    <string name="DetailLinkContentDescription">A link that you can tap on in order to see the full article</string>
 </resources>

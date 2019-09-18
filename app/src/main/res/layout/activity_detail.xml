@@ -11,6 +11,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:backgroundTint="@android:color/white"
         android:isScrollContainer="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
@@ -20,6 +21,33 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <TextView
+                android:id="@+id/detail_title"
+                style="@style/DetailTextStyle"
+                tools:text="Title"/>
+
+            <TextView
+                android:id="@+id/detail_description"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:textSize="15sp"
+                style="@style/DetailTextStyle"
+                tools:text="description" />
+
+
+
+            <TextView
+                android:id="@+id/detail_content"
+                android:layout_marginEnd="16dp"
+                android:textSize="15sp"
+                tools:text="content"
+                style="@style/DetailTextStyle" />
+
+            <TextView
+                android:id="@+id/detail_source"
+                style="@style/DetailTextStyle"
+                tools:text="source" />
+
             <ImageView
                 android:id="@+id/detail_link"
                 android:layout_width="wrap_content"
@@ -28,78 +56,44 @@
                 android:layout_marginTop="8dp"
                 android:paddingBottom="8dp"
                 android:src="@drawable/ic_link_black_24dp"
-                android:textColor="@color/colorPrimary"
-                tools:src="@drawable/ic_link_black_24dp" />
-
-            <TextView
-                android:id="@+id/detail_content"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:fontFamily="@font/ubuntu_r"
-                android:textColor="#000000"
-                android:textSize="15sp"
-                tools:text="content" />
-
-            <TextView
-                android:id="@+id/detail_source"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/text_margin"
-                android:layout_marginTop="16dp"
-                android:fontFamily="@font/ubuntu_r"
-                android:textColor="#000000"
-                tools:text="source" />
-
-            <TextView
-                android:id="@+id/detail_description"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
-                android:layout_marginBottom="16dp"
-                android:fontFamily="@font/ubuntu_r"
-                android:textColor="#000000"
-                android:textSize="15sp"
-                tools:text="description" />
+                android:contentDescription="@string/DetailLinkContentDescription" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:fitsSystemWindows="true">
+        android:fitsSystemWindows="true"
+        app:elevation="0dp"
+        android:backgroundTint="@android:color/white">
 
         <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/detail_actionbar"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_marginBottom="@dimen/text_margin"
-            android:elevation="4dp"
-            app:collapsedTitleTextAppearance="@style/TextAppearance.AppCompat.Large"
-            app:expandedTitleMarginBottom="24dp"
-            app:expandedTitleMarginStart="24dp"
-            app:contentScrim="?attr/colorPrimary"
-            app:expandedTitleTextAppearance="@style/TitleLabel"
+            app:title="Details"
+            app:expandedTitleTextAppearance="@style/InvisibleNewsLabel"
+            app:collapsedTitleTextAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            app:contentScrim="@android:color/white"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
                 android:id="@+id/detail_image"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:contentDescription="@string/detail_image_content_description"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
                 android:scaleType="fitXY"
+                android:contentDescription="@string/detail_image_content_description"
                 android:transitionName="@string/image_detail_transition_name"
                 app:layout_collapseMode="parallax"
                 tools:src="@drawable/ic_image_grey_24dp" />
 
             <androidx.appcompat.widget.Toolbar
+                android:id="@+id/detail_actionbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_marginTop="24dp"
+                style="@style/ActionBarStyle"
                 app:layout_collapseMode="pin" />
 
         </com.google.android.material.appbar.CollapsingToolbarLayout>

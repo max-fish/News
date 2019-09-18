@@ -6,11 +6,6 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.Window;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -26,10 +21,10 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.myapplication.Application;
 import com.example.myapplication.Constants;
 import com.example.myapplication.R;
+import com.example.myapplication.Utils.WindowUtils;
 import com.example.myapplication.ui.newListFragment.NewsListFragment;
 import com.example.myapplication.ui.preferences.PreferenceDialogFragment;
 import com.example.myapplication.ui.preferences.TopHeadlinesPreferenceDialogFragment;
-import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.Objects;
@@ -89,8 +84,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        getWindow().requestFeature(Window.FEATURE_CONTENT_TRANSITIONS);
         super.onCreate(savedInstanceState);
+
+        WindowUtils.setLightStatusBar(getWindow(), this);
 
         if(getIntent() != null){
             if(!TextUtils.isEmpty(getIntent().getStringExtra("url"))){
@@ -111,10 +107,6 @@ public class MainActivity extends AppCompatActivity {
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
         mainLayout = findViewById(R.id.main_layout);
-
-        if(!TextUtils.isEmpty(getIntent().getStringExtra("userName"))) {
-            //startWelcomeAnimation();
-        }
 
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -191,76 +183,4 @@ public class MainActivity extends AppCompatActivity {
         }
         return false;
     }
-
-//    private void startWelcomeAnimation() {
-//        welcomeTextContainer = findViewById(R.id.welcome_text_container);
-//        welcomeTextContainer.setVisibility(View.VISIBLE);
-//        TextView welcomeTextTitle = findViewById(R.id.welcome_text_title);
-//        welcomeTextName = findViewById(R.id.welcome_text_name);
-//
-//        welcomeTextName.setText(getIntent().getStringExtra("userName"));
-//
-//        final Animation fadeInAnimationTitle = new AlphaAnimation(0, 1);
-//        final Animation fadeInAnimationName = new AlphaAnimation(0, 1);
-//        final Animation fadeOutAnimation = AnimationUtils.loadAnimation(this, android.R.anim.fade_out);
-//
-//        fadeInAnimationTitle.setStartOffset(1000);
-//        fadeInAnimationTitle.setDuration(1000);
-//        fadeInAnimationName.setDuration(1000);
-//        fadeOutAnimation.setDuration(1000);
-//
-//        fadeInAnimationTitle.setAnimationListener(new Animation.AnimationListener() {
-//            @Override
-//            public void onAnimationStart(Animation animation) {
-//
-//            }
-//
-//            @Override
-//            public void onAnimationEnd(Animation animation) {
-//                welcomeTextName.setVisibility(View.VISIBLE);
-//                welcomeTextName.startAnimation(fadeInAnimationName);
-//            }
-//
-//            @Override
-//            public void onAnimationRepeat(Animation animation) {
-//
-//            }
-//        });
-//
-//        fadeInAnimationName.setAnimationListener(new Animation.AnimationListener() {
-//            @Override
-//            public void onAnimationStart(Animation animation) {
-//
-//            }
-//
-//            @Override
-//            public void onAnimationEnd(Animation animation) {
-//                welcomeTextContainer.startAnimation(fadeOutAnimation);
-//            }
-//
-//            @Override
-//            public void onAnimationRepeat(Animation animation) {
-//
-//            }
-//        });
-//
-//        fadeOutAnimation.setAnimationListener(new Animation.AnimationListener() {
-//            @Override
-//            public void onAnimationStart(Animation animation) {
-//            }
-//
-//            @Override
-//            public void onAnimationEnd(Animation animation) {
-//                welcomeTextContainer.setVisibility(View.GONE);
-//                mainLayout.removeView(welcomeTextContainer);
-//            }
-//
-//            @Override
-//            public void onAnimationRepeat(Animation animation) {
-//
-//            }
-//        });
-//
-//        welcomeTextTitle.setAnimation(fadeInAnimationTitle);
-//    }
 }

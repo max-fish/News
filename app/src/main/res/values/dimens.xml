@@ -3,7 +3,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="text_margin">16dp</dimen>
-    <dimen name="radius_image">20dp</dimen>
+    <dimen name="radius_image">10dp</dimen>
     <dimen name="news_item_height">100dp</dimen>
     <dimen name="news_item_pic_width">150dp</dimen>
     <dimen name="made_fake_news_pic_width">380dp</dimen>

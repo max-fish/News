@@ -23,9 +23,8 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="68dp"
         android:layout_marginEnd="8dp"
-        android:fontFamily="@font/ubuntu_th"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline3"
         android:text="@string/sign_in_message"
-        android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

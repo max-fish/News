@@ -33,8 +33,7 @@
             android:layout_height="match_parent"
             app:layoutManager="LinearLayoutManager"
             tools:context=".ui.newListFragment.NewsListFragment"
-            tools:listitem="@layout/news_item"
-            android:background="@null" />
+            tools:listitem="@layout/news_item" />
         </FrameLayout>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

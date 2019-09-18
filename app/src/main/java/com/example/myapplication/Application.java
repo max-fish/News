@@ -3,6 +3,7 @@ package com.example.myapplication;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.os.Build;
+import android.view.View;
 
 
 import com.example.myapplication.data.repository.NewsRepository;
