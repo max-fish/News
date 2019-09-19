@@ -144,7 +144,7 @@ public class NewsRepositoryImpl implements NewsRepository {
 
     @Override
     public void submitRequest(DataCallBack<List<DataModel>> callBack, Constants.NewsType newsType, Request request) {
-        previousRequest = currentRequest;
+            previousRequest = currentRequest;
         if (newsType == Constants.NewsType.RECOMMENDED) {
             getRecommendedNews(callBack, request);
             currentRequest = request;
@@ -166,6 +166,7 @@ public class NewsRepositoryImpl implements NewsRepository {
         }
     }
 
+    @Override
     public void refresh(DataCallBack<List<DataModel>> callBack, Constants.NewsType newsType) {
         if (newsType == Constants.NewsType.RECOMMENDED) {
             getRecommendedNews(callBack, currentRequest);

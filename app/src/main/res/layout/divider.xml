@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<View android:id="@+id/news_item_divider"
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="@android:color/black"
+    android:alpha="0.12"
+    android:layout_marginStart="@dimen/text_margin"
+    android:layout_marginEnd="@dimen/text_margin"
+    android:layout_marginTop="8dp"
+    xmlns:android="http://schemas.android.com/apk/res/android" />

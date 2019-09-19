@@ -3,17 +3,15 @@ package com.example.myapplication.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -78,9 +76,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private FragmentManager fragmentManager;
-    private ConstraintLayout welcomeTextContainer;
-    private TextView welcomeTextName;
-    private CoordinatorLayout mainLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,7 +101,6 @@ public class MainActivity extends AppCompatActivity {
         navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
-        mainLayout = findViewById(R.id.main_layout);
 
         fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -133,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
                     NewsListFragment currentNewsListFragment = (NewsListFragment) currentFragment;
                     Application.getRepository().changeQuery(currentNewsListFragment,
                             currentNewsListFragment.getNewsType(), query);
+                    Log.d("MainActivity", "should change");
                     return true;
                 }
                 return false;

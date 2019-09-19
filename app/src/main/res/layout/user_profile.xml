@@ -14,6 +14,7 @@
         android:layout_height="40dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:srcCompat="@android:drawable/picture_frame"
         android:contentDescription="@string/profile_pic_content_description" />
 
@@ -41,11 +42,11 @@
 
     <Button
         android:id="@+id/sign_out_button"
-        android:layout_width="65dp"
-        android:layout_height="32dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:stateListAnimator="@null"
         android:elevation="2dp"
-        android:background="@color/colorPrimary"
+        android:background="@drawable/sign_out_button_background"
         android:text="@string/sign_out_button_text"
         android:textColor="@color/white"
         android:textSize="12sp"

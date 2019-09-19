@@ -19,33 +19,54 @@
             android:id="@+id/detail_info_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginTop="@dimen/text_margin">
 
             <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
                 android:id="@+id/detail_title"
-                style="@style/DetailTextStyle"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:fontFamily="@font/roboto_regular"
+                android:textStyle="bold"
+                android:layout_marginStart="@dimen/text_margin"
+                android:layout_marginEnd="@dimen/text_margin"
+                android:textSize="20sp"
                 tools:text="Title"/>
 
+            <include layout="@layout/divider" />
+
             <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
                 android:id="@+id/detail_description"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="16dp"
+                android:layout_marginStart="@dimen/text_margin"
+                android:layout_marginEnd="@dimen/text_margin"
                 android:textSize="15sp"
-                style="@style/DetailTextStyle"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                android:fontFamily="@font/roboto_regular"
                 tools:text="description" />
 
-
+            <include layout="@layout/divider" />
 
             <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
                 android:id="@+id/detail_content"
-                android:layout_marginEnd="16dp"
-                android:textSize="15sp"
-                tools:text="content"
-                style="@style/DetailTextStyle" />
+                android:layout_marginStart="@dimen/text_margin"
+                android:layout_marginEnd="@dimen/text_margin"
+                android:layout_marginTop="8dp"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                android:fontFamily="@font/roboto_regular"
+                tools:text="content" />
+
 
             <TextView
                 android:id="@+id/detail_source"
                 style="@style/DetailTextStyle"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
+                android:fontFamily="@font/roboto_regular"
                 tools:text="source" />
 
             <ImageView
@@ -73,7 +94,7 @@
             android:layout_marginBottom="@dimen/text_margin"
             app:title="Details"
             app:expandedTitleTextAppearance="@style/InvisibleNewsLabel"
-            app:collapsedTitleTextAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+            app:collapsedTitleTextAppearance="@style/ToolbarTitleTextAppearance"
             app:contentScrim="@android:color/white"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
@@ -82,10 +103,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                android:scaleType="fitXY"
                 android:contentDescription="@string/detail_image_content_description"
                 android:transitionName="@string/image_detail_transition_name"
                 app:layout_collapseMode="parallax"
+                android:scaleType="fitXY"
                 tools:src="@drawable/ic_image_grey_24dp" />
 
             <androidx.appcompat.widget.Toolbar

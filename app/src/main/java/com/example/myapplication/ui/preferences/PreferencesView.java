@@ -14,7 +14,6 @@ import android.view.animation.Animation;
 import android.widget.LinearLayout;
 
 import androidx.appcompat.widget.AppCompatTextView;
-import androidx.core.content.res.ResourcesCompat;
 import androidx.core.widget.TextViewCompat;
 
 import com.example.myapplication.Application;
@@ -23,7 +22,6 @@ import com.example.myapplication.R;
 import com.example.myapplication.data.callbacks.DataCallBack;
 import com.example.myapplication.data.model.DataModel;
 import java.util.List;
-import java.util.Objects;
 
 import static com.example.myapplication.Constants.FilterPreferenceIDs.*;
 
@@ -52,9 +50,9 @@ public class PreferencesView extends LinearLayout {
 
             final FilterPreferenceTextView textView = new FilterPreferenceTextView(getContext(), type);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                textView.setTextAppearance(R.style.TextAppearance_MaterialComponents_Button);
+                textView.setTextAppearance(R.style.TextAppearance_MaterialComponents_Subtitle1);
             } else {
-                TextViewCompat.setTextAppearance(textView, R.style.TextAppearance_MaterialComponents_Button);
+                TextViewCompat.setTextAppearance(textView, R.style.TextAppearance_MaterialComponents_Subtitle1);
             }
             textView.setText(preference);
             textView.setBackground(getResources().getDrawable(R.drawable.preference_button_border));
